@@ -86,7 +86,7 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
             utility.addon_id, urllib.quote_plus(utility.main_url + '/WiMovie/' + url))))
     if video_type == 'tvshow':
         entries.append((utility.get_string(30150),
-                        'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s'  '&seriesID=%s)' % (
+                        'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
                             utility.addon_id, urllib.quote_plus(utility.encode(name.strip())), urllib.quote_plus(url))))
     elif video_type == 'movie':
         entries.append((utility.get_string(30150),
@@ -117,7 +117,7 @@ def season(name, url, mode, thumb, series_name, series_id):
     else:
         list_item.setProperty('fanart_image', utility.addon_fanart())
     entries.append((utility.get_string(30150),
-                    'RunPlugin(plugin://%s/?mode=add_series_to_library&url=%s&name=%s&seriesID=%s)' % (
+                    'RunPlugin(plugin://%s/?mode=add_series_to_library&url=%s&name=%s&series_id=%s)' % (
                         utility.addon_id, urllib.quote_plus(unicode(url)),
                         urllib.quote_plus(utility.encode(series_name.strip())),
                         series_id)))
