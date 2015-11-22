@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 
-import base64
 import time
 import xbmc
 import xbmcvfs
@@ -18,11 +17,15 @@ def video_info(video_id):
         content = file_handler.read()
         file_handler.close()
     if not content:
-        content = connect.load_site(utility.main_url + '/JSON/BOB?movieid=' + video_id)
+        postdata = '{"paths":[["videos",{media_id},["bookmarkPosition","details","episodeCount","maturity","queue",' \
+                   '"releaseYear","requestId","runtime","seasonCount","summary","title","userRating","watched"]],' \
+                   '["videos",{media_id},"boxarts",["_342x192","_665x375"],"jpg"]],"authURL":"{authorization_url}"}' \
+            .replace('{media_id}', video_id).replace('{authorization_url}', utility.get_setting('authorization_url'))
+        content = connect.load_site(utility.evaluator(), post=postdata)
         file_handler = xbmcvfs.File(cache_file, 'wb')
         file_handler.write(content)
         file_handler.close()
-    return utility.clean_content(utility.decode(content))
+    return utility.decode(content)
 
 
 def series_info(series_id):
@@ -43,8 +46,8 @@ def series_info(series_id):
 
 
 def cover(video_type, video_id, title, year):
-    filename = utility.clean_filename(video_id) + '.jpg'
-    filename_none = utility.clean_filename(video_id) + '.none'
+    filename = video_id + '.jpg'
+    filename_none = video_id + '.none'
     cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
     cover_file_none = xbmc.translatePath(utility.cover_cache_dir() + filename_none)
     fanart_file = xbmc.translatePath(utility.fanart_cache_dir() + filename)

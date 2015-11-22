@@ -28,7 +28,7 @@ def series(series_id, series_title, season, single_update=True):
     for test in content:
         episode_season = unicode(test['seq'])
         if episode_season == season or season == '':
-            season_dir = utility.create_pathname(series_file, 'Season ' + episode_season)
+            season_dir = utility.create_pathname(series_file, test['title'])
             if not xbmcvfs.exists(season_dir):
                 xbmcvfs.mkdir(season_dir)
             for item in test['episodes']:
@@ -40,7 +40,7 @@ def series(series_id, series_title, season, single_update=True):
                 season_nr = episode_season
                 if len(season_nr) == 1:
                     season_nr = '0' + season_nr
-                filename = 'S' + season_nr + 'E' + episode_nr + '.' + episode_title + '.strm'
+                filename = 'S' + season_nr + 'E' + episode_nr + ' - ' + episode_title + '.strm'
                 filename = utility.clean_filename(filename, ' .')
                 file_handler = xbmcvfs.File(utility.create_pathname(season_dir, filename), 'w')
                 file_handler.write(

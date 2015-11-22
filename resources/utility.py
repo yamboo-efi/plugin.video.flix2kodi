@@ -72,6 +72,10 @@ def create_pathname(path, item):
     return os.path.join(path, item)
 
 
+def evaluator():
+    return evaluator_url % (get_setting('netflix_application'), get_setting('netflix_version'))
+
+
 def log(message, loglevel=xbmc.LOGNOTICE):
     xbmc.log(encode(addon_id + ': ' + message), level=loglevel)
 

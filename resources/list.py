@@ -93,49 +93,40 @@ def videos(url, video_type, run_as_widget=False):
 
 def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url):
     added = False
-    year = ''
-    mpaa = ''
-    duration = ''
-    description = ''
     director = ''
     genre = ''
-    rating = 0.0
     video_details = get.video_info(video_id)
-    match = re.compile('<span class="title.*?>(.+?)</span', re.DOTALL).findall(video_details)
+    match = json.loads(video_details)['value']['videos'][video_id]
     if not title:
-        title = match[0].strip()
-    match = re.compile('<span class="year.*?>(.+?)</span', re.DOTALL).findall(video_details)
-    if match:
-        year = match[0].partition('-')[0]
+        title = match['title']
+    year = match['releaseYear']
     if not thumb_url:
-        match = re.compile('src="(.+?)"', re.DOTALL).findall(video_details)
-        thumb_url = match[0].replace('/webp/', '/images/').replace('.webp', '.jpg')
-    match = re.compile('<span class="mpaaRating.*?>(.+?)</span', re.DOTALL).findall(video_details)
-    if match:
-        mpaa = match[0].strip()
-    match = re.compile('<span class="duration.*?>(.+?)</span', re.DOTALL).findall(video_details)
-    if match:
-        duration = match[0].lower()
-    if duration.split(' ')[-1].startswith('min'):
-        type = 'movie'
+        try:
+            thumb_url = match['boxarts']['_665x375']['jpg']['url']
+        except Exception:
+            try:
+                thumb_url = match['boxarts']['_342x192']['jpg']['url']
+            except Exception:
+                thumb_url = utility.addon_fanart()
+    mpaa = match['maturity']['rating']['value']
+    duration = match['runtime']
+    type = match['summary']['type']
+    if type == 'movie':
         video_type_temp = type
-        duration = duration.split(' ')[0]
     else:
         video_type_temp = 'tv'
         if is_episode:
             type = 'episode'
         else:
             type = 'tvshow'
-        duration = ''
+            duration = ''
     if utility.get_setting('use_tmdb') == 'true':
         year_temp = year
         title_temp = title
         if ' - ' in title_temp:
             title_temp = title_temp[title_temp.index(' - '):]
-        if '-' in year_temp:
-            year_temp = year_temp.split('-')[0]
-        filename = utility.clean_filename(video_id) + '.jpg'
-        filename_none = utility.clean_filename(video_id) + '.none'
+        filename = video_id + '.jpg'
+        filename_none = video_id + '.none'
         cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
         cover_file_none = xbmc.translatePath(utility.cover_cache_dir() + filename_none)
         if not (xbmcvfs.exists(cover_file) or xbmcvfs.exists(cover_file_none)):
@@ -143,22 +134,16 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url):
                                                                                                 video_id, title_temp,
                                                                                                 year_temp))
             get.cover(video_type_temp, video_id, title_temp, year_temp)
-    match = re.compile('src=".+?">.*?<.*?>(.+?)<', re.DOTALL).findall(video_details)
-    if match:
-        description_temp = match[0]
-        # replace all embedded unicode in unicode (Norwegian problem)
-        description_temp = description_temp.replace('u2013', unicode('\u2013')).replace('u2026', unicode('\u2026'))
-        description = utility.unescape(description_temp)
-    match = re.compile('Director:</dt><dd>(.+?)<', re.DOTALL).findall(video_details)
-    if match:
-        director = match[0].strip()
-    match = re.compile('<span class="genre.*?>(.+?)</span', re.DOTALL).findall(video_details)
-    if match:
-        genre = match[0]
-    match = re.compile('<span class="rating">(.+?)</span', re.DOTALL).findall(video_details)
-    if len(match) > 0:
-        rating = float(match[0])
-    title = utility.unescape(title)
+    description = match['details']['synopsis']
+    try:
+        director = match['details']['directors'][0]['name']
+    except Exception:
+        pass
+    try:
+        genre = match['details']['genres'][0]['name']
+    except Exception:
+        pass
+    rating = match['userRating']['average']
     next_mode = 'play_video_main'
     if utility.get_setting('browse_tv_shows') == 'true' and type == 'tvshow':
         next_mode = 'list_seasons'
@@ -189,9 +174,7 @@ def genres(video_type):
                     % utility.get_setting('authorization_url')
     else:
         pass
-    content = utility.decode(connect.load_site(
-        utility.evaluator_url % (utility.get_setting('netflix_application'), utility.get_setting('netflix_version')),
-        post=post_data))
+    content = utility.decode(connect.load_site(utility.evaluator(), post=post_data))
     matches = json.loads(content)['value']['genres']
     for k in matches:
         try:
@@ -268,9 +251,7 @@ def search(search_string, video_type, run_as_widget=False):
     post_data = '{"paths":[["search","%s",{"from":0,"to":48},["summary","title"]],["search","%s",["id","length",' \
                 '"name","trackIds","requestId"]]],"authURL":"%s"}' % (search_string, search_string,
                                                                       utility.get_setting('authorization_url'))
-    content = utility.decode(connect.load_site(
-        utility.evaluator_url % (utility.get_setting('netflix_application'), utility.get_setting('netflix_version')),
-        post=post_data))
+    content = utility.decode(connect.load_site(utility.evaluator(), post=post_data))
     try:
         matches = json.loads(content)['value']['videos']
         for k in matches:

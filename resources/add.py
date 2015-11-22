@@ -38,8 +38,6 @@ def directory(name, url, mode, thumb, type='', context_enable=True):
 def video(name, url, mode, thumb, video_type='', description='', duration='', year='', mpaa='', director='', genre='',
           rating=0.0, remove=False):
     entries = []
-    if duration:
-        duration = unicode(int(duration) * 60)
     filename = utility.clean_filename(url) + '.jpg'
     cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
     fanart_file = xbmc.translatePath(utility.fanart_cache_dir() + filename)
@@ -92,7 +90,7 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
         entries.append((utility.get_string(30150),
                         'RunPlugin(plugin://%s/?mode=add_movie_to_library&url=%s&name=%s)' % (
                             utility.addon_id, urllib.quote_plus(url),
-                            urllib.quote_plus(utility.encode(name.strip())) + ' (' + year + ')')))
+                            urllib.quote_plus(utility.encode(name.strip())) + ' (' + unicode(year) + ')')))
     list_item.addContextMenuItems(entries)
     directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=True)
     return directory_item
@@ -100,7 +98,7 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
 
 def season(name, url, mode, thumb, series_name, series_id):
     entries = []
-    filename = utility.clean_filename(series_id) + '.jpg'
+    filename = series_id + '.jpg'
     cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
     fanart_file = xbmc.translatePath(utility.fanart_cache_dir() + filename)
     u = sys.argv[0]
@@ -128,9 +126,7 @@ def season(name, url, mode, thumb, series_name, series_id):
 
 def episode(name, url, mode, thumb, description='', duration='', season_nr='', episode_nr='', series_id='',
             playcount=''):
-    if duration:
-        duration = unicode(int(duration) * 60)
-    filename = utility.clean_filename(series_id) + '.jpg'
+    filename = series_id + '.jpg'
     cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
     fanart_file = xbmc.translatePath(utility.fanart_cache_dir() + filename)
     u = sys.argv[0]
