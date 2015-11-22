@@ -30,7 +30,7 @@ def tmdb(video_type, title, year=None):
                     content = search.tv(query=utility.encode(title), first_air_date_year=year, language=language,
                                         include_adult='true')
                 elif ':' in title:
-                    title = title[:title.find(':')]
+                    title = title.replace(':', '+')
                     content = search.tv(query=utility.encode(title), first_air_date_year=year, language=language,
                                         include_adult='true')
     else:
@@ -43,7 +43,7 @@ def tmdb(video_type, title, year=None):
                     content = search.movie(query=utility.encode(title), year=year, language=language,
                                            include_adult='true')
                 elif ':' in title:
-                    title = title[:title.find(':')]
+                    title = title.replace(':', '+')
                     content = search.movie(query=utility.encode(title), year=year, language=language,
                                            include_adult='true')
     if content['total_results'] == 0:

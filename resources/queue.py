@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
-import connect
+
 import xbmc
+
+import connect
 import utility
 
 '''
@@ -14,8 +16,8 @@ rewrite necessary :(
 def add(id):
     if authMyList:
         encodedAuth = urllib.urlencode({'authURL': authMyList})
-        load(urlMain+"/AddToQueue?movieid="+id+"&qtype=INSTANT&"+encodedAuth)
-        xbmc.executebuiltin('XBMC.Notification(NetfliXBMC:,'+str(translation(30144))+',3000,'+icon+')')
+        load(urlMain + "/AddToQueue?movieid=" + id + "&qtype=INSTANT&" + encodedAuth)
+        xbmc.executebuiltin('XBMC.Notification(NetfliXBMC:,' + str(translation(30144)) + ',3000,' + icon + ')')
     else:
         debug("Attempted to addToQueue without valid authMyList")
 
@@ -23,8 +25,8 @@ def add(id):
 def remove(id):
     if authMyList:
         encodedAuth = urllib.urlencode({'authURL': authMyList})
-        load(urlMain+"/QueueDelete?"+encodedAuth+"&qtype=ED&movieid="+id)
-        xbmc.executebuiltin('XBMC.Notification(NetfliXBMC:,'+str(translation(30145))+',3000,'+icon+')')
+        load(urlMain + "/QueueDelete?" + encodedAuth + "&qtype=ED&movieid=" + id)
+        xbmc.executebuiltin('XBMC.Notification(NetfliXBMC:,' + str(translation(30145)) + ',3000,' + icon + ')')
         xbmc.executebuiltin("Container.Refresh")
     else:
-         debug("Attempted to removeFromQueue without valid authMyList")
+        debug("Attempted to removeFromQueue without valid authMyList")
