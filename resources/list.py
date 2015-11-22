@@ -95,6 +95,7 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url):
     added = False
     director = ''
     genre = ''
+    playcount = 0
     video_details = get.video_info(video_id)
     match = json.loads(video_details)['value']['videos'][video_id]
     if not title:
@@ -110,6 +111,9 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url):
                 thumb_url = utility.addon_fanart()
     mpaa = match['maturity']['rating']['value']
     duration = match['runtime']
+    offset = match['bookmarkPosition']
+    if (duration > 0 and float(offset) / float(duration)) >= 0.9:
+        playcount = 1
     type = match['summary']['type']
     if type == 'movie':
         video_type_temp = type
@@ -149,13 +153,13 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url):
         next_mode = 'list_seasons'
     if '/my-list' in url and video_type_temp == video_type:
         add.video(title, video_id, next_mode, thumb_url, type, description, duration, year, mpaa,
-                  director, genre, rating, remove=True)
+                  director, genre, rating, playcount, remove=True)
         added = True
     elif type == 'movie' and hide_movies:
         pass
     elif video_type_temp == video_type or video_type == 'both':
         add.video(title, video_id, next_mode, thumb_url, type, description, duration, year, mpaa,
-                  director, genre, rating)
+                  director, genre, rating, playcount)
         added = True
     return added
 
@@ -286,12 +290,12 @@ def episodes(series_id, season):
         episode_season = unicode(test['seq'])
         if episode_season == season:
             for item in test['episodes']:
+                playcount = 0
                 episode_id = item['episodeId']
                 episode_nr = item['seq']
                 episode_title = (unicode(episode_nr) + '. ' + item['title'])
                 duration = item['runtime']
                 offset = item['bookmark']['offset']
-                playcount = 0
                 if (duration > 0 and float(offset) / float(duration)) >= 0.9:
                     playcount = 1
                 description = item['synopsis']

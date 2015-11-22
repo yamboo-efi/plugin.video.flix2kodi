@@ -36,7 +36,7 @@ def directory(name, url, mode, thumb, type='', context_enable=True):
 
 
 def video(name, url, mode, thumb, video_type='', description='', duration='', year='', mpaa='', director='', genre='',
-          rating=0.0, remove=False):
+          rating=0.0, playcount=0, remove=False):
     entries = []
     filename = utility.clean_filename(url) + '.jpg'
     cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
@@ -52,7 +52,8 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
     list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb})
     list_item.setInfo(type='video',
                       infoLabels={'title': name, 'plot': description, 'duration': duration, 'year': int(year),
-                                  'mpaa': mpaa, 'director': director, 'genre': genre, 'rating': rating})
+                                  'mpaa': mpaa, 'director': director, 'genre': genre, 'rating': rating,
+                                  'playcount': playcount})
     if xbmcvfs.exists(fanart_file):
         list_item.setProperty('fanart_image', fanart_file)
     elif xbmcvfs.exists(cover_file):
@@ -125,7 +126,7 @@ def season(name, url, mode, thumb, series_name, series_id):
 
 
 def episode(name, url, mode, thumb, description='', duration='', season_nr='', episode_nr='', series_id='',
-            playcount=''):
+            playcount=0):
     filename = series_id + '.jpg'
     cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
     fanart_file = xbmc.translatePath(utility.fanart_cache_dir() + filename)
