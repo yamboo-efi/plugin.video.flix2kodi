@@ -2,28 +2,30 @@ from __future__ import unicode_literals
 
 import pickle
 import requests
+import ssl
 import xbmc
 import xbmcvfs
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.poolmanager import PoolManager
 
 import resources.lib.certifi as certifi
 import utility
 
 session = None
 
-'''
-temporary solution to surpress warnings
-have to be fixed later to get ssl verification working
-'''
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from requests.packages.urllib3.exceptions import InsecurePlatformWarning
 
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
+class HTTPSAdapter(HTTPAdapter):
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = PoolManager(num_pools=connections,
+                                       maxsize=maxsize,
+                                       block=block,
+                                       ssl_version=ssl.PROTOCOL_TLSv1)
 
 
 def new_session():
     global session
     session = requests.Session()
+    session.mount('https://', HTTPSAdapter())
     session.headers.update({'User-Agent': 'User-Agent: Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko'})
     session.max_redirects = 5
     session.allow_redirects = True
@@ -52,16 +54,16 @@ def load_site(url, post=None):
     utility.log('Loading url: ' + url)
     try:
         if post:
-            response = session.post(url, verify=True, data=post)
+            response = session.post(url, data=post)
         else:
-            response = session.get(url, verify=True)
+            response = session.get(url)
     except AttributeError:
         utility.log('Session is missing', loglevel=xbmc.LOGERROR)
         utility.notification(utility.get_string(30301))
         new_session()
         save_session()
         if post:
-            response = session.post(url, verify=True, data=post)
+            response = session.post(url, data=post)
         else:
-            response = session.get(url, verify=True)
+            response = session.get(url)
     return response.content
