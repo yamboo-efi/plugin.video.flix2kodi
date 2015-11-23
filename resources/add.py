@@ -13,6 +13,7 @@ plugin_handle = int(sys.argv[1])
 
 
 def directory(name, url, mode, thumb, type='', context_enable=True):
+    entries = []
     name = utility.unescape(name)
     u = sys.argv[0]
     u += '?url=' + urllib.quote_plus(url)
@@ -22,7 +23,6 @@ def directory(name, url, mode, thumb, type='', context_enable=True):
     list_item = xbmcgui.ListItem(name)
     list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb})
     list_item.setInfo(type='video', infoLabels={'title': name})
-    entries = []
     if "/my-list" in url:
         entries.append(
             (utility.get_string(30150), 'RunPlugin(plugin://%s/?mode=add_my_list_to_library)' % utility.addon_id))

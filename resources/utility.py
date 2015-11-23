@@ -20,6 +20,7 @@ profile_url = 'https://www.netflix.com/ProfilesGate?nextpage=http%3A%2F%2Fwww.ne
 picture_url = 'https://image.tmdb.org/t/p/original'
 series_url = 'http://www.netflix.com/api/%s/%s/metadata?movieid=%s&imageFormat=jpg'
 tmdb_url = 'https://api.themoviedb.org/3/search/%s?api_key=%s&query=%s&language=de'
+activity_url = 'https://www.netflix.com/api/%s/%s/viewingactivity?_retry=0&authURL=%s'
 
 # postdata information
 recently_added = '{"paths":[["recentlyadded","su",{"from":0,"to":150},"title"]],"authURL":"%s"}'

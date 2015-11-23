@@ -196,12 +196,12 @@ def genres(video_type):
         pass
     content = utility.decode(connect.load_site(utility.evaluator(), post=post_data))
     matches = json.loads(content)['value']['genres']
-    for k in matches:
+    for item in matches:
         try:
-            match.append((unicode(matches[k]['id']), matches[k]['menuName']))
+            match.append((unicode(matches[item]['id']), matches[item]['menuName']))
         except Exception:
             try:
-                match.append((unicode(matches[k]['summary']['id']), matches[k]['summary']['menuName']))
+                match.append((unicode(matches[item]['summary']['id']), matches[item]['summary']['menuName']))
             except Exception:
                 pass
     for genre_id, title in match:
@@ -215,7 +215,6 @@ def genres(video_type):
 
 def view_activity(video_type, run_as_widget=False):
     count = 0
-    video_ids = []
     loading_progress = None
     if not run_as_widget:
         loading_progress = xbmcgui.DialogProgress()
@@ -224,35 +223,37 @@ def view_activity(video_type, run_as_widget=False):
     xbmcplugin.setContent(plugin_handle, 'movies')
     if not xbmcvfs.exists(utility.session_file()):
         login.login()
-    content = utility.decode(connect.load_site(utility.main_url + '/WiViewingActivity'))
-    series_id = re.compile('(<li .*?data-series=.*?</li>)', re.DOTALL).findall(content)
-    for i in range(1, len(series_id), 1):
-        entry = series_id[i]
-        if not run_as_widget:
-            utility.progress_window(loading_progress, (count + 1) * 100 / len(series_id), '...')
-        match_id = re.compile('data-movieid="(.*?)"', re.DOTALL).findall(entry)
-        if match_id:
-            video_id = match_id[0]
-        match = re.compile('class="col date nowrap">(.+?)<', re.DOTALL).findall(entry)
-        date = match[0]
-        match_title1 = re.compile('class="seriestitle">(.+?)</a>', re.DOTALL).findall(entry)
-        match_title2 = re.compile('class="col title">.+?>(.+?)<', re.DOTALL).findall(entry)
-        if match_title1:
-            title = utility.unescape(match_title1[0]).replace('</span>', '')
-        elif match_title2:
-            title = match_title2[0]
-        else:
-            title = ''
-        title = date + ' - ' + title
-        if video_id not in video_ids:
-            video_ids.append(video_id)
-            # due to limitations in the netflix api, there is no way to get the series_id of an
-            # episode, so the 4 param is set to True to treat tv episodes the same as movies.
-            added = video(video_id, title, '', True, False, video_type, '')
+    content = utility.decode(connect.load_site(utility.activity_url % (
+    utility.get_setting('netflix_application'), utility.get_setting('netflix_id'),
+    utility.get_setting('authorization_url'))))
+    matches = json.loads(content)['viewedItems']
+    try:
+        for item in matches:
+            series_id = 0
+            is_episode = False
+            video_id = unicode(item['movieID'])
+            date = item['dateStr']
+            try:
+                series_id = item['series']
+                series_title = item['seriesTitle']
+                title = item['title']
+                title = series_title + ' ' + title
+            except Exception:
+                title = item['title']
+            if not run_as_widget:
+                utility.progress_window(loading_progress, (count + 1) * 500 / len(matches), title)
+            title = date + ' - ' + title
+            if series_id > 0:
+                is_episode = True
+            added = video(video_id, title, '', is_episode, False, video_type, '')
             if added:
                 count += 1
+                print count
             if count == 20:
                 break
+    except Exception:
+        utility.notification(utility.get_string(30306))
+        pass
     if utility.get_setting('force_view') and not run_as_widget:
         xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_activity') + ')')
     xbmcplugin.endOfDirectory(plugin_handle)
