@@ -29,14 +29,22 @@ def videos(url, video_type, run_as_widget=False):
     xbmcplugin.setContent(plugin_handle, 'movies')
     if not xbmcvfs.exists(utility.session_file()):
         login.login()
-    content = utility.decode(connect.load_site(url))
-    if not 'id="page-LOGIN"' in content:
+    '''
+    the next part is necessary during the changing phase. Otherwise data are not available.
+    '''
+    if 'recently-added' in url:
+        postdata = utility.recently_added % utility.get_setting('authorization_url')
+        content = utility.decode(connect.load_site(utility.evaluator(), post=postdata))
+    else:
+        content = utility.decode(connect.load_site(url))
+    if not 'id="page-LOGIN"' in content or url == 'recently-added':
         if utility.get_setting('single_profile') == 'true' and 'id="page-ProfilesGate"' in content:
             profiles.force_choose()
         else:
             if '<div id="queue"' in content:
                 content = content[content.find('<div id="queue"'):]
-            content = utility.clean_content(content)
+            if not 'recently-added' in url:
+                content = utility.clean_content(content)
             match = None
             if not match: match = re.compile('"\$type":"leaf",.*?"id":([0-9]+)', re.DOTALL).findall(content)
             print '1: ' + str(match)
@@ -50,10 +58,15 @@ def videos(url, video_type, run_as_widget=False):
             print '5: ' + str(match)
             if not match: match = re.compile('WiPlayer\?movieid=([0-9]+?)&', re.DOTALL).findall(content)
             print '6: ' + str(match)
+            if 'recently-added' in url:
+                matches = json.loads(content)['value']['videos']
+                for video_id in matches:
+                    match.append(unicode(video_id))
+            print '7: ' + str(match)
             print len(match)
             i = 1
             for video_id in match:
-                if int(video_id) > 10000000:
+                if int(video_id) > 10000000 or 'recently-added' in url:
                     if not run_as_widget:
                         utility.progress_window(loading_progress, i * 100 / len(match), '...')
                     video(video_id, '', '', False, False, video_type, url)
@@ -112,8 +125,11 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url):
     mpaa = match['maturity']['rating']['value']
     duration = match['runtime']
     offset = match['bookmarkPosition']
-    if (duration > 0 and float(offset) / float(duration)) >= 0.9:
-        playcount = 1
+    try:
+        if (duration > 0 and float(offset) / float(duration)) >= 0.9:
+            playcount = 1
+    except Exception:
+        pass
     type = match['summary']['type']
     if type == 'movie':
         video_type_temp = type

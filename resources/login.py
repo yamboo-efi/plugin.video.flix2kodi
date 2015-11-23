@@ -59,9 +59,9 @@ def login():
         if not utility.get_setting('is_kid') == 'true':
             content = utility.decode(connect.load_site(utility.main_url + '/browse'))
             match = re.compile('"version":{"app":"(.+?)"').findall(content)
-            netflix_application, netflix_version = match[0].split('-')
+            netflix_application, netflix_id = match[0].split('-')
             utility.set_setting('netflix_application', netflix_application)
-            utility.set_setting('netflix_version', netflix_version)
+            utility.set_setting('netflix_id', netflix_id)
         if login_progress:
             if not utility.progress_window(login_progress, 100, utility.get_string(30204)):
                 return False
