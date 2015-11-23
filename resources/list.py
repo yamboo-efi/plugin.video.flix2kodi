@@ -248,7 +248,6 @@ def view_activity(video_type, run_as_widget=False):
             added = video(video_id, title, '', is_episode, False, video_type, '')
             if added:
                 count += 1
-                print count
             if count == 20:
                 break
     except Exception:
