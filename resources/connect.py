@@ -6,11 +6,15 @@ import ssl
 import xbmc
 import xbmcvfs
 from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.exceptions import InsecurePlatformWarning
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from requests.packages.urllib3.poolmanager import PoolManager
 
 import resources.lib.certifi as certifi
 import utility
 
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 session = None
 
 
