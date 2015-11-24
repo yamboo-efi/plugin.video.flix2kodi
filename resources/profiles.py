@@ -20,7 +20,7 @@ def load():
 def choose():
     profiles = []
     content = utility.decode(connect.load_site(utility.profile_url))
-    match = re.compile('"experience":"(.+?)".+?guid":"(.+?)".+?profileName":"(.+?)"', re.DOTALL).findall(content)
+    match = re.compile('"experience":"(.+?)".+?guid":"(.+?)".+?firstName":"(.+?)"', re.DOTALL).findall(content)
     for is_kid, token, name in match:
         profile = {'name': utility.unescape(name), 'token': token, 'is_kid': is_kid == 'jfk'}
         profiles.append(profile)
