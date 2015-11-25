@@ -27,7 +27,7 @@ def main(video_type):
     add.directory(utility.get_string(30105), '', 'list_viewing_activity', '', video_type)
     add.directory(utility.get_string(30106), 'recently-added', 'list_videos', '', video_type)
     if video_type == 'tv':
-        add.directory(utility.get_string(30107), utility.main_url + '/browse/genre/83', 'list_videos', '', video_type)
+        add.directory(utility.get_string(30107), utility.main_url + 'genre?83', 'list_videos', '', video_type)
         add.directory(utility.get_string(30108), '', 'list_genres', '', video_type)
     else:
         add.directory(utility.get_string(30108), '', 'list_genres', '', video_type)

@@ -24,6 +24,10 @@ activity_url = 'https://www.netflix.com/api/%s/%s/viewingactivity?_retry=0&authU
 
 # postdata information
 recently_added = '{"paths":[["recentlyadded","su",{"from":0,"to":150},"title"]],"authURL":"%s"}'
+genre = '{"paths":[["genres",%s,"su",{"from":0,"to":400},["summary","title"]]],"authURL":"%s"}'
+series_subgenre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"],["genres",83,"subgenres",' \
+                  '"summary"]],"authURL":"%s"}'
+movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]],["genreList"]],"authURL":"%s"}'
 
 
 def data_dir():
