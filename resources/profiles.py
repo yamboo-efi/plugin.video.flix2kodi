@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+import json
 import re
 import xbmc
 import xbmcgui
@@ -20,9 +21,9 @@ def load():
 def choose():
     profiles = []
     content = utility.decode(connect.load_site(utility.profile_url))
-    match = re.compile('"experience":"(.+?)".+?guid":"(.+?)".+?firstName":"(.+?)"', re.DOTALL).findall(content)
-    for is_kid, token, name in match:
-        profile = {'name': utility.unescape(name), 'token': token, 'is_kid': is_kid == 'jfk'}
+    match = json.loads(content)['profiles']
+    for item in match:
+        profile = {'name': item['firstName'], 'token': item['guid'], 'is_kid': item['experience'] == 'jfk'}
         profiles.append(profile)
     if len(match) > 0:
         dialog = xbmcgui.Dialog()
