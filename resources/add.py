@@ -38,9 +38,7 @@ def directory(name, url, mode, thumb, type='', context_enable=True):
 def video(name, url, mode, thumb, video_type='', description='', duration='', year='', mpaa='', director='', genre='',
           rating=0.0, playcount=0, remove=False):
     entries = []
-    filename = utility.clean_filename(url) + '.jpg'
-    cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
-    fanart_file = xbmc.translatePath(utility.fanart_cache_dir() + filename)
+    cover_file, fanart_file = utility.cover_fanart(url)
     if xbmcvfs.exists(cover_file):
         thumb = cover_file
     u = sys.argv[0]
@@ -99,9 +97,7 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
 
 def season(name, url, mode, thumb, series_name, series_id):
     entries = []
-    filename = series_id + '.jpg'
-    cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
-    fanart_file = xbmc.translatePath(utility.fanart_cache_dir() + filename)
+    cover_file, fanart_file = utility.cover_fanart(series_id)
     u = sys.argv[0]
     u += '?url=' + urllib.quote_plus(unicode(url))
     u += '&mode=' + mode
@@ -127,9 +123,7 @@ def season(name, url, mode, thumb, series_name, series_id):
 
 def episode(name, url, mode, thumb, description='', duration='', season_nr='', episode_nr='', series_id='',
             playcount=0):
-    filename = series_id + '.jpg'
-    cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
-    fanart_file = xbmc.translatePath(utility.fanart_cache_dir() + filename)
+    cover_file, fanart_file = utility.cover_fanart(series_id)
     u = sys.argv[0]
     u += '?url=' + urllib.quote_plus(unicode(url))
     u += '&mode=' + mode

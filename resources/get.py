@@ -17,10 +17,8 @@ def video_info(video_id):
         content = file_handler.read()
         file_handler.close()
     if not content:
-        postdata = '{"paths":[["videos",{media_id},["bookmarkPosition","details","episodeCount","maturity","queue",' \
-                   '"releaseYear","requestId","runtime","seasonCount","summary","title","userRating","watched"]],' \
-                   '["videos",{media_id},"boxarts",["_342x192","_665x375"],"jpg"]],"authURL":"{authorization_url}"}' \
-            .replace('{media_id}', video_id).replace('{authorization_url}', utility.get_setting('authorization_url'))
+        postdata = utility.video_info % (video_id, video_id, video_id, video_id,
+                                         utility.get_setting('authorization_url'))
         content = connect.load_site(utility.evaluator(), post=postdata)
         file_handler = xbmcvfs.File(cache_file, 'wb')
         file_handler.write(content)

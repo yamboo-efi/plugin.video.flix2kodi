@@ -21,6 +21,7 @@ plugin_handle = int(sys.argv[1])
 
 
 def videos(url, video_type, run_as_widget=False):
+    content = ''
     loading_progress = None
     if not run_as_widget:
         loading_progress = xbmcgui.DialogProgress()
@@ -29,9 +30,6 @@ def videos(url, video_type, run_as_widget=False):
     xbmcplugin.setContent(plugin_handle, 'movies')
     if not xbmcvfs.exists(utility.session_file()):
         login.login()
-    '''
-    the next part is necessary during the changing phase. Otherwise data are not available.
-    '''
     if 'recently-added' in url:
         postdata = utility.recently_added % utility.get_setting('authorization_url')
         content = utility.decode(connect.load_site(utility.evaluator(), post=postdata))
@@ -40,73 +38,23 @@ def videos(url, video_type, run_as_widget=False):
         content = utility.decode(connect.load_site(utility.evaluator(), post=postdata))
     else:
         pass
-        #content = utility.decode(connect.load_site(url))
-    #if not 'id="page-LOGIN"' in content or url == 'recently-added':
     if utility.get_setting('single_profile') == 'true' and 'id="page-ProfilesGate"' in content:
         profiles.force_choose()
     else:
-        #if '<div id="queue"' in content:
-        #    content = content[content.find('<div id="queue"'):]
-        #if not ('recently-added' or 'genre') in url:
-        #    content = utility.clean_content(content)
         match = []
-        #if not match: match = re.compile('"\$type":"leaf",.*?"id":([0-9]+)', re.DOTALL).findall(content)
-        #print '1: ' + str(match)
-        #if not match: match = re.compile('<a href="\/watch\/([0-9]+)', re.DOTALL).findall(content)
-        #print '2: ' + str(match)
-        #if not match: match = re.compile('<span id="dbs(.+?)_.+?alt=".+?"', re.DOTALL).findall(content)
-        #print '3: ' + str(match)
-        #if not match: match = re.compile('<span class="title.*?"><a id="b(.+?)_', re.DOTALL).findall(content)
-        #print '4: ' + str(match)
-        #if not match: match = re.compile('"boxart":".+?","titleId":(.+?),', re.DOTALL).findall(content)
-        #print '5: ' + str(match)
-        #if not match: match = re.compile('WiPlayer\?movieid=([0-9]+?)&', re.DOTALL).findall(content)
-        #print '6: ' + str(match)
         if 'recently-added' or 'genre' in url:
             matches = json.loads(content)['value']['videos']
-            print matches
             for video_id in matches:
                 match.append((unicode(video_id), matches[video_id]['title']))
-        print '7: ' + str(match)
-        print len(match)
         i = 1
         for video_id, title in match:
-            if int(video_id) > 10000000 or 'recently-added' in url:
-                if not run_as_widget:
-                    utility.progress_window(loading_progress, i * 100 / len(match), title)
-                video(video_id, '', '', False, False, video_type, url)
+            if not run_as_widget:
+                utility.progress_window(loading_progress, i * 100 / len(match), title)
+            video(video_id, '', '', False, False, video_type, url)
             i += 1
-        #match1 = re.compile('&pn=(.+?)&', re.DOTALL).findall(url)
-        #match2 = re.compile('&from=(.+?)&', re.DOTALL).findall(url)
-        #match_api_root = re.compile('"API_ROOT":"(.+?)"', re.DOTALL).findall(content)
-        #match_api_base = re.compile('"API_BASE_URL":"(.+?)"', re.DOTALL).findall(content)
-        #match_identifier = re.compile('"BUILD_IDENTIFIER":"(.+?)"', re.DOTALL).findall(content)
-        #if 'agid=' in url and match_api_root and match_api_base and match_identifier:
-        #    genre_id = url[url.find('agid=') + 5:]
-        #    add.directory(utility.get_string(30110), match_api_root[0] + match_api_base[0] + '/' + match_identifier[
-        #        0] + '/wigenre?genreId=' + genre_id + '&full=false&from=51&to=100&_retry=0', 'list_videos', '',
-        #                  video_type)
-        #elif match1:
-        #    current_page = match1[0]
-        #    next_page = str(int(current_page) + 1)
-        #    add.directory(utility.get_string(30110),
-        #                  url.replace('&pn=' + current_page + '&', '&pn=' + next_page + '&'), 'list_videos', '',
-        #                  video_type)
-        #elif match2:
-        #    current_from = match2[0]
-        #    next_from = str(int(current_from) + 50)
-        #    current_to = str(int(current_from) + 49)
-        #    next_to = str(int(current_from) + 99)
-        #    add.directory(utility.get_string(30110),
-        #                  url.replace('&from=' + current_from + '&', '&from=' + next_from + '&').replace(
-        #                      '&to=' + current_to + '&', '&to=' + next_to + '&'), 'list_videos', '', video_type)
         if utility.get_setting('force_view') == 'true' and not run_as_widget:
             xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_videos') + ')')
     xbmcplugin.endOfDirectory(plugin_handle)
-    #else:
-    #    delete.cookies()
-    #    utility.log('User is not logged in.', loglevel=xbmc.LOGERROR)
-    #    utility.notification(utility.get_string(30303))
 
 
 def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url):
@@ -303,6 +251,7 @@ def seasons(series_name, series_id, thumb):
 def episodes(series_id, season):
     xbmcplugin.setContent(plugin_handle, 'episodes')
     content = get.series_info(series_id)
+    print content
     content = json.loads(content)['video']['seasons']
     for test in content:
         episode_season = unicode(test['seq'])

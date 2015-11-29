@@ -28,6 +28,11 @@ genre = '{"paths":[["genres",%s,"su",{"from":0,"to":400},["summary","title"]]],"
 series_subgenre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"],["genres",83,"subgenres",' \
                   '"summary"]],"authURL":"%s"}'
 movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]],["genreList"]],"authURL":"%s"}'
+video_info = '{"paths":[["videos",%s,["availability","bookmarkPosition","details","episodeCount","maturity",' \
+             '"queue","releaseYear","requestId","runtime","seasonCount","summary","title","userRating","watched"]],' \
+             '["videos",%s,"current",["summary","runtime","bookmarkPosition","creditsOffset","title"]],' \
+             '["videos",%s,"seasonList","current",["showMemberType","summary"]],["videos",%s,' \
+             '"boxarts",["_342x192","_665x375"],"jpg"]],"authURL":"%s"}'
 
 
 def data_dir():
@@ -76,6 +81,13 @@ def addon_icon():
 
 def addon_fanart():
     return addon_handle.getAddonInfo('fanart')
+
+
+def cover_fanart(name):
+    filename = clean_filename(name) + '.jpg'
+    cover_file = xbmc.translatePath(cover_cache_dir() + filename)
+    fanart_file = xbmc.translatePath(fanart_cache_dir() + filename)
+    return cover_file, fanart_file
 
 
 def create_pathname(path, item):
