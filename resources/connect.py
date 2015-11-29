@@ -13,7 +13,6 @@ from requests.packages.urllib3.poolmanager import PoolManager
 import resources.lib.certifi as certifi
 import utility
 
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 session = None
 
@@ -33,7 +32,6 @@ def new_session():
     session.headers.update({'User-Agent': 'User-Agent: Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko'})
     session.max_redirects = 5
     session.allow_redirects = True
-    session.verify = certifi.where()
     if xbmcvfs.exists(utility.session_file()):
         file_handler = xbmcvfs.File(utility.session_file(), 'rb')
         content = file_handler.read()
@@ -58,16 +56,16 @@ def load_site(url, post=None):
     utility.log('Loading url: ' + url)
     try:
         if post:
-            response = session.post(url, data=post)
+            response = session.post(url, data=post, verify=certifi.where())
         else:
-            response = session.get(url)
+            response = session.get(url, verify=certifi.where())
     except AttributeError:
         utility.log('Session is missing', loglevel=xbmc.LOGERROR)
         utility.notification(utility.get_string(30301))
         new_session()
         save_session()
         if post:
-            response = session.post(url, data=post)
+            response = session.post(url, data=post, verify=certifi.where())
         else:
-            response = session.get(url)
+            response = session.get(url, verify=certifi.where())
     return response.content
