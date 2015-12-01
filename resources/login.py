@@ -50,12 +50,8 @@ def login():
             profiles.choose()
         elif not (utility.get_setting('single_profile') == 'true') and (utility.get_setting('show_profiles') == 'true'):
             profiles.choose()
-        elif not (
-                    (utility.get_setting('single_profile') == 'true') and (
-                            utility.get_setting('show_profiles') == 'true')):
+        elif not ((utility.get_setting('single_profile') and utility.get_setting('show_profiles')) == 'true'):
             profiles.load()
-        else:
-            profiles.get_my_list_change_authorisation()
         if not utility.get_setting('is_kid') == 'true':
             content = utility.decode(connect.load_site(utility.main_url + '/browse'))
             match = re.compile('"version":{"app":"(.+?)"').findall(content)

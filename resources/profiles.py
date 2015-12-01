@@ -15,7 +15,6 @@ def load():
         connect.save_session()
     else:
         utility.log('Load profile: no stored profile found!', loglevel=xbmc.LOGERROR)
-    get_my_list_change_authorisation()
 
 
 def choose():
@@ -37,7 +36,6 @@ def choose():
         utility.set_setting('is_kid', 'true' if selected_profile['is_kid'] else 'false')
         utility.set_setting('profile_name', selected_profile['name'])
         connect.save_session()
-        get_my_list_change_authorisation()
     else:
         utility.log('Choose profile: no profiles were found!', loglevel=xbmc.LOGERROR)
 
@@ -54,15 +52,3 @@ def update_displayed():
         utility.set_setting('selected_profile', None)
         connect.save_session()
     xbmc.executebuiltin('Container.Update(' + menu_path + ')')
-
-
-def get_my_list_change_authorisation():
-    """
-    Looks like this function was intended for the owners list.
-    There is now xsrf element in the site anymore
-    this have to be changed or obsulate
-    """
-    content = utility.decode(connect.load_site(utility.main_url + '/WiHome'))
-    match = re.compile('"xsrf":"(.+?)"', re.DOTALL).findall(content)
-    if match:
-        utility.set_setting('my_list_authorization', match[0])
