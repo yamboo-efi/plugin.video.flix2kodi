@@ -22,12 +22,13 @@ series_url = 'https://www.netflix.com/api/%s/%s/metadata?movieid=%s&imageFormat=
 tmdb_url = 'https://api.themoviedb.org/3/search/%s?api_key=%s&query=%s&language=de'
 activity_url = 'https://www.netflix.com/api/%s/%s/viewingactivity?_retry=0&authURL=%s'
 
-# postdata information
+# post data information
 recently_added = '{"paths":[["recentlyadded","su",{"from":0,"to":150},"title"]],"authURL":"%s"}'
+my_list = '{"paths":[["lolomo",{"from":2,"to":2},{"from":0,"to":50},"title"]],"authURL":"%s"}'
 genre = '{"paths":[["genres",%s,"su",{"from":0,"to":400},["summary","title"]]],"authURL":"%s"}'
-series_subgenre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"],["genres",83,"subgenres",' \
-                  '"summary"]],"authURL":"%s"}'
 movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]],["genreList"]],"authURL":"%s"}'
+series_genre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"],["genres",83,"subgenres","summary"]]' \
+               ',"authURL":"%s"}'
 video_info = '{"paths":[["videos",%s,["availability","bookmarkPosition","details","episodeCount","maturity",' \
              '"queue","releaseYear","requestId","runtime","seasonCount","summary","title","userRating","watched"]],' \
              '["videos",%s,"current",["summary","runtime","bookmarkPosition","creditsOffset","title"]],' \

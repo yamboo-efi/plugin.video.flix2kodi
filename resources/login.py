@@ -12,8 +12,8 @@ import utility
 def login():
     login_progress = xbmcgui.DialogProgress()
     login_progress.create('Netflix', utility.get_string(30200) + '...')
-    utility.progress_window(login_progress, 25, utility.get_string(30201))
     connect.session.cookies.clear()
+    utility.progress_window(login_progress, 25, utility.get_string(30201))
     content = utility.decode(connect.load_site(utility.main_url + '/Login'))
     match = re.compile('"locale":"(.+?)"', re.DOTALL | re.IGNORECASE).findall(content)
     if match and not utility.get_setting('language'):

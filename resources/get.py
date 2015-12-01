@@ -17,9 +17,9 @@ def video_info(video_id):
         content = file_handler.read()
         file_handler.close()
     if not content:
-        postdata = utility.video_info % (video_id, video_id, video_id, video_id,
+        post_data = utility.video_info % (video_id, video_id, video_id, video_id,
                                          utility.get_setting('authorization_url'))
-        content = connect.load_site(utility.evaluator(), post=postdata)
+        content = connect.load_site(utility.evaluator(), post=post_data)
         file_handler = xbmcvfs.File(cache_file, 'wb')
         file_handler.write(content)
         file_handler.close()

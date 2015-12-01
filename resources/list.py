@@ -21,7 +21,8 @@ plugin_handle = int(sys.argv[1])
 
 
 def videos(url, video_type, run_as_widget=False):
-    content = ''
+    post_data = ''
+    i = 1
     loading_progress = None
     if not run_as_widget:
         loading_progress = xbmcgui.DialogProgress()
@@ -31,29 +32,20 @@ def videos(url, video_type, run_as_widget=False):
     if not xbmcvfs.exists(utility.session_file()):
         login.login()
     if 'recently-added' in url:
-        postdata = utility.recently_added % utility.get_setting('authorization_url')
-        content = utility.decode(connect.load_site(utility.evaluator(), post=postdata))
+        post_data = utility.recently_added % utility.get_setting('authorization_url')
     elif 'genre' in url:
-        postdata = utility.genre % (url.split('?')[1], utility.get_setting('authorization_url'))
-        content = utility.decode(connect.load_site(utility.evaluator(), post=postdata))
-    else:
-        pass
-    if utility.get_setting('single_profile') == 'true' and 'id="page-ProfilesGate"' in content:
-        profiles.force_choose()
-    else:
-        match = []
-        if 'recently-added' or 'genre' in url:
-            matches = json.loads(content)['value']['videos']
-            for video_id in matches:
-                match.append((unicode(video_id), matches[video_id]['title']))
-        i = 1
-        for video_id, title in match:
-            if not run_as_widget:
-                utility.progress_window(loading_progress, i * 100 / len(match), title)
-            video(video_id, '', '', False, False, video_type, url)
-            i += 1
-        if utility.get_setting('force_view') == 'true' and not run_as_widget:
-            xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_videos') + ')')
+        post_data = utility.genre % (url.split('?')[1], utility.get_setting('authorization_url'))
+    elif 'my-list' in url:
+        post_data = utility.my_list % utility.get_setting('authorization_url')
+    content = utility.decode(connect.load_site(utility.evaluator(), post=post_data))
+    matches = json.loads(content)['value']['videos']
+    for video_id in matches:
+        if not run_as_widget:
+            utility.progress_window(loading_progress, i * 100 / len(matches), matches[video_id]['title'])
+        video(unicode(video_id), '', '', False, False, video_type, url)
+        i += 1
+    if utility.get_setting('force_view') == 'true' and not run_as_widget:
+        xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_videos') + ')')
     xbmcplugin.endOfDirectory(plugin_handle)
 
 
@@ -140,7 +132,7 @@ def genres(video_type):
     if not xbmcvfs.exists(utility.session_file()):
         login.login()
     if video_type == 'tv':
-        post_data = utility.series_subgenre % utility.get_setting('authorization_url')
+        post_data = utility.series_genre % utility.get_setting('authorization_url')
     elif video_type == 'movie':
         post_data = utility.movie_genre % utility.get_setting('authorization_url')
     else:
@@ -275,4 +267,3 @@ def episodes(series_id, season):
     if utility.get_setting('force_view'):
         xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_episodes') + ')')
     xbmcplugin.endOfDirectory(plugin_handle)
-
