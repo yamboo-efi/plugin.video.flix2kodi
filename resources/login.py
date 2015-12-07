@@ -33,6 +33,7 @@ def login():
             utility.progress_window(login_progress, 50, utility.get_string(30202))
             content = utility.decode(connect.load_site(utility.main_url + '/Login?locale=' +
                                                        utility.get_setting('language'), post=post_data))
+            print utility.encode(content)
             if 'id="page-LOGIN"' in content:
                 utility.notification(utility.get_string(30303))
                 return False
@@ -44,6 +45,9 @@ def login():
             if match:
                 utility.log('Setting country code: ' + match[0])
                 utility.set_setting('country_code', match[0])
+            match = re.compile('"apiUrl":"(.+?)",').findall(content)
+            if match:
+                utility.set_setting('api_url', match[0])
             connect.save_session()
             utility.progress_window(login_progress, 75, utility.get_string(30203))
         if not (utility.get_setting('selected_profile') or (utility.get_setting('single_profile') == 'true')):
@@ -52,12 +56,10 @@ def login():
             profiles.choose()
         elif not ((utility.get_setting('single_profile') and utility.get_setting('show_profiles')) == 'true'):
             profiles.load()
-        if not utility.get_setting('is_kid') == 'true':
-            content = utility.decode(connect.load_site(utility.main_url + '/browse'))
-            match = re.compile('"version":{"app":"(.+?)"').findall(content)
-            netflix_application, netflix_id = match[0].split('-')
-            utility.set_setting('netflix_application', netflix_application)
-            utility.set_setting('netflix_id', netflix_id)
+        #if not utility.get_setting('is_kid') == 'true':
+            #match = re.compile('"version":{"app":"(.+?)"').findall(content)
+            #utility.set_setting('lolomos', match[0])
+            #3a5922fa-a4a9-41d8-a08c-9e84c2d32be4_ROOT
         if login_progress:
             if not utility.progress_window(login_progress, 100, utility.get_string(30204)):
                 return False

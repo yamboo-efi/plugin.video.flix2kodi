@@ -34,8 +34,7 @@ def series_info(series_id):
         content = file_handler.read()
         file_handler.close()
     if not content:
-        url = utility.series_url % (utility.get_setting('netflix_application'), utility.get_setting('netflix_id'),
-                                    series_id)
+        url = utility.series_url % (utility.get_setting('api_url'), series_id)
         content = connect.load_site(url)
         file_handler = xbmcvfs.File(cache_file, 'wb')
         file_handler.write(content)

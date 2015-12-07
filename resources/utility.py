@@ -14,17 +14,18 @@ addon_handle = xbmcaddon.Addon(addon_id)
 # urls for netflix
 main_url = 'https://www.netflix.com'
 kids_url = 'https://www.netflix.com/Kids'
-evaluator_url = 'https://www.netflix.com/api/%s/%s/pathEvaluator?materialize=true&model=harris'
+evaluator_url = '%s/pathEvaluator?materialize=true&model=harris'
 profile_switch_url = 'http://api-global.netflix.com/desktop/account/profiles/switch?switchProfileGuid='
 profile_url = 'http://api-global.netflix.com/desktop/account/profiles?version=2&withCredentials=true'
 picture_url = 'https://image.tmdb.org/t/p/original'
-series_url = 'https://www.netflix.com/api/%s/%s/metadata?movieid=%s&imageFormat=jpg'
+series_url = '%s/metadata?movieid=%s&imageFormat=jpg'
 tmdb_url = 'https://api.themoviedb.org/3/search/%s?api_key=%s&query=%s&language=de'
-activity_url = 'https://www.netflix.com/api/%s/%s/viewingactivity?_retry=0&authURL=%s'
+activity_url = '%s/viewingactivity?_retry=0&authURL=%s'
 
 # post data information
 recently_added = '{"paths":[["recentlyadded","su",{"from":0,"to":150},"title"]],"authURL":"%s"}'
-my_list = '{"paths":[["lolomo",{"from":2,"to":2},{"from":0,"to":50},"title"]],"authURL":"%s"}'
+my_list = '{"paths":[["lolomo",{"from":2,"to":2},{"from":0,"to":50},["summary","title"]],["lolomo",{"from":1,"to":2},' \
+          '["trackIds","displayName"]]],"authURL":"%s"}'
 genre = '{"paths":[["genres",%s,"su",{"from":0,"to":400},["summary","title"]]],"authURL":"%s"}'
 movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]],["genreList"]],"authURL":"%s"}'
 series_genre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"],["genres",83,"subgenres","summary"]]' \
@@ -34,6 +35,7 @@ video_info = '{"paths":[["videos",%s,["availability","bookmarkPosition","details
              '["videos",%s,"current",["summary","runtime","bookmarkPosition","creditsOffset","title"]],' \
              '["videos",%s,"seasonList","current",["showMemberType","summary"]],["videos",%s,' \
              '"boxarts",["_342x192","_665x375"],"jpg"]],"authURL":"%s"}'
+add_list = '{"callPath":["lolomos","%s","addToList"],"params":["%s",2,["videos",%s],%s,null,null],"paths":[],"pathSuffixes":[[["length","trackIds","context","displayName"]],[{"to":%s}],["watchedEvidence",{"to":2}]],"authURL":"%s"}'
 
 
 def data_dir():
@@ -96,7 +98,7 @@ def create_pathname(path, item):
 
 
 def evaluator():
-    return evaluator_url % (get_setting('netflix_application'), get_setting('netflix_id'))
+    return evaluator_url % get_setting('api_url')
 
 
 def log(message, loglevel=xbmc.LOGNOTICE):

@@ -165,8 +165,7 @@ def view_activity(video_type, run_as_widget=False):
     xbmcplugin.setContent(plugin_handle, 'movies')
     if not xbmcvfs.exists(utility.session_file()):
         login.login()
-    content = utility.decode(connect.load_site(utility.activity_url % (utility.get_setting('netflix_application'),
-                                                                       utility.get_setting('netflix_id'),
+    content = utility.decode(connect.load_site(utility.activity_url % (utility.get_setting('api_url'),
                                                                        utility.get_setting('authorization_url'))))
     matches = json.loads(content)['viewedItems']
     try:
@@ -243,7 +242,6 @@ def seasons(series_name, series_id, thumb):
 def episodes(series_id, season):
     xbmcplugin.setContent(plugin_handle, 'episodes')
     content = get.series_info(series_id)
-    print content
     content = json.loads(content)['video']['seasons']
     for test in content:
         episode_season = unicode(test['seq'])
