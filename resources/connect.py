@@ -29,7 +29,8 @@ def new_session():
     global session
     session = requests.Session()
     session.mount('https://', HTTPSAdapter())
-    session.headers.update({'User-Agent': 'User-Agent: Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko'})
+    session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
+                                          'like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586'})
     session.max_redirects = 5
     session.allow_redirects = True
     if xbmcvfs.exists(utility.session_file()):
@@ -52,20 +53,24 @@ def save_session():
     xbmcvfs.rename(temp_file, utility.session_file())
 
 
-def load_site(url, post=None):
+def load_site(url, headers=None, post=None, options=False, cookies=None):
     utility.log('Loading url: ' + url)
     try:
         if post:
-            response = session.post(url, data=post, verify=certifi.where())
+            response = session.post(url, headers=headers, cookies=cookies, data=post, verify=certifi.where())
+        elif options:
+            response = session.options(url, headers=headers, cookies=cookies, verify=certifi.where())
         else:
-            response = session.get(url, verify=certifi.where())
+            response = session.get(url, headers=headers, cookies=cookies, verify=certifi.where())
     except AttributeError:
         utility.log('Session is missing', loglevel=xbmc.LOGERROR)
         utility.notification(utility.get_string(30301))
         new_session()
         save_session()
         if post:
-            response = session.post(url, data=post, verify=certifi.where())
+            response = session.post(url, headers=headers, cookies=cookies, data=post, verify=certifi.where())
+        elif options:
+            response = session.options(url, headers=headers, cookies=cookies, verify=certifi.where())
         else:
-            response = session.get(url, verify=certifi.where())
+            response = session.get(url, headers=headers, cookies=cookies, verify=certifi.where())
     return response.content

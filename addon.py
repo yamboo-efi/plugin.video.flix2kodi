@@ -16,9 +16,6 @@ utility.log('\n\nStart of plugin')
 while (utility.get_setting('username') or utility.get_setting('password')) == '':
     utility.open_setting()
 
-if len(utility.get_setting('country')) == 0 and len(utility.get_setting('language').split('-')) > 1:
-    utility.set_setting('country', utility.get_setting('language').split('-')[1])
-
 utility.prepare_folders()
 connect.new_session()
 

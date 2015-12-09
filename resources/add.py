@@ -78,9 +78,9 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
                 utility.addon_id, urllib.quote_plus(url))))
         entries.append((utility.get_string(30156),
                         'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=movie)' % (
-                            utility.addon_id, urllib.quote_plus(utility.main_url + '/WiMovie/' + url))))
+                            utility.addon_id, urllib.quote_plus(utility.main_url + 'WiMovie/' + url))))
         entries.append((utility.get_string(30157), 'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=tv)' % (
-            utility.addon_id, urllib.quote_plus(utility.main_url + '/WiMovie/' + url))))
+            utility.addon_id, urllib.quote_plus(utility.main_url + 'WiMovie/' + url))))
     if video_type == 'tvshow':
         entries.append((utility.get_string(30150),
                         'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
