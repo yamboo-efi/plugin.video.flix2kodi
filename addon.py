@@ -1,5 +1,7 @@
 ﻿from __future__ import unicode_literals
 
+import os
+import xbmcaddon
 from resources import connect
 from resources import delete
 from resources import general
@@ -61,5 +63,8 @@ elif mode == 'delete_cache':
     delete.cache()
 elif mode == 'reset_addon':
     delete.addon()
+elif mode == 'play_video_main':
+    addonPath = xbmcaddon.Addon().getAddonInfo("path")
+    os.system('sh '+addonPath+'/resources/launchBrowser.sh https://www.netflix.com/watch/%s' % url)
 else:
     general.index()
