@@ -57,5 +57,10 @@ class FlixPlayer(xbmcgui.Window):
         start_new_thread(self.playInternal, (url,))
         self.doModal()
     def playInternal (self, url):
+        xbmc.executebuiltin("PlayerControl(Stop)")
+        xbmc.audioSuspend()
+#        xbmc.enableNavSounds(False)
         addonPath = xbmcaddon.Addon().getAddonInfo("path")
         os.system('sh '+addonPath+'/resources/launchBrowser.sh https://www.netflix.com/watch/%s' % url)
+        xbmc.audioResume()
+#        xbmc.enableNavSounds(True)

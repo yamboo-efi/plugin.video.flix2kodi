@@ -91,7 +91,11 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
                             utility.addon_id, urllib.quote_plus(url),
                             urllib.quote_plus(utility.encode(name.strip())) + ' (' + unicode(year) + ')')))
     list_item.addContextMenuItems(entries)
-    directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=True)
+
+    folder = True
+    if mode == 'play_video_main':
+        folder = False
+    directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=folder)
     return directory_item
 
 
