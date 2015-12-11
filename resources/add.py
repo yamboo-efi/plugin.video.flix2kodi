@@ -139,5 +139,5 @@ def episode(name, url, mode, thumb, description='', duration='', season_nr='', e
         list_item.setProperty('fanart_image', cover_file)
     else:
         list_item.setProperty('fanart_image', utility.addon_fanart())
-    directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=True)
+    directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=False)
     return directory_item

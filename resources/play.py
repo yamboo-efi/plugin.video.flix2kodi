@@ -1,11 +1,11 @@
 from __future__ import unicode_literals
-
-import xbmc
-import xbmcgui
+from thread import start_new_thread
+import xbmc, xbmcgui, xbmcaddon, xbmcplugin
 
 import get
 import utility
-
+import os
+import sys
 
 def trailer(title, video_type):
     trailers = []
@@ -31,3 +31,31 @@ def trailer(title, video_type):
     else:
         utility.notification(utility.get_string(30305))
         pass
+
+
+def video(url):
+    player = FlixPlayer()
+    player.play( url )
+    return None
+
+
+class FlixPlayer(xbmcgui.Window):
+
+    def onAction(self, action):
+        xbmc.log('Action: ' + `action.getId()`, level=xbmc.LOGERROR)
+        if action.getId() == 92:
+            os.system('/usr/bin/xdotool key alt+F4')
+            self.close()
+        if action.getId() == 7:
+            os.system('/usr/bin/xdotool key space')
+        if action.getId() == 1:
+            os.system('/usr/bin/xdotool key Left Left Left space')
+        if action.getId() == 2:
+            os.system('/usr/bin/xdotool key Right Right Right space')
+
+    def play ( self, url):
+        start_new_thread(self.playInternal, (url,))
+        self.doModal()
+    def playInternal (self, url):
+        addonPath = xbmcaddon.Addon().getAddonInfo("path")
+        os.system('sh '+addonPath+'/resources/launchBrowser.sh https://www.netflix.com/watch/%s' % url)
