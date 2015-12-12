@@ -1,5 +1,9 @@
 from __future__ import unicode_literals
 
+import requests
+from multiprocessing import Pool
+from requests.packages.urllib3.exceptions import HTTPError
+
 import json
 import re
 import sys
@@ -8,6 +12,7 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 import xbmcvfs
+import time
 
 import add
 import connect
@@ -29,7 +34,7 @@ def videos(url, video_type, run_as_widget=False):
         loading_progress.create('Netflix', utility.get_string(30205) + '...')
         utility.progress_window(loading_progress, 0, '...')
     xbmcplugin.setContent(plugin_handle, 'movies')
-    if not xbmcvfs.exists(utility.session_file()):
+    if not xbmcvfs.exists(utility.session_file(0)):
         login.login()
     if 'recently-added' in url:
         post_data = utility.recently_added % utility.get_setting('authorization_url')
@@ -39,15 +44,43 @@ def videos(url, video_type, run_as_widget=False):
         post_data = utility.my_list % utility.get_setting('authorization_url')
     content = utility.decode(connect.load_site(utility.evaluator(), post=post_data))
     matches = json.loads(content)['value']['videos']
-    for video_id in matches:
+
+    pool = Pool(processes=4)              # process per core
+
+    args = [(video_id, video_type, url) for video_id in matches]
+    size = 0
+    for video_add_arg in pool.imap(procVideo, args):
+        if(video_add_arg != None):
+            video_add(video_add_arg)
+        size+=1
         if not run_as_widget:
-            utility.progress_window(loading_progress, i * 100 / len(matches), matches[video_id]['title'])
-        video(unicode(video_id), '', '', False, False, video_type, url)
-        i += 1
+            utility.progress_window(loading_progress, size * 100 / len(matches), 'processing...')
+
     if utility.get_setting('force_view') == 'true' and not run_as_widget:
         xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_videos') + ')')
     xbmcplugin.endOfDirectory(plugin_handle)
 
+
+
+def procVideo(args):
+    video_id, video_type, url = args
+
+    ret = None
+    success = False
+    while (success == False):
+        try:
+            ret = video(unicode(video_id), '', '', False, False, video_type, url)
+            success = True
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code != 429:
+                time.sleep(2)
+            else:
+                utility.log('cannot load '+video_id+' url: '+url + str(e), xbmc.LOGERROR)
+                break
+        except Exception as e:
+            utility.log('cannot load '+video_id+' url: '+url + str(e), xbmc.LOGERROR)
+            break
+    return ret
 
 def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url):
     added = False
@@ -112,24 +145,31 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url):
     next_mode = 'play_video_main'
     if utility.get_setting('browse_tv_shows') == 'true' and type == 'tvshow':
         next_mode = 'list_seasons'
+
+    video_add_args = None
     if '/my-list' in url and video_type_temp == video_type:
-        add.video(title, video_id, next_mode, thumb_url, type, description, duration, year, mpaa,
-                  director, genre, rating, playcount, remove=True)
-        added = True
+        video_add_args = [title, video_id, next_mode, thumb_url, type, description, duration, year, mpaa,
+                          director, genre, rating, playcount, True]
     elif type == 'movie' and hide_movies:
         pass
     elif video_type_temp == video_type or video_type == 'both':
-        add.video(title, video_id, next_mode, thumb_url, type, description, duration, year, mpaa,
-                  director, genre, rating, playcount)
-        added = True
-    return added
+        video_add_args = [title, video_id, next_mode, thumb_url, type, description, duration, year, mpaa,
+                          director, genre, rating, playcount, False]
+
+    return video_add_args
+
+def video_add(args):
+    title, video_id, next_mode, thumb_url, type, description, duration, year, mpaa, director, genre, rating, playcount, remove = args
+    add.video(title, video_id, next_mode, thumb_url, type, description, duration, year, mpaa,
+                  director, genre, rating, playcount, remove=remove)
+
 
 
 def genres(video_type):
     post_data = ''
     match = []
     xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
-    if not xbmcvfs.exists(utility.session_file()):
+    if not xbmcvfs.exists(utility.session_file(0)):
         login.login()
     if video_type == 'tv':
         post_data = utility.series_genre % utility.get_setting('authorization_url')
@@ -163,40 +203,67 @@ def view_activity(video_type, run_as_widget=False):
         loading_progress.create('Netflix', utility.get_string(30205) + '...')
         utility.progress_window(loading_progress, 0, '...')
     xbmcplugin.setContent(plugin_handle, 'movies')
-    if not xbmcvfs.exists(utility.session_file()):
+    if not xbmcvfs.exists(utility.session_file(0)):
         login.login()
     content = utility.decode(connect.load_site(utility.activity_url % (utility.get_setting('api_url'),
                                                                        utility.get_setting('authorization_url'))))
     matches = json.loads(content)['viewedItems']
     try:
-        for item in matches:
-            series_id = 0
-            is_episode = False
-            video_id = unicode(item['movieID'])
-            date = item['dateStr']
-            try:
-                series_id = item['series']
-                series_title = item['seriesTitle']
-                title = item['title']
-                title = series_title + ' ' + title
-            except Exception:
-                title = item['title']
+
+        pool = Pool(processes=4)              # process per core
+        args = [(item, video_type) for item in matches]
+        size = 0
+        for video_add_arg in pool.imap(view_activity_load_match, args):
+            if(video_add_arg != None):
+                video_add(video_add_arg)
+            size+=1
             if not run_as_widget:
-                utility.progress_window(loading_progress, (count + 1) * 500 / len(matches), title)
-            title = date + ' - ' + title
-            if series_id > 0:
-                is_episode = True
-            added = video(video_id, title, '', is_episode, False, video_type, '')
-            if added:
-                count += 1
-            if count == 20:
-                break
+                utility.progress_window(loading_progress, size * 100 / len(matches), 'processing...')
+            if size == 20: break
+
+
     except Exception:
         utility.notification(utility.get_string(30306))
         pass
     if utility.get_setting('force_view') and not run_as_widget:
         xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_activity') + ')')
     xbmcplugin.endOfDirectory(plugin_handle)
+
+def view_activity_load_match(args):
+    item, video_type = args
+    series_id = 0
+    is_episode = False
+    video_id = unicode(item['movieID'])
+    date = item['dateStr']
+    try:
+        series_id = item['series']
+        series_title = item['seriesTitle']
+        title = item['title']
+        title = series_title + ' ' + title
+    except Exception:
+        title = item['title']
+    title = date + ' - ' + title
+    if series_id > 0:
+        is_episode = True
+
+
+
+    success = False
+    while (success == False):
+        try:
+            ret = video(video_id, title, '', is_episode, False, video_type, '')
+            success = True
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code != 429:
+                time.sleep(2)
+            else:
+                utility.log('cannot load '+video_id + str(e), xbmc.LOGERROR)
+                break
+        except Exception as e:
+            utility.log('cannot load '+video_id + str(e), xbmc.LOGERROR)
+            break
+
+    return ret
 
 
 def search(search_string, video_type, run_as_widget=False):
@@ -207,7 +274,7 @@ def search(search_string, video_type, run_as_widget=False):
         loading_progress.create('Netflix', utility.get_string(30205) + '...')
         utility.progress_window(loading_progress, 0, '...')
     xbmcplugin.setContent(plugin_handle, 'movies')
-    if not xbmcvfs.exists(utility.session_file()):
+    if not xbmcvfs.exists(utility.session_file(0)):
         login.login()
     post_data = '{"paths":[["search","%s",{"from":0,"to":48},["summary","title"]],["search","%s",["id","length",' \
                 '"name","trackIds","requestId"]]],"authURL":"%s"}' % (search_string, search_string,
@@ -218,7 +285,7 @@ def search(search_string, video_type, run_as_widget=False):
         for k in matches:
             if not run_as_widget:
                 utility.progress_window(loading_progress, i * 100 / len(matches), '...')
-            video(unicode(matches[k]['summary']['id']), '', '', False, False, video_type, '')
+            video_add(video(unicode(matches[k]['summary']['id']), '', '', False, False, video_type, ''))
             i += 1
         if utility.get_setting('force_view') and not run_as_widget:
             xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_videos') + ')')

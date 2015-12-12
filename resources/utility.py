@@ -55,8 +55,8 @@ def fanart_cache_dir():
     return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/cache/fanart/')
 
 
-def session_file():
-    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/session')
+def session_file(idx):
+    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/session'+str(idx))
 
 
 def cookie_file():

@@ -17,7 +17,7 @@ while (utility.get_setting('username') or utility.get_setting('password')) == ''
     utility.open_setting()
 
 utility.prepare_folders()
-connect.new_session()
+connect.create_sessions()
 
 parameters = utility.parameters_to_dictionary(sys.argv[2])
 name = utility.get_parameter(parameters, 'name')

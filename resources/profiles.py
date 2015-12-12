@@ -11,15 +11,15 @@ import utility
 
 def load():
     if utility.get_setting('selected_profile'):
-        connect.load_site(utility.profile_switch_url + utility.get_setting('selected_profile'))
-        connect.save_session()
+        connect.load_site_login(utility.profile_switch_url + utility.get_setting('selected_profile'))
+#        connect.save_session()
     else:
         utility.log('Load profile: no stored profile found!', loglevel=xbmc.LOGERROR)
 
 
 def choose():
     profiles = []
-    content = utility.decode(connect.load_site(utility.profile_url))
+    content = utility.decode(connect.load_site_login(utility.profile_url))
     match = json.loads(content)['profiles']
     for item in match:
         profile = {'name': item['firstName'], 'token': item['guid'], 'is_kid': item['experience'] == 'jfk'}
@@ -31,11 +31,11 @@ def choose():
             selected_profile = profiles[nr]
         else:
             selected_profile = profiles[0]
-        connect.load_site(utility.profile_switch_url + selected_profile['token'])
+        connect.load_site_login(utility.profile_switch_url + selected_profile['token'])
         utility.set_setting('selected_profile', selected_profile['token'])
         utility.set_setting('is_kid', 'true' if selected_profile['is_kid'] else 'false')
         utility.set_setting('profile_name', selected_profile['name'])
-        connect.save_session()
+#        connect.save_session()
     else:
         utility.log('Choose profile: no profiles were found!', loglevel=xbmc.LOGERROR)
 
