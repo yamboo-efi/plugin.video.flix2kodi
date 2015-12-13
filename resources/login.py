@@ -14,7 +14,7 @@ def login():
     login_progress = xbmcgui.DialogProgress()
     login_progress.create('Netflix', utility.get_string(30200) + '...')
     utility.progress_window(login_progress, 25, utility.get_string(30201))
-    content = utility.decode(connect.load_site_login(utility.main_url + 'Login', clearCookies=True))
+    content = utility.decode(connect.load_netflix_site(utility.main_url + 'Login', new_session=True))
     if not 'Sorry, Netflix ' in content:
         match = re.compile('name="authURL" value="(.+?)"', re.DOTALL).findall(content)
         utility.log('Setting authorization url: ' + match[0])
@@ -24,7 +24,7 @@ def login():
         post_data = {'authURL': utility.get_setting('authorization_url'), 'email': utility.get_setting('username'),
                      'password': utility.get_setting('password'), 'RememberMe': 'on'}
         utility.progress_window(login_progress, 50, utility.get_string(30202))
-        content = utility.decode(connect.load_site_login(utility.main_url + 'Login?locale=' +
+        content = utility.decode(connect.load_netflix_site(utility.main_url + 'Login?locale=' +
                                                    utility.get_setting('language'), post=post_data))
         if 'id="page-LOGIN"' in content:
             utility.notification(utility.get_string(30303))
@@ -32,7 +32,7 @@ def login():
         match = re.compile('"apiUrl":"(.+?)",').findall(content)
         utility.set_setting('api_url', match[0])
         post_data = utility.my_list % utility.get_setting('authorization_url')
-        content = utility.decode(connect.load_site_login(utility.evaluator(), post=post_data))
+        content = utility.decode(connect.load_netflix_site(utility.evaluator(), post=post_data))
         matches = json.loads(content)['value']
         match = matches['lolomos'].keys()
         utility.set_setting('root_list', match[0])
@@ -52,7 +52,6 @@ def login():
             #utility.set_setting('lolomos', match[0])
             #3a5922fa-a4a9-41d8-a08c-9e84c2d32be4_ROOT
 
-        connect.sync_sessions()
         if login_progress:
             if not utility.progress_window(login_progress, 100, utility.get_string(30204)):
                 return False

@@ -9,7 +9,7 @@ import search
 import utility
 
 
-def video_info(video_id):
+def video_info(video_id, lock = None):
     content = ''
     cache_file = xbmc.translatePath(utility.cache_dir() + video_id + '.cache')
     if xbmcvfs.exists(cache_file):
@@ -19,7 +19,7 @@ def video_info(video_id):
     if not content:
         post_data = utility.video_info % (video_id, video_id, video_id, video_id,
                                          utility.get_setting('authorization_url'))
-        content = connect.load_site(utility.evaluator(), post=post_data)
+        content = connect.load_netflix_site(utility.evaluator(), post=post_data, lock = lock)
         file_handler = xbmcvfs.File(cache_file, 'wb')
         file_handler.write(content)
         file_handler.close()
@@ -35,7 +35,7 @@ def series_info(series_id):
         file_handler.close()
     if not content:
         url = utility.series_url % (utility.get_setting('api_url'), series_id)
-        content = connect.load_site(url)
+        content = connect.load_netflix_site(url)
         file_handler = xbmcvfs.File(cache_file, 'wb')
         file_handler.write(content)
         file_handler.close()
@@ -53,7 +53,7 @@ def cover(video_type, video_id, title, year):
         content = content['results'][0]
         try:
             cover_url = utility.picture_url + content['poster_path']
-            content_jpg = connect.load_site(cover_url)
+            content_jpg = connect.load_other_site(cover_url)
             file_handler = open(cover_file, 'wb')
             file_handler.write(content_jpg)
             file_handler.close()
@@ -64,7 +64,7 @@ def cover(video_type, video_id, title, year):
             pass
         try:
             fanart_url = utility.picture_url + content['backdrop_path']
-            content_jpg = connect.load_site(fanart_url)
+            content_jpg = connect.load_other_site(fanart_url)
             file_handler = open(fanart_file, 'wb')
             file_handler.write(content_jpg)
             file_handler.close()

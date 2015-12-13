@@ -7,6 +7,7 @@ import xbmc
 import xbmcaddon
 import xbmcvfs
 
+
 addon_id = 'plugin.video.netflix'
 addon_name = 'Netflix'
 addon_handle = xbmcaddon.Addon(addon_id)
@@ -15,7 +16,7 @@ addon_handle = xbmcaddon.Addon(addon_id)
 main_url = 'https://www.netflix.com/'
 kids_url = 'https://www.netflix.com/Kids'
 evaluator_url = '%s/pathEvaluator?materialize=true&model=harris'
-profile_switch_url = 'http://api-global.netflix.com/desktop/account/profiles/switch?switchProfileGuid='
+profile_switch_url = '%s/profiles/switch?'
 profile_url = 'http://api-global.netflix.com/desktop/account/profiles?version=2&withCredentials=true'
 picture_url = 'https://image.tmdb.org/t/p/original'
 series_url = '%s/metadata?movieid=%s&imageFormat=jpg'
@@ -55,8 +56,8 @@ def fanart_cache_dir():
     return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/cache/fanart/')
 
 
-def session_file(idx):
-    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/session'+str(idx))
+def session_file():
+    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/session')
 
 
 def cookie_file():
@@ -101,6 +102,8 @@ def create_pathname(path, item):
 def evaluator():
     return evaluator_url % get_setting('api_url')  #.replace('http','https')
 
+def profile_switch():
+    return profile_switch_url % get_setting('api_url')
 
 def log(message, loglevel=xbmc.LOGNOTICE):
     xbmc.log(encode(addon_id + ': ' + message), level=loglevel)
@@ -108,7 +111,6 @@ def log(message, loglevel=xbmc.LOGNOTICE):
 
 def notification(message):
     xbmc.executebuiltin(encode('Notification(%s: , %s, 5000, %s)' % (addon_name, message, addon_icon())))
-
 
 def open_setting():
     return addon_handle.openSettings()

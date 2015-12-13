@@ -33,8 +33,7 @@ def cookies():
         utility.log('Cookie file deleted.')
         utility.notification(30301)
 
-    for i in range(0, connect.MAX_SESSIONS):
-        if xbmcvfs.exists(utility.session_file(i)):
-            xbmcvfs.delete(utility.session_file(i))
-            utility.log('Session file '+str(i)+' deleted.')
-            utility.notification(30302)
+    if xbmcvfs.exists(utility.session_file()):
+        xbmcvfs.delete(utility.session_file())
+        utility.log('Session file deleted.')
+        utility.notification(30302)
