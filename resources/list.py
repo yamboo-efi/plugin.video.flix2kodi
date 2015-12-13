@@ -1,7 +1,9 @@
 from __future__ import unicode_literals
 
 import requests
-import multiprocessing as mp
+import threading
+
+import thread
 from requests.packages.urllib3.exceptions import HTTPError
 from traceback import format_exc
 
@@ -47,19 +49,37 @@ def videos(url, video_type, run_as_widget=False):
     content = utility.decode(connect.load_netflix_site(utility.evaluator(), post=post_data))
     matches = json.loads(content)['value']['videos']
 
-    pool = mp.Pool(4)
-    lock = mp.Manager().Lock()
 
+    lock = thread.allocate_lock()
 
-    args = [(video_id, video_type, url, lock) for video_id in matches]
+    max_threads = 4
+    threads = [None] * max_threads
+    rets = [None] * max_threads
+    video_add_args = []
     size = 0
 
-    for video_add_arg in pool.imap(procVideo, args):
-        if(video_add_arg != None):
-            video_add(video_add_arg)
+    i = 0
+    for video_id in matches:
+        if(i==max_threads):
+            utility.log('max reached, waiting for join')
+            for i in range(len(threads)):
+                threads[i].join()
+                video_add_args.append(rets[i])
+            utility.log('all joined')
+            i = 0
+
+        threads[i] = threading.Thread(target = procVideo, args = (video_id, video_type, url, lock, rets, i))
+        threads[i].start()
+        utility.log('thread '+str(i)+' started')
         size+=1
         if not run_as_widget:
             utility.progress_window(loading_progress, size * 100 / len(matches), 'processing...')
+
+        i+=1
+
+    for video_add_arg in video_add_args:
+        if(video_add_arg != None):
+            video_add(video_add_arg)
 
     if utility.get_setting('force_view') == 'true' and not run_as_widget:
         xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_videos') + ')')
@@ -67,8 +87,7 @@ def videos(url, video_type, run_as_widget=False):
 
 
 
-def procVideo(args):
-    video_id, video_type, url, lock = args
+def procVideo(video_id, video_type, url, lock, rets, i):
 #    utility.log('loading '+unicode(video_id))
 
     ret = None
@@ -87,7 +106,7 @@ def procVideo(args):
             utility.log('error loading video ' +unicode(video_id)+'\n'+ traceback.format_exc(), xbmc.LOGERROR)
             break
 #    utility.log('finished '+video_id)
-    return ret
+    rets[i] = ret
 
 def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url, lock = None):
     added = False
@@ -217,19 +236,36 @@ def view_activity(video_type, run_as_widget=False):
     matches = json.loads(content)['viewedItems']
     try:
 
-        pool = mp.Pool(4)
-        lock = mp.Manager().Lock()
+        lock = thread.allocate_lock()
 
-        args = [(item, video_type, lock) for item in matches]
+        max_threads = 4
+        threads = [None] * max_threads
+        rets = [None] * max_threads
+        video_add_args = []
         size = 0
-        for video_add_arg in pool.imap(view_activity_load_match, args):
-            if(video_add_arg != None):
-                video_add(video_add_arg)
+
+        i = 0
+        for item in matches:
+            if(i==max_threads):
+                utility.log('max reached, waiting for join')
+                for i in range(len(threads)):
+                    threads[i].join()
+                    video_add_args.append(rets[i])
+                utility.log('all joined')
+                i = 0
+
+            threads[i] = threading.Thread(target = view_activity_load_match, args = (item, video_type, lock, rets, i))
+            threads[i].start()
+            utility.log('thread '+str(i)+' started')
             size+=1
             if not run_as_widget:
                 utility.progress_window(loading_progress, size * 100 / len(matches), 'processing...')
-            if size == 20: break
 
+            i+=1
+
+        for video_add_arg in video_add_args:
+            if(video_add_arg != None):
+                video_add(video_add_arg)
 
     except Exception:
         utility.notification(utility.get_string(30306))
@@ -238,8 +274,7 @@ def view_activity(video_type, run_as_widget=False):
         xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_activity') + ')')
     xbmcplugin.endOfDirectory(plugin_handle)
 
-def view_activity_load_match(args):
-    item, video_type, lock = args
+def view_activity_load_match(item, video_type, lock, rets, i):
     series_id = 0
     is_episode = False
     video_id = unicode(item['movieID'])
@@ -272,7 +307,7 @@ def view_activity_load_match(args):
             utility.log('error loading video ' +video_id+'\n'+ traceback.format_exc(), xbmc.LOGERROR)
             break
 
-    return ret
+    rets[i] = ret
 
 
 def search(search_string, video_type, run_as_widget=False):

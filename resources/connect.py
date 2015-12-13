@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 import pickle
 import requests
 import ssl
-import threading
-import time
 
 import xbmc
 import xbmcvfs
