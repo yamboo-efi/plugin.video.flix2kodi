@@ -196,3 +196,6 @@ def keyboard():
     else:
         search_string = None
     return search_string
+
+def windows():
+    return os.name == 'nt'

@@ -40,24 +40,9 @@ def video(url):
 
 
 class LogiPlayer(xbmcgui.Window):
-
-    def __init__(self):
-        self.strActionInfo = xbmcgui.ControlLabel(180, 60, 1200, 400, '', 'font14', '0xFFBBBBFF')
-        self.addControl(self.strActionInfo)
-        self.strActionInfo.setLabel('Push BACK to go back. If your browser not launches, something went wrong.')
-
-    def onAction(self, action):
-        xbmc.log('Action: ' + `action.getId()`, level=xbmc.LOGERROR)
-        if action.getId() == 92:
-            os.system('/usr/bin/xdotool key alt+F4')
-            self.close()
-        if action.getId() == 7:
-            os.system('/usr/bin/xdotool key space')
-        if action.getId() == 1:
-            os.system('/usr/bin/xdotool key Left Left Left space')
-        if action.getId() == 2:
-            os.system('/usr/bin/xdotool key Right Right Right space')
-
+    addon_path = None
+    control = None
+    launch_browser = None
     def play ( self, url):
         start_new_thread(self.playInternal, (url,))
         self.doModal()
@@ -65,7 +50,64 @@ class LogiPlayer(xbmcgui.Window):
     def playInternal (self, url):
         xbmc.executebuiltin("PlayerControl(Stop)")
         xbmc.audioSuspend()
-        addonPath = xbmcaddon.Addon().getAddonInfo("path")
-        os.system('sh '+addonPath+'/resources/launchBrowser.sh https://www.netflix.com/watch/%s' % url)
+        launch_browser('https://www.netflix.com/watch/%s' % url)
         xbmc.audioResume()
         self.close()
+
+    def onAction(self, action):
+        xbmc.log('Action: ' + `action.getId()`, level=xbmc.LOGERROR)
+        if action.getId() == 92:
+            control('close')
+            self.close()
+        if action.getId() == 7:
+            control('pause')
+        if action.getId() == 1:
+            control('backward')
+        if action.getId() == 2:
+            control('forward')
+
+    def control_linux(self, key):
+        cmd = None
+        if key=='close':
+            cmd = 'alt+F4'
+        if key=='pause':
+            cmd = 'space'
+        if key=='backward':
+            cmd = 'Left Left space'
+        if key=='forward':
+            cmd = 'Right Right space'
+        os.system('/usr/bin/xdotool key '+cmd)
+
+
+    def control_windows(self, key):
+        cmd = None
+        if key=='close':
+            cmd = 'alt+F4'
+        if key=='pause':
+            cmd = 'space'
+        if key=='backward':
+            cmd = 'Left Left space'
+        if key=='forward':
+            cmd = 'Right Right space'
+#        os.system('/usr/bin/xdotool key '+cmd)
+
+    def launch_browser_linux(self, url):
+        os.system('sh '+addon_path+'/resources/launchBrowser.sh ' + url)
+
+    def launch_browser_windows(self, url):
+        os.system(addon_path+'/resources/launchBrowser.cmd ' + url)
+
+    def __init__(self):
+        global addon_path, launch_browser, control
+        self.strActionInfo = xbmcgui.ControlLabel(180, 60, 1200, 400, '', 'font14', '0xFFBBBBFF')
+        self.addControl(self.strActionInfo)
+        self.strActionInfo.setLabel('Push BACK to go back. If your browser not launches, something went wrong.')
+
+        addon_path = xbmcaddon.Addon().getAddonInfo("path")
+
+        if utility.windows():
+            control = self.control_windows
+            launch_browser = self.launch_browser_windows
+        else:
+            control = self.control_linux
+            launch_browser = self.launch_browser_linux
