@@ -34,12 +34,17 @@ def trailer(title, video_type):
 
 
 def video(url):
-    player = FlixPlayer()
+    player = LogiPlayer()
     player.play( url )
     return None
 
 
-class FlixPlayer(xbmcgui.Window):
+class LogiPlayer(xbmcgui.Window):
+
+    def __init__(self):
+        self.strActionInfo = xbmcgui.ControlLabel(180, 60, 1200, 400, '', 'font14', '0xFFBBBBFF')
+        self.addControl(self.strActionInfo)
+        self.strActionInfo.setLabel('Push BACK to go back. If your browser not launches, something went wrong.')
 
     def onAction(self, action):
         xbmc.log('Action: ' + `action.getId()`, level=xbmc.LOGERROR)
@@ -56,11 +61,11 @@ class FlixPlayer(xbmcgui.Window):
     def play ( self, url):
         start_new_thread(self.playInternal, (url,))
         self.doModal()
+
     def playInternal (self, url):
         xbmc.executebuiltin("PlayerControl(Stop)")
         xbmc.audioSuspend()
-#        xbmc.enableNavSounds(False)
         addonPath = xbmcaddon.Addon().getAddonInfo("path")
         os.system('sh '+addonPath+'/resources/launchBrowser.sh https://www.netflix.com/watch/%s' % url)
         xbmc.audioResume()
-#        xbmc.enableNavSounds(True)
+        self.close()
