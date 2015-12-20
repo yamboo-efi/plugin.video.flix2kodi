@@ -31,6 +31,7 @@ def login():
             return False
         match = re.compile('"apiUrl":"(.+?)",').findall(content)
         utility.set_setting('api_url', match[0])
+        connect.set_chrome_netflix_cookies()
         post_data = utility.my_list % utility.get_setting('authorization_url')
         content = utility.decode(connect.load_netflix_site(utility.evaluator(), post=post_data))
         matches = json.loads(content)['value']
@@ -47,10 +48,6 @@ def login():
             profiles.choose()
         elif not ((utility.get_setting('single_profile') and utility.get_setting('show_profiles')) == 'true'):
             profiles.load()
-        #if not utility.get_setting('is_kid') == 'true':
-            #match = re.compile('"version":{"app":"(.+?)"').findall(content)
-            #utility.set_setting('lolomos', match[0])
-            #3a5922fa-a4a9-41d8-a08c-9e84c2d32be4_ROOT
 
         if login_progress:
             if not utility.progress_window(login_progress, 100, utility.get_string(30204)):

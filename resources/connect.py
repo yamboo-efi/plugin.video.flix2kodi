@@ -4,6 +4,7 @@ import pickle
 import requests
 import ssl
 
+import datetime
 import xbmc
 import xbmcvfs
 from requests.adapters import HTTPAdapter
@@ -12,6 +13,7 @@ from requests.packages.urllib3.poolmanager import PoolManager
 
 import resources.lib.certifi as certifi
 import utility
+from resources import chrome_cookie
 
 requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 
@@ -71,6 +73,7 @@ def load_netflix_site(url, post=None, new_session=False, lock = None):
 
     netflix_session.headers = session.headers.copy()
     netflix_session.cookies = session.cookies.copy()
+
     if lock != None:
         lock.release()
     return ret
@@ -92,3 +95,20 @@ def load_site_internal(url, session, post=None, options=False, headers=None, coo
 
     content = response.content
     return content
+
+def get_cookie_expires(cookie_name):
+    for cookie in netflix_session.cookies:
+        if cookie.name == cookie_name:
+            return datetime.datetime.utcfromtimestamp(cookie.expires)
+    return None
+def set_chrome_netflix_cookies():
+    netflix_id=netflix_session.cookies.get(name='NetflixId', domain='.netflix.com')
+    netflix_id_expires = None
+    if netflix_id != None :
+        netflix_id_expires = get_cookie_expires('NetflixId')
+    secure_netflix_id = netflix_session.cookies.get(name='SecureNetflixId', domain='.netflix.com')
+
+    secure_netflix_id_expires = None
+    if secure_netflix_id != None:
+        secure_netflix_id_expires = get_cookie_expires('SecureNetflixId')
+    chrome_cookie.set_netflix_cookies(netflix_id, netflix_id_expires, secure_netflix_id, secure_netflix_id_expires)
