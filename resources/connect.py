@@ -41,6 +41,10 @@ def create_session(netflix = False, new_session = False):
         content = file_handler.read()
         file_handler.close()
         session = pickle.loads(content)
+
+    if netflix == True and new_session == True:
+        session.cookies.set('profilesNewUser', '0')
+        session.cookies.set('profilesNewSession', '0')
     return session
 
 

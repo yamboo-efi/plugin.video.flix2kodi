@@ -95,6 +95,7 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
     folder = True
     if mode == 'play_video_main':
         folder = False
+#    utility.log(u)
     directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=folder)
     return directory_item
 

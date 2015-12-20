@@ -22,11 +22,10 @@ picture_url = 'https://image.tmdb.org/t/p/original'
 series_url = '%s/metadata?movieid=%s&imageFormat=jpg'
 tmdb_url = 'https://api.themoviedb.org/3/search/%s?api_key=%s&query=%s&language=de'
 activity_url = '%s/viewingactivity?_retry=0&authURL=%s'
+mylist_url = 'http://www.netflix.com/browse/my-list'
 
 # post data information
 recently_added = '{"paths":[["recentlyadded","su",{"from":0,"to":150},"title"]],"authURL":"%s"}'
-my_list = '{"paths":[["lolomo",{"from":2,"to":2},{"from":0,"to":50},["summary","title"]],' \
-          '["lolomo",{"from":1,"to":2},["trackIds","displayName"]]],"authURL":"%s"}'
 genre = '{"paths":[["genres",%s,"su",{"from":0,"to":400},["summary","title"]]],"authURL":"%s"}'
 movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]]],"authURL":"%s"}'
 series_genre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"]],"authURL":"%s"}'

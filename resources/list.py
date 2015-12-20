@@ -40,15 +40,34 @@ def videos(url, video_type, run_as_widget=False):
     xbmcplugin.setContent(plugin_handle, 'movies')
     if not xbmcvfs.exists(utility.session_file()):
         login.login()
+
+    target_url = utility.evaluator()
     if 'recently-added' in url:
         post_data = utility.recently_added % utility.get_setting('authorization_url')
     elif 'genre' in url:
         post_data = utility.genre % (url.split('?')[1], utility.get_setting('authorization_url'))
     elif 'my-list' in url:
-        post_data = utility.my_list % utility.get_setting('authorization_url')
-    content = utility.decode(connect.load_netflix_site(utility.evaluator(), post=post_data))
-    matches = json.loads(content)['value']['videos']
+        post_data = None
+        target_url = utility.mylist_url
 
+    response = connect.load_netflix_site(target_url, post=post_data)
+#    utility.log(response)
+
+    if 'my-list' in url:
+        match = re.compile('netflix.falkorCache = ({.*});</script><script>window.netflix', re.DOTALL).findall(response)
+        content = utility.decode(match[0])
+#        utility.log(content)
+        jsondata = json.loads(content)
+        matches = []
+        videos = jsondata['videos']
+        for video in videos:
+            if not video in ('$size', 'size'):
+                matches.append(video)
+    else:
+        content = utility.decode(response)
+        jsondata = json.loads(content)
+        utility.log(str(jsondata))
+        matches = jsondata['value']['videos']
 
     lock = thread.allocate_lock()
 
@@ -65,9 +84,12 @@ def videos(url, video_type, run_as_widget=False):
             for i in range(len(threads)):
                 threads[i].join()
                 video_add_args.append(rets[i])
+                threads[i] = None
+                rets[i] = None
             utility.log('all joined')
             i = 0
 
+#        utility.log(video_id)
         threads[i] = threading.Thread(target = procVideo, args = (video_id, video_type, url, lock, rets, i))
         threads[i].start()
         utility.log('thread '+str(i)+' started')
@@ -76,6 +98,14 @@ def videos(url, video_type, run_as_widget=False):
             utility.progress_window(loading_progress, size * 100 / len(matches), 'processing...')
 
         i+=1
+
+    for i in range(len(threads)):
+        if threads[i] != None:
+            threads[i].join()
+            video_add_args.append(rets[i])
+            threads[i] = None
+            rets[i] = None
+    utility.log('all joined')
 
     for video_add_arg in video_add_args:
         if(video_add_arg != None):
@@ -115,6 +145,7 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url, 
     playcount = 0
     video_details = get.video_info(video_id, lock)
     match = json.loads(video_details)['value']['videos'][video_id]
+#    utility.log(str(match))
     if not title:
         title = match['title']
     year = match['releaseYear']
@@ -182,6 +213,7 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url, 
         video_add_args = [title, video_id, next_mode, thumb_url, type, description, duration, year, mpaa,
                           director, genre, rating, playcount, False]
 
+#    utility.log(str(video_add_args))
     return video_add_args
 
 def video_add(args):
@@ -251,6 +283,8 @@ def view_activity(video_type, run_as_widget=False):
                 for i in range(len(threads)):
                     threads[i].join()
                     video_add_args.append(rets[i])
+                    threads[i] = None
+                    rets[i] = None
                 utility.log('all joined')
                 i = 0
 
@@ -262,6 +296,14 @@ def view_activity(video_type, run_as_widget=False):
                 utility.progress_window(loading_progress, size * 100 / len(matches), 'processing...')
 
             i+=1
+
+        for i in range(len(threads)):
+            if threads[i] != None:
+                threads[i].join()
+                video_add_args.append(rets[i])
+                threads[i] = None
+                rets[i] = None
+        utility.log('all joined')
 
         for video_add_arg in video_add_args:
             if(video_add_arg != None):
