@@ -52,6 +52,7 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
                       infoLabels={'title': name, 'plot': description, 'duration': duration, 'year': int(year),
                                   'mpaa': mpaa, 'director': director, 'genre': genre, 'rating': rating,
                                   'playcount': playcount})
+    list_item.setProperty('IsPlayable', 'true');
     if xbmcvfs.exists(fanart_file):
         list_item.setProperty('fanart_image', fanart_file)
     elif xbmcvfs.exists(cover_file):
@@ -99,6 +100,18 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
     directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=folder)
     return directory_item
 
+
+def add_next_item(name, page, url, video_type, mode, iconimage):
+    u = sys.argv[0]
+    u += '?url=' + urllib.quote_plus(url)
+    u += '&mode=' + mode
+    u += '&type=' + video_type
+    u += '&page=' + str(page)
+    u += '&name=' + urllib.quote_plus(utility.encode(name))
+    liz=xbmcgui.ListItem(unicode(name), iconImage="DefaultFolder.png",thumbnailImage=iconimage)
+    liz.setInfo( type="Video", infoLabels={ "Title": name })
+    ok=xbmcplugin.addDirectoryItem(handle=plugin_handle,url=u,listitem=liz,isFolder=True)
+    return ok
 
 def season(name, url, mode, thumb, series_name, series_id):
     entries = []

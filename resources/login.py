@@ -18,7 +18,7 @@ def login():
     content = utility.decode(response)
     if not 'Sorry, Netflix ' in content:
         match = re.compile('name="authURL" value="(.+?)"', re.DOTALL).findall(content)
-        utility.log('Setting authorization url: ' + match[0])
+#        utility.log('Setting authorization url: ' + match[0])
         utility.set_setting('authorization_url', match[0])
         match = re.compile('locale: "(.+?)"', re.DOTALL).findall(content)
         utility.set_setting('language', match[0])
@@ -28,7 +28,7 @@ def login():
         response = connect.load_netflix_site(utility.main_url + 'Login?locale=' + utility.get_setting('language'),
                                          post=post_data)
         content = utility.decode(response)
-        xbmc.log(response)
+#        utility.log(response)
 
         if 'id="page-LOGIN"' in content:
             utility.notification(utility.get_string(30303))

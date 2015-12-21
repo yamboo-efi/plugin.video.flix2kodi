@@ -100,19 +100,5 @@ def load_site_internal(url, session, post=None, options=False, headers=None, coo
     content = response.content
     return content
 
-def get_cookie_expires(cookie_name):
-    for cookie in netflix_session.cookies:
-        if cookie.name == cookie_name:
-            return datetime.datetime.utcfromtimestamp(cookie.expires)
-    return None
 def set_chrome_netflix_cookies():
-    netflix_id=netflix_session.cookies.get(name='NetflixId', domain='.netflix.com')
-    netflix_id_expires = None
-    if netflix_id != None :
-        netflix_id_expires = get_cookie_expires('NetflixId')
-    secure_netflix_id = netflix_session.cookies.get(name='SecureNetflixId', domain='.netflix.com')
-
-    secure_netflix_id_expires = None
-    if secure_netflix_id != None:
-        secure_netflix_id_expires = get_cookie_expires('SecureNetflixId')
-    chrome_cookie.set_netflix_cookies(netflix_id, netflix_id_expires, secure_netflix_id, secure_netflix_id_expires)
+    chrome_cookie.set_netflix_cookies(netflix_session.cookies)

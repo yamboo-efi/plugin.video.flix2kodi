@@ -29,7 +29,12 @@ import utility
 plugin_handle = int(sys.argv[1])
 
 
-def videos(url, video_type, run_as_widget=False):
+def videos(url, video_type, offset, run_as_widget=False):
+    if '' == offset:
+        page = 0
+    else:
+        page = int(offset)
+
     post_data = ''
     i = 1
     loading_progress = None
@@ -45,7 +50,10 @@ def videos(url, video_type, run_as_widget=False):
     if 'recently-added' in url:
         post_data = utility.recently_added % utility.get_setting('authorization_url')
     elif 'genre' in url:
-        post_data = utility.genre % (url.split('?')[1], utility.get_setting('authorization_url'))
+        off_from = page * 6
+        off_to = off_from + 4
+#        utility.log('from:' + str(off_from)+' to: '+str(off_to))
+        post_data = utility.genre % (url.split('?')[1], off_from,off_to, utility.get_setting('authorization_url'))
     elif 'my-list' in url:
         post_data = None
         target_url = utility.mylist_url
@@ -53,11 +61,11 @@ def videos(url, video_type, run_as_widget=False):
     response = connect.load_netflix_site(target_url, post=post_data)
 #    utility.log(response)
 
+    matches = []
     if 'my-list' in url:
         match = re.compile('netflix.falkorCache = ({.*});</script><script>window.netflix', re.DOTALL).findall(response)
         content = utility.decode(match[0])
         jsondata = json.loads(content)
-        matches = []
         if 'videos' in jsondata:
             videos = jsondata['videos']
             for video in videos:
@@ -66,8 +74,9 @@ def videos(url, video_type, run_as_widget=False):
     else:
         content = utility.decode(response)
         jsondata = json.loads(content)
-        utility.log(str(jsondata))
-        matches = jsondata['value']['videos']
+#        utility.log(str(jsondata))
+        if 'videos' in jsondata['value']:
+            matches = jsondata['value']['videos']
 
     lock = thread.allocate_lock()
 
@@ -80,7 +89,7 @@ def videos(url, video_type, run_as_widget=False):
     i = 0
     for video_id in matches:
         if(i==max_threads):
-            utility.log('max reached, waiting for join')
+#            utility.log('max reached, waiting for join')
             for i in range(len(threads)):
                 threads[i].join()
                 video_add_args.append(rets[i])
@@ -110,6 +119,9 @@ def videos(url, video_type, run_as_widget=False):
     for video_add_arg in video_add_args:
         if(video_add_arg != None):
             video_add(video_add_arg)
+
+    if 'genre' in url and len(video_add_args) > 0:
+        add.add_next_item('Next', page + 1, url, video_type, 'list_videos', '')
 
     if utility.get_setting('force_view') == 'true' and not run_as_widget:
         xbmc.executebuiltin('Container.SetViewMode(' + utility.get_setting('view_id_videos') + ')')
@@ -279,7 +291,7 @@ def view_activity(video_type, run_as_widget=False):
         i = 0
         for item in matches:
             if(i==max_threads):
-                utility.log('max reached, waiting for join')
+#                utility.log('max reached, waiting for join')
                 for i in range(len(threads)):
                     threads[i].join()
                     video_add_args.append(rets[i])

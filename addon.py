@@ -26,12 +26,13 @@ thumb = utility.get_parameter(parameters, 'thumb')
 video_type = utility.get_parameter(parameters, 'type')
 season = utility.get_parameter(parameters, 'season')
 series_id = utility.get_parameter(parameters, 'series_id')
+page = utility.get_parameter(parameters, 'page')
 run_as_widget = utility.get_parameter(parameters, 'widget') == 'true'
 
 if mode == 'main':
     general.main(video_type)
 elif mode == 'list_videos':
-    list.videos(url, video_type, run_as_widget)
+    list.videos(url, video_type, page, run_as_widget)
 elif mode == 'list_seasons':
     list.seasons(name, url, thumb)
 elif mode == 'list_episodes':

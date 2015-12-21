@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import utility
+import xbmc
 
 windows = os.name == 'nt'
 
@@ -78,10 +79,8 @@ def set_cookie(conn, name, value, expires, only_secure = False):
     else:
         insert_netflix_id(conn, name, expires_utc, last_access_utc, value, only_secure)
 
-
-
-def set_netflix_cookies(netflix_id, netflix_id_expires, secure_netflix_id, secure_netflix_id_expires):
-    utility.log(expanduser("~"))
+def connect():
+#    utility.log(expanduser("~"))
     db_path = expanduser("~")
     if windows:
         db_path += '\AppData\Local\Google\Chrome\User Data\Default\Cookies'
@@ -89,10 +88,21 @@ def set_netflix_cookies(netflix_id, netflix_id_expires, secure_netflix_id, secur
         db_path += '/.config/google-chrome/Default/Cookies'
     conn = sqlite3.connect(db_path)
     conn.text_factory = str
-    if netflix_id != None:
-        set_cookie(conn, 'NetflixId', netflix_id, netflix_id_expires)
-    if secure_netflix_id != None:
-        set_cookie(conn, 'SecureNetflixId', secure_netflix_id, secure_netflix_id_expires, only_secure=True)
+    return conn
 
-    conn.commit()
-    conn.close()
+def set_netflix_cookies(cookies):
+    try:
+        conn = connect()
+
+        for cookie in cookies:
+            expires = cookie.expires
+            if(expires == None):
+                expires_date = datetime.datetime.now() + datetime.timedelta(days=5)
+            else:
+                expires_date = datetime.datetime.utcfromtimestamp(expires)
+            set_cookie(conn, cookie.name, cookie.value, expires_date)
+
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        utility.log('Error setting Chrome-Cookie: '+str(e), xbmc.LOGERROR)
