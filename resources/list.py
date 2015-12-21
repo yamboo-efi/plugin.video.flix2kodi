@@ -56,13 +56,13 @@ def videos(url, video_type, run_as_widget=False):
     if 'my-list' in url:
         match = re.compile('netflix.falkorCache = ({.*});</script><script>window.netflix', re.DOTALL).findall(response)
         content = utility.decode(match[0])
-#        utility.log(content)
         jsondata = json.loads(content)
         matches = []
-        videos = jsondata['videos']
-        for video in videos:
-            if not video in ('$size', 'size'):
-                matches.append(video)
+        if 'videos' in jsondata:
+            videos = jsondata['videos']
+            for video in videos:
+                if not video in ('$size', 'size'):
+                    matches.append(video)
     else:
         content = utility.decode(response)
         jsondata = json.loads(content)
@@ -86,13 +86,13 @@ def videos(url, video_type, run_as_widget=False):
                 video_add_args.append(rets[i])
                 threads[i] = None
                 rets[i] = None
-            utility.log('all joined')
+#            utility.log('all joined')
             i = 0
 
 #        utility.log(video_id)
         threads[i] = threading.Thread(target = procVideo, args = (video_id, video_type, url, lock, rets, i))
         threads[i].start()
-        utility.log('thread '+str(i)+' started')
+#        utility.log('thread '+str(i)+' started')
         size+=1
         if not run_as_widget:
             utility.progress_window(loading_progress, size * 100 / len(matches), 'processing...')
@@ -105,7 +105,7 @@ def videos(url, video_type, run_as_widget=False):
             video_add_args.append(rets[i])
             threads[i] = None
             rets[i] = None
-    utility.log('all joined')
+#    utility.log('all joined')
 
     for video_add_arg in video_add_args:
         if(video_add_arg != None):
@@ -285,12 +285,12 @@ def view_activity(video_type, run_as_widget=False):
                     video_add_args.append(rets[i])
                     threads[i] = None
                     rets[i] = None
-                utility.log('all joined')
+#                utility.log('all joined')
                 i = 0
 
             threads[i] = threading.Thread(target = view_activity_load_match, args = (item, video_type, lock, rets, i))
             threads[i].start()
-            utility.log('thread '+str(i)+' started')
+#            utility.log('thread '+str(i)+' started')
             size+=1
             if not run_as_widget:
                 utility.progress_window(loading_progress, size * 100 / len(matches), 'processing...')
@@ -303,7 +303,7 @@ def view_activity(video_type, run_as_widget=False):
                 video_add_args.append(rets[i])
                 threads[i] = None
                 rets[i] = None
-        utility.log('all joined')
+ #       utility.log('all joined')
 
         for video_add_arg in video_add_args:
             if(video_add_arg != None):
