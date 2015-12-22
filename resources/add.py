@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
 import sys
@@ -87,10 +88,16 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
                         'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
                             utility.addon_id, urllib.quote_plus(utility.encode(name.strip())), urllib.quote_plus(url))))
     elif video_type == 'movie':
+        title_utf8 = name.strip()+' ('+str(year)+')'
+        title = urllib.quote_plus(title_utf8.encode('utf-8'))
+#        utility.log(title)
+#        utility.log(urllib.unquote_plus(title).decode('utf-8'))
+#        utility.log(str(isinstance(title, unicode)))
         entries.append((utility.get_string(30150),
                         'RunPlugin(plugin://%s/?mode=add_movie_to_library&url=%s&name=%s)' % (
                             utility.addon_id, urllib.quote_plus(url),
-                            urllib.quote_plus(utility.encode(name.strip())) + ' (' + unicode(year) + ')')))
+                            title)))
+#    utility.log(str(entries))
     list_item.addContextMenuItems(entries)
 
     folder = True

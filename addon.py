@@ -1,6 +1,5 @@
 ﻿from __future__ import unicode_literals
 
-from resources import connect
 from resources import delete
 from resources import general
 from resources import library
@@ -61,6 +60,8 @@ elif mode == 'delete_cache':
     delete.cache()
 elif mode == 'reset_addon':
     delete.addon()
+elif mode == 'play_video':
+    play.video(url);
 elif mode == 'play_video_main':
     play.video(url);
 else:

@@ -132,7 +132,7 @@ def decode(string):
 
 
 def encode(string):
-    return string.encode('utf-8')
+    return unicode(string).encode('utf-8')
 
 
 def clean_filename(n, chars=None):
@@ -176,7 +176,7 @@ def parameters_to_dictionary(parameters):
 
 
 def get_parameter(parameters, parameter):
-    return urllib.unquote_plus(parameters.get(parameter, ''))
+    return urllib.unquote_plus(str(parameters.get(parameter, ''))).decode('utf-8')
 
 
 def progress_window(window_handle, value, message):

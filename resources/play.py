@@ -1,11 +1,18 @@
 from __future__ import unicode_literals
+
+import json
+import subprocess
 from thread import start_new_thread
+
+import time
 import xbmc, xbmcgui, xbmcaddon, xbmcplugin
 
 import get
 import utility
 import os
 import sys
+
+plugin_handle = int(sys.argv[1])
 
 def trailer(title, video_type):
     trailers = []
@@ -34,49 +41,109 @@ def trailer(title, video_type):
 
 
 def video(url):
+    utility.log(utility.addon_dir()+'/resources/fakeVid.mp4')
+    listitem = xbmcgui.ListItem(path=utility.addon_dir()+'/resources/fakeVid.mp4')
+    xbmcplugin.setResolvedUrl(plugin_handle, True, listitem)
     player = LogiPlayer()
     player.play( url )
     return None
 
 
+chrome_handle = None
 class LogiPlayer(xbmcgui.Window):
+    screensaver = None
+    display_off = None
     addon_path = None
     control = None
     launch_browser = None
+
     def play ( self, url):
         start_new_thread(self.playInternal, (url,))
+        start_new_thread(self.after_chrome_launched, ())
         self.doModal()
 
     def playInternal (self, url):
         xbmc.executebuiltin("PlayerControl(Stop)")
         xbmc.audioSuspend()
+        self.disable_screensaver()
         launch_browser('https://www.netflix.com/watch/%s' % url)
+        self.enable_screensaver()
         xbmc.audioResume()
         self.close()
 
+    def disable_screensaver(self):
+        global screensaver_mode, display_off
+        ret = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.getSettingValue", "params": {"setting":"screensaver.mode" } }')
+        jsn = json.loads(ret)
+        screensaver_mode = jsn['result']['value']
+
+        ret = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.getSettingValue", "params": {"setting":"powermanagement.displaysoff" } }')
+        jsn = json.loads(ret)
+        display_off = jsn['result']['value']
+
+        xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting": "screensaver.mode", "value": "" } }')
+        xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting": "powermanagement.displaysoff", "value": 0 } }')
+
+    def enable_screensaver(self):
+        global screensaver_mode, display_off
+        xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting":"screensaver.mode", "value": "'+screensaver_mode+'" } }')
+        xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting":"powermanagement.displaysoff", "value": '+str(display_off)+' } }')
+    def after_chrome_launched(self):
+        if utility.windows() == False:
+            self.get_chrome_window_handle_linux()
+
+    def get_chrome_window_handle_linux(self):
+        global chrome_handle
+        tries = 0
+        handle = self.find_chrome_window_handle_linux()
+        while (handle == '' and tries < 30):
+            time.sleep(1)
+            handle = self.find_chrome_window_handle_linux()
+            tries+=1
+
+        if handle == '':
+            utility.log('cannot find chrome after 30 seconds!', xbmc.LOGERROR)
+            self.close()
+        chrome_handle = handle.strip()
+
+    def find_chrome_window_handle_linux(self):
+        proc = subprocess.Popen(['/usr/bin/xdotool search "Google Chrome"'], stdout=subprocess.PIPE, shell=True)
+        (out, err) = proc.communicate()
+        return out
+
+
     def onAction(self, action):
-        xbmc.log('Action: ' + `action.getId()`, level=xbmc.LOGERROR)
+#        utility.log(str(action.getId()))
         if action.getId() == 92:
             control('close')
-            self.close()
         if action.getId() == 7:
             control('pause')
         if action.getId() == 1:
             control('backward')
         if action.getId() == 2:
             control('forward')
+        if action.getId() == 3:
+            control('up')
+        if action.getId() == 4:
+            control('down')
 
     def control_linux(self, key):
-        cmd = None
-        if key=='close':
-            cmd = 'alt+F4'
-        if key=='pause':
-            cmd = 'space'
-        if key=='backward':
-            cmd = 'Left Left space'
-        if key=='forward':
-            cmd = 'Right Right space'
-        os.system('/usr/bin/xdotool key '+cmd)
+        if chrome_handle != None:
+            cmd = None
+            if key=='close':
+                cmd = 'alt+F4'
+            if key=='pause':
+                cmd = 'space'
+            if key=='backward':
+                cmd = 'Left space'
+            if key=='down':
+                cmd = 'Left Left space'
+            if key=='forward':
+                cmd = 'Right space'
+            if key=='up':
+                cmd = 'Right Right space'
+            utility.log('/usr/bin/xdotool windowactivate --sync '+chrome_handle+' key '+cmd)
+            os.system('/usr/bin/xdotool windowactivate --sync '+chrome_handle+' key '+cmd)
 
 
     def control_windows(self, key):

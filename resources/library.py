@@ -9,6 +9,7 @@ import utility
 
 
 def movie(movie_id, title, single_update=True):
+    utility.log(title)
     filename = utility.clean_filename(title + '.strm', ' .').strip(' .')
     movie_file = xbmc.translatePath(utility.movie_dir() + filename)
     file_handler = xbmcvfs.File(movie_file, 'w')
