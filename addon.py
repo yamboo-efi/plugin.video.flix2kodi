@@ -61,8 +61,10 @@ elif mode == 'delete_cache':
 elif mode == 'reset_addon':
     delete.addon()
 elif mode == 'play_video':
+#    utility.log('play_video: '+url)
     play.video(url);
 elif mode == 'play_video_main':
+#    utility.log('play_video_main: '+url)
     play.video(url);
 else:
     general.index()

@@ -41,11 +41,13 @@ def trailer(title, video_type):
 
 
 def video(url):
-    utility.log(utility.addon_dir()+'/resources/fakeVid.mp4')
-    listitem = xbmcgui.ListItem(path=utility.addon_dir()+'/resources/fakeVid.mp4')
-    xbmcplugin.setResolvedUrl(plugin_handle, True, listitem)
+    xbmc.Player().stop()
     player = LogiPlayer()
     player.play( url )
+    listitem = xbmcgui.ListItem(path=utility.addon_dir()+'/resources/fakeVid.mp4')
+    xbmcplugin.setResolvedUrl(plugin_handle, True, listitem)
+    xbmc.PlayList(xbmc.PLAYLIST_VIDEO).clear()
+    player.doModal()
     return None
 
 
@@ -60,10 +62,8 @@ class LogiPlayer(xbmcgui.Window):
     def play ( self, url):
         start_new_thread(self.playInternal, (url,))
         start_new_thread(self.after_chrome_launched, ())
-        self.doModal()
 
     def playInternal (self, url):
-        xbmc.executebuiltin("PlayerControl(Stop)")
         xbmc.audioSuspend()
         self.disable_screensaver()
         launch_browser('https://www.netflix.com/watch/%s' % url)
@@ -142,7 +142,6 @@ class LogiPlayer(xbmcgui.Window):
                 cmd = 'Right space'
             if key=='up':
                 cmd = 'Right Right space'
-            utility.log('/usr/bin/xdotool windowactivate --sync '+chrome_handle+' key '+cmd)
             os.system('/usr/bin/xdotool windowactivate --sync '+chrome_handle+' key '+cmd)
 
 
