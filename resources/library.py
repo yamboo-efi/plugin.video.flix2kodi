@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 import json
+import re
+
 import xbmc
 import xbmcvfs
 
@@ -10,9 +12,16 @@ import utility
 
 def movie(movie_id, title, single_update=True):
     utility.log(title)
-    filename = utility.clean_filename(title + '.strm', ' .').strip(' .')
-    movie_file = xbmc.translatePath(utility.movie_dir() + filename)
-    file_handler = xbmcvfs.File(movie_file, 'w')
+    pattern = re.compile('^\d\d.\d\d.\d\d \- .*')
+    if pattern.match(title) != None:
+        title = title[11:]
+    filename = utility.clean_filename(title, ' .')
+    movie_dir = xbmc.translatePath(utility.movie_dir() + filename)
+    if not xbmcvfs.exists(movie_dir):
+        xbmcvfs.mkdir(movie_dir)
+
+    movie_file = utility.clean_filename(title + '.strm', ' .').strip(' .')
+    file_handler = xbmcvfs.File(utility.create_pathname(movie_dir.decode('utf-8'), movie_file), 'w')
     file_handler.write(utility.encode('plugin://%s/?mode=play_video&url=%s' % (utility.addon_id, movie_id)))
     file_handler.close()
     if utility.get_setting('update_db') and single_update:
@@ -29,7 +38,7 @@ def series(series_id, series_title, season, single_update=True):
     for test in content:
         episode_season = unicode(test['seq'])
         if episode_season == season or season == '':
-            season_dir = utility.create_pathname(series_file, test['title'])
+            season_dir = utility.create_pathname(series_file.decode('utf-8'), test['title'])
             if not xbmcvfs.exists(season_dir):
                 xbmcvfs.mkdir(season_dir)
             for item in test['episodes']:

@@ -95,7 +95,8 @@ def cover_fanart(name):
 
 
 def create_pathname(path, item):
-    return os.path.join(path, item)
+    ret = os.path.join(path, item)
+    return ret
 
 
 def evaluator():
