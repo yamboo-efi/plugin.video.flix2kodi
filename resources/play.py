@@ -146,16 +146,7 @@ class LogiPlayer(xbmcgui.Window):
 
 
     def control_windows(self, key):
-        cmd = None
-        if key=='close':
-            cmd = 'alt+F4'
-        if key=='pause':
-            cmd = 'space'
-        if key=='backward':
-            cmd = 'Left Left space'
-        if key=='forward':
-            cmd = 'Right Right space'
-#        os.system('/usr/bin/xdotool key '+cmd)
+        os.system('cscript '+utility.addon_dir()+'\\resources\\sendKey.vbs '+key)
 
     def launch_browser_linux(self, url):
         os.system('sh '+addon_path+'/resources/launchBrowser.sh ' + url)
