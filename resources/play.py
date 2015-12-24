@@ -114,9 +114,9 @@ class LogiPlayer(xbmcgui.Window):
 
     def onAction(self, action):
 #        utility.log(str(action.getId()))
-        if action.getId() == 92:
+        if action.getId() in(92,10,13):
             control('close')
-        if action.getId() == 7:
+        if action.getId() == (7, 79):
             control('pause')
         if action.getId() == 1:
             control('backward')
