@@ -146,13 +146,13 @@ class LogiPlayer(xbmcgui.Window):
 
 
     def control_windows(self, key):
-        os.system('cscript '+utility.addon_dir()+'\\resources\\sendKey.vbs '+key)
+        os.system('cscript "'+utility.addon_dir()+'\\resources\\sendKey.vbs" '+key)
 
     def launch_browser_linux(self, url):
         os.system('sh '+addon_path+'/resources/launchBrowser.sh ' + url)
 
     def launch_browser_windows(self, url):
-        os.system(addon_path+'/resources/launchBrowser.cmd ' + url)
+        os.system('"'+addon_path+'\\resources\\launchBrowser.cmd" ' + url)
 
     def __init__(self):
         global addon_path, launch_browser, control
