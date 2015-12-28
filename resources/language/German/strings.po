@@ -56,6 +56,10 @@ msgctxt "#30012"
 msgid "Library path"
 msgstr "Datenbank Verzeichnis"
 
+msgctxt "#30016"
+msgid "Chrome Launcher benutzen"
+msgstr ""
+
 msgctxt "#30013"
 msgid "SSL settings"
 msgstr "SSL Einstellungen"

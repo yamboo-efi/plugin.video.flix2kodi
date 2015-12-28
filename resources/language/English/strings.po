@@ -56,6 +56,10 @@ msgctxt "#30012"
 msgid "Library path"
 msgstr ""
 
+msgctxt "#30016"
+msgid "Use Chrome Launcher"
+msgstr ""
+
 msgctxt "#30013"
 msgid "SSL settings"
 msgstr ""
