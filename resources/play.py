@@ -107,25 +107,45 @@ class LogiPlayer(xbmcgui.Window):
         chrome_handle = handle.strip()
 
     def find_chrome_window_handle_linux(self):
-        proc = subprocess.Popen(['sh '+addon_path+'/resources/findChromeWindow.sh'], stdout=subprocess.PIPE, shell=True)
+        proc = subprocess.Popen(['sh '''+addon_path+'/resources/findChromeWindow.sh'''], stdout=subprocess.PIPE, shell=True)
         (out, err) = proc.communicate()
         return out
 
-
     def onAction(self, action):
-        utility.log(str(action.getId()))
-        if action.getId() in(92,10,13):
+        ACTION_NAV_BACK = 92
+        ACTION_PREVIOUS_MENU = 10
+        ACTION_STOP = 13
+
+        ACTION_SELECT_ITEM = 7
+        ACTION_PLAYER_PLAY = 79
+        ACTION_PLAYER_PLAYPAUSE = 229
+        ACTION_PAUSE = 12
+
+        ACTION_PLAYER_REWIND = 78
+        ACTION_MOVE_LEFT = 1
+        ACTION_REWIND = 17
+
+        ACTION_PLAYER_FORWARD = 77
+        ACTION_MOVE_RIGHT = 2
+        ACTION_FORWARD = 16
+
+        ACTION_MOVE_UP = 3
+        ACTION_MOVE_DOWN = 4
+
+        if action.getId() in(ACTION_NAV_BACK, ACTION_PREVIOUS_MENU, ACTION_STOP):
             control('close')
-        if action.getId() == (7, 79):
+        elif action.getId() in(ACTION_SELECT_ITEM, ACTION_PLAYER_PLAY, ACTION_PLAYER_PLAYPAUSE, ACTION_PAUSE):
             control('pause')
-        if action.getId() == 1:
+        elif action.getId() in(ACTION_PLAYER_REWIND, ACTION_MOVE_LEFT, ACTION_REWIND):
             control('backward')
-        if action.getId() == 2:
+        elif action.getId() in(ACTION_PLAYER_FORWARD, ACTION_MOVE_RIGHT, ACTION_FORWARD):
             control('forward')
-        if action.getId() == 3:
+        elif action.getId() == ACTION_MOVE_UP:
             control('up')
-        if action.getId() == 4:
+        elif action.getId() == ACTION_MOVE_DOWN:
             control('down')
+        else:
+            utility.log('unknown action: '+str(action.getId()))
 
     def control_linux(self, key):
         if chrome_handle != None:
@@ -154,7 +174,7 @@ class LogiPlayer(xbmcgui.Window):
 #    os.system(
 
     def launch_browser_linux(self, url):
-        os.system('sh '+addon_path+'/resources/launchBrowser.sh ' + url)
+        os.system('sh '''+addon_path+'/resources/launchBrowser.sh'' ' + url)
 
     def launch_browser_windows(self, url):
         info = subprocess.STARTUPINFO()
