@@ -113,7 +113,7 @@ class LogiPlayer(xbmcgui.Window):
 
 
     def onAction(self, action):
-#        utility.log(str(action.getId()))
+        utility.log(str(action.getId()))
         if action.getId() in(92,10,13):
             control('close')
         if action.getId() == (7, 79):
@@ -146,13 +146,23 @@ class LogiPlayer(xbmcgui.Window):
 
 
     def control_windows(self, key):
-        os.system('cscript "'+utility.addon_dir()+'\\resources\\sendKey.vbs" '+key)
+        info = subprocess.STARTUPINFO()
+        info.dwFlags = subprocess.STARTF_USESTDHANDLES | subprocess.STARTF_USESHOWWINDOW
+        info.wShowWindow = subprocess.SW_HIDE
+        process = subprocess.Popen('cscript "'+utility.addon_dir()+'\\resources\\sendKey.vbs" '+key, startupinfo=info)
+        process.wait()
+#    os.system(
 
     def launch_browser_linux(self, url):
         os.system('sh '+addon_path+'/resources/launchBrowser.sh ' + url)
 
     def launch_browser_windows(self, url):
-        os.system('"'+addon_path+'\\resources\\launchBrowser.cmd" ' + url)
+        info = subprocess.STARTUPINFO()
+        info.dwFlags = subprocess.STARTF_USESTDHANDLES | subprocess.STARTF_USESHOWWINDOW
+        info.wShowWindow = subprocess.SW_HIDE
+        process = subprocess.Popen('"'+addon_path+'\\resources\\launchBrowser.cmd" ' + url, startupinfo=info)
+        process.wait()
+#        os.system('"'+addon_path+'\\resources\\launchBrowser.cmd" ' + url)
 
     def __init__(self):
         global addon_path, launch_browser, control
