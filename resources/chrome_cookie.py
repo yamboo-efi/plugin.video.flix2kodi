@@ -1,10 +1,10 @@
 import sqlite3
 import os
-import utility
+import sys
 import xbmc
 
 windows = os.name == 'nt'
-darwin = os.platform == 'darwin'
+darwin = sys.platform == 'darwin'
 
 if windows:
     import win32crypt
