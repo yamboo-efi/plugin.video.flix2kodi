@@ -151,7 +151,6 @@ def procVideo(video_id, video_type, url, lock, rets, i):
     rets[i] = ret
 
 def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url, lock = None):
-    added = False
     director = ''
     genre = ''
     playcount = 0
@@ -210,6 +209,8 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url, 
         genre = match['details']['genres'][0]['name']
     except Exception:
         pass
+
+    rating = None
     try:
         rating = match['userRating']['average']
     except Exception:
@@ -270,7 +271,6 @@ def genres(video_type):
 
 
 def view_activity(video_type, run_as_widget=False):
-    count = 0
     loading_progress = None
     if not run_as_widget:
         loading_progress = xbmcgui.DialogProgress()
