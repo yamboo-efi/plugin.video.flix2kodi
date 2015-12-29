@@ -25,7 +25,7 @@ activity_url = '%s/viewingactivity?_retry=0&authURL=%s'
 mylist_url = 'http://www.netflix.com/browse/my-list'
 
 # post data information
-recently_added = '{"paths":[["recentlyadded","su",{"from":0,"to":150},"title"]],"authURL":"%s"}'
+recently_added = '{"paths":[["recentlyadded","su",{"from":%s,"to":%s},"title"]],"authURL":"%s"}'
 genre = '{"paths":[["genres",%s,"su",{"from":%s,"to":%s},["summary","title"]]],"authURL":"%s"}'
 movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]]],"authURL":"%s"}'
 series_genre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"]],"authURL":"%s"}'

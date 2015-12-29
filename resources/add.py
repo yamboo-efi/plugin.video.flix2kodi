@@ -120,12 +120,12 @@ def add_next_item(name, page, url, video_type, mode, iconimage):
     ok=xbmcplugin.addDirectoryItem(handle=plugin_handle,url=u,listitem=liz,isFolder=True)
     return ok
 
-def season(name, url, mode, thumb, series_name, series_id):
+def season(name, url, thumb, series_name, series_id):
     entries = []
     cover_file, fanart_file = utility.cover_fanart(series_id)
     u = sys.argv[0]
     u += '?url=' + urllib.quote_plus(unicode(url))
-    u += '&mode=' + mode
+    u += '&mode=list_episodes'
     u += '&series_id=' + urllib.quote_plus(series_id)
     list_item = xbmcgui.ListItem(name)
     list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb})
@@ -146,12 +146,13 @@ def season(name, url, mode, thumb, series_name, series_id):
     return directory_item
 
 
-def episode(name, url, mode, thumb, description='', duration='', season_nr='', episode_nr='', series_id='',
-            playcount=0):
+def episode(episode):
+    series_id, episode_id, name, description, episode_nr, season_nr, duration, thumb, playcount = episode
+
     cover_file, fanart_file = utility.cover_fanart(series_id)
     u = sys.argv[0]
-    u += '?url=' + urllib.quote_plus(unicode(url))
-    u += '&mode=' + mode
+    u += '?url=' + urllib.quote_plus(unicode(episode_id))
+    u += '&mode=play_video_main'
     u += '&series_id=' + urllib.quote_plus(series_id)
     list_item = xbmcgui.ListItem(name)
     list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb})

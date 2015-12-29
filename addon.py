@@ -39,7 +39,7 @@ elif mode == 'list_episodes':
 elif mode == 'list_genres':
     list.genres(video_type)
 elif mode == 'list_viewing_activity':
-    list.view_activity(video_type, run_as_widget)
+    list.viewing_activity(video_type, run_as_widget)
 elif mode == 'add_to_queue':
     queue.add(url)
 elif mode == 'remove_from_queue':

@@ -7,6 +7,7 @@ import xbmcvfs
 import connect
 import search
 import utility
+from resources import utility, connect
 
 
 def video_info(video_id, lock = None):
@@ -23,7 +24,7 @@ def video_info(video_id, lock = None):
         file_handler = xbmcvfs.File(cache_file, 'wb')
         file_handler.write(content)
         file_handler.close()
-    return utility.decode(content)
+    return content
 
 
 def series_info(series_id):
@@ -39,7 +40,7 @@ def series_info(series_id):
         file_handler = xbmcvfs.File(cache_file, 'wb')
         file_handler.write(content)
         file_handler.close()
-    return utility.decode(content)
+    return content
 
 
 def cover(video_type, video_id, title, year):
@@ -81,4 +82,31 @@ def trailer(video_type, title):
     else:
         utility.notification(utility.get_string(30305))
         content = None
+    return content
+
+
+def genre_info(video_type):
+    post_data = ''
+    if video_type == 'tv':
+        post_data = utility.series_genre % utility.get_setting('authorization_url')
+    elif video_type == 'movie':
+        post_data = utility.movie_genre % utility.get_setting('authorization_url')
+    else:
+        pass
+    content = connect.load_netflix_site(utility.evaluator(), post=post_data)
+    return content
+
+
+def search_results(search_string):
+    post_data = '{"paths":[["search","%s",{"from":0,"to":48},["summary","title"]],["search","%s",["id","length",' \
+                '"name","trackIds","requestId"]]],"authURL":"%s"}' % (search_string, search_string,
+                                                                      utility.get_setting('authorization_url'))
+    content = connect.load_netflix_site(utility.evaluator(), post=post_data)
+    return content
+
+
+def viewing_activity_info():
+    content = connect.load_netflix_site(utility.activity_url % (utility.get_setting('api_url'),
+                                                                               utility.get_setting(
+                                                                                   'authorization_url')))
     return content

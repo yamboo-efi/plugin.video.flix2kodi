@@ -62,6 +62,7 @@ def save_netflix_session():
     xbmcvfs.rename(temp_file, session_file)
 
 def load_netflix_site(url, post=None, new_session=False, lock = None):
+    utility.log('Loading: '+url+' Post: '+ str(post))
     if lock != None:
         lock.acquire()
 
@@ -80,6 +81,8 @@ def load_netflix_site(url, post=None, new_session=False, lock = None):
 
     if lock != None:
         lock.release()
+    ret = utility.decode(ret)
+    utility.log('Returning: '+ret)
     return ret
 
 
@@ -88,7 +91,6 @@ def load_other_site(url):
     return load_site_internal(url, session)
 
 def load_site_internal(url, session, post=None, options=False, headers=None, cookies=None):
-    utility.log('Loading url: ' + url, xbmc.LOGDEBUG)
 
     if post:
         response = session.post(url, headers=headers, cookies=cookies, data=post, verify=certifi.where())
