@@ -34,6 +34,7 @@ def series(series_id, series_title, season, single_update=True):
     if not xbmcvfs.exists(series_file):
         xbmcvfs.mkdir(series_file)
     content = get.series_info(series_id)
+    utility.log(str(content))
     content = json.loads(content)['video']['seasons']
     for test in content:
         episode_season = unicode(test['seq'])
