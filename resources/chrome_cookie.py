@@ -4,9 +4,12 @@ import utility
 import xbmc
 
 windows = os.name == 'nt'
+darwin = os.platform == 'darwin'
 
 if windows:
     import win32crypt
+elif darwin:
+    import keyring
 else:
     from Crypto.Cipher import AES
     from Crypto.Protocol.KDF import PBKDF2
@@ -27,10 +30,14 @@ def get_cipher():
     iv = b' ' * 16
     length = 16
 
-    my_pass = 'peanuts'.encode('utf8')
+    if darwin:
+        my_pass = keyring.get_password('Chrome Safe Storage', 'Chrome')
+        iterations = 1003
+    else:
+        my_pass = 'peanuts'
+        iterations = 1
 
-    iterations = 1
-
+    my_pass = my_pass.encode('utf8')
     key = PBKDF2(my_pass, salt, length, iterations)
     return AES.new(key, AES.MODE_CBC, IV=iv)
 
@@ -80,10 +87,11 @@ def set_cookie(conn, name, value, expires, only_secure = False):
         insert_netflix_id(conn, name, expires_utc, last_access_utc, value, only_secure)
 
 def connect():
-#    utility.log(expanduser("~"))
     db_path = expanduser("~")
     if windows:
         db_path += '\AppData\Local\Google\Chrome\User Data\Default\Cookies'
+    elif darwin:
+        db_path += "/Library/Application Support/Google/Chrome/Default/Cookies"
     else:
         db_path += '/.config/google-chrome/Default/Cookies'
     conn = sqlite3.connect(db_path)
