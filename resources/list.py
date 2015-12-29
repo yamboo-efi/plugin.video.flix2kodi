@@ -210,8 +210,11 @@ def video(video_id, title, thumb_url, is_episode, hide_movies, video_type, url, 
         genre = match['details']['genres'][0]['name']
     except Exception:
         pass
-    xbmc.log('match: '+str(match))
-    rating = match['userRating']['average']
+    try:
+        rating = match['userRating']['average']
+    except Exception:
+        pass
+
     next_mode = 'play_video_main'
     if utility.get_setting('browse_tv_shows') == 'true' and type == 'tvshow':
         next_mode = 'list_seasons'
@@ -397,6 +400,7 @@ def search(search_string, video_type, run_as_widget=False):
 def seasons(series_name, series_id, thumb):
     seasons = []
     content = get.series_info(series_id)
+    utility.log(str(content))
     content = json.loads(content)['video']['seasons']
     for item in content:
         seasons.append((item['title'], item['seq']))
