@@ -12,7 +12,7 @@ def video(video_id, is_episode, lock = None, custom_title = None, series_title =
     video_details = get.video_info(video_id, lock)
     match = json.loads(video_details)['value']['videos'][video_id]
 
-    utility.log('parsing videodata: '+unicode(match))
+#    utility.log('parsing videodata: '+unicode(match))
 
     if custom_title != None:
         title = custom_title

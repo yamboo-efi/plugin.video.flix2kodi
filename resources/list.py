@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import sys
 
+import collections
 import xbmc
 import xbmcgui
 import xbmcplugin
@@ -49,7 +50,9 @@ def viewing_activity(video_type, run_as_widget=False):
 def load_videos_to_directory(loading_progress, run_as_widget, metadatas, video_type, page = None, url=None, viewing_activity = False):
     video_metadatas = multiprocessor.load_data(metadatas, video_type, run_as_widget, loading_progress, url, viewing_activity)
     removable = url != None and 'my-list' in url
-    for video_metadata in video_metadatas:
+
+    sorted_video_metadata = sorted(video_metadatas, key=lambda t: t['title'], reverse = viewing_activity)
+    for video_metadata in sorted_video_metadata:
         if (video_metadata != None):
             video_add(video_metadata, removable, viewing_activity)
     if (url != None and ('genre' in url or 'recently-added' in url) and len(video_metadatas) > 0):

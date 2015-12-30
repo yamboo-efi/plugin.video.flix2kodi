@@ -16,8 +16,10 @@ def videos_matches(video_type, page, url):
     if not xbmcvfs.exists(utility.cookies_file()):
         login.login()
     target_url = utility.evaluator()
-    off_from = page * 6
-    off_to = off_from + 4
+
+    items_per_page = int(utility.get_setting('items_per_page'))
+    off_from = page * items_per_page
+    off_to = off_from + items_per_page - 2
 
     if 'recently-added' in url:
         post_data = utility.recently_added % (off_from, off_to, utility.get_setting('authorization_url'))
@@ -28,7 +30,7 @@ def videos_matches(video_type, page, url):
         post_data = None
         target_url = utility.mylist_url
     response = connect.load_netflix_site(target_url, post=post_data)
-    #    utility.log(response)
+#    utility.log('response: '+response)
     if 'my-list' in url:
         extract_my_list_video_ids(response, video_ids, video_type)
     else:
@@ -39,7 +41,7 @@ def videos_matches(video_type, page, url):
 def extract_other_video_ids(response, video_ids):
     content = response
     jsondata = json.loads(content)
-    utility.log('jsondata: ' + str(jsondata))
+#    utility.log('jsondata: ' + str(jsondata))
     if 'videos' in jsondata['value']:
         video_ids = jsondata['value']['videos']
     return video_ids

@@ -70,7 +70,7 @@ def read_headers():
     return pickle.loads(content)
 
 def load_netflix_site(url, post=None, new_session=False, lock = None):
-    utility.log('Loading: '+url+' Post: '+ str(post))
+#    utility.log('Loading: '+url+' Post: '+ str(post))
     if lock != None:
         lock.acquire()
 
@@ -94,7 +94,7 @@ def load_netflix_site(url, post=None, new_session=False, lock = None):
 
 
 def load_other_site(url):
-#    utility.log('loading-other: '+url)
+    utility.log('loading-other: '+url)
     session = create_session()
     content = load_site_internal(url, session)
     return content

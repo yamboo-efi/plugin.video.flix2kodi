@@ -57,8 +57,8 @@ msgid "Library path"
 msgstr "Datenbank Verzeichnis"
 
 msgctxt "#30016"
-msgid "Chrome Launcher benutzen"
-msgstr ""
+msgid "Use Chrome Launcher"
+msgstr "Chrome Launcher benutzen"
 
 msgctxt "#30013"
 msgid "SSL settings"
@@ -83,6 +83,10 @@ msgstr "Cover & Fanart über TMDb beziehen"
 msgctxt "#30022"
 msgid "Browse TV-Shows instead of autoplaying"
 msgstr "Serien durchsuchen anstatt automatischer Wiedergabe"
+
+msgctxt "#30028"
+msgid "Items per page"
+msgstr "Einträge pro Seite"
 
 msgctxt "#30023"
 msgid "Appearance"
