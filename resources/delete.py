@@ -33,7 +33,7 @@ def cookies():
         utility.log('Cookie file deleted.')
         utility.notification(30301)
 
-    if xbmcvfs.exists(utility.session_file()):
-        xbmcvfs.delete(utility.session_file())
-        utility.log('Session file deleted.')
+    if xbmcvfs.exists(utility.headers_file()):
+        xbmcvfs.delete(utility.headers_file())
+        utility.log('Header file deleted.')
         utility.notification(30302)

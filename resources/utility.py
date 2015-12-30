@@ -3,14 +3,21 @@ from __future__ import unicode_literals
 import HTMLParser
 import os
 import urllib
-import xbmc
-import xbmcaddon
-import xbmcvfs
+
+test = False
+try:
+    import xbmc
+    import xbmcaddon
+    import xbmcvfs
+except Exception:
+    test = True
+
 
 
 addon_id = 'plugin.video.netflix'
 addon_name = 'Netflix'
-addon_handle = xbmcaddon.Addon(addon_id)
+if test == False:
+    addon_handle = xbmcaddon.Addon(addon_id)
 
 # urls for netflix
 main_url = 'https://www.netflix.com/'
@@ -55,12 +62,12 @@ def fanart_cache_dir():
     return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/cache/fanart/')
 
 
-def session_file():
-    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/session')
+def headers_file():
+    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/headers')
 
 
-def cookie_file():
-    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/cookie')
+def cookies_file():
+    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/cookies')
 
 
 def library_dir():
@@ -105,9 +112,14 @@ def evaluator():
 def profile_switch():
     return profile_switch_url % get_setting('api_url')
 
-def log(message, loglevel=xbmc.LOGNOTICE):
-    xbmc.log(encode(addon_id + ': ' + message), level=loglevel)
-
+def log(message, loglevel = None):
+    logmsg = ("[%s] %s" % (addon_id, message)).encode('utf-8')
+    if test == False:
+        if loglevel == None:
+            loglevel = xbmc.LOGNOTICE
+        xbmc.log(logmsg, level=loglevel)
+    else:
+        print logmsg
 
 def notification(message):
     xbmc.executebuiltin(encode('Notification(%s: , %s, 5000, %s)' % (addon_name, message, addon_icon())))
@@ -132,8 +144,8 @@ def decode(string):
     return string.decode('utf-8')
 
 
-def encode(string):
-    return unicode(string).encode('utf-8')
+def encode(unicode):
+    return unicode.encode('utf-8') if unicode else ''.encode('utf-8')
 
 
 def clean_filename(n, chars=None):

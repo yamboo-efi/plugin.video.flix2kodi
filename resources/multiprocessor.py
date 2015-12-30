@@ -1,14 +1,16 @@
+from __future__ import unicode_literals
 import thread
 import threading
 import time
 import traceback
 
 import requests
+import xbmc
 
 from resources import utility
 from resources.video_parser import video
 
-def load_data(matches, video_type, run_as_widget, loading_progress, url = '', viewing_activity=False):
+def load_data(metadatas, video_type, run_as_widget, loading_progress, is_episode=False, viewing_activity = False):
     video_add_args = []
 
     lock = thread.allocate_lock()
@@ -17,7 +19,7 @@ def load_data(matches, video_type, run_as_widget, loading_progress, url = '', vi
     rets = [None] * max_threads
     size = 0
     thread_id = 0
-    for match in matches:
+    for metadata in metadatas:
         if (thread_id == max_threads):
             #            utility.log('max reached, waiting for join')
             for thread_id in range(len(threads)):
@@ -29,16 +31,14 @@ def load_data(matches, video_type, run_as_widget, loading_progress, url = '', vi
             thread_id = 0
 
         #        utility.log(video_id)
-        if viewing_activity == True:
-            threads[thread_id] = threading.Thread(target=view_activity_load_match, args=(match, video_type, lock, rets, thread_id))
-        else:
-            threads[thread_id] = threading.Thread(target=video_load_match, args=(match, video_type, url, lock, rets, thread_id))
+
+        threads[thread_id] = threading.Thread(target=load_match, args=(thread_id, lock, rets, metadata, is_episode, viewing_activity))
 
         threads[thread_id].start()
         #        utility.log('thread '+str(i)+' started')
         size += 1
         if not run_as_widget:
-            utility.progress_window(loading_progress, size * 100 / len(matches), 'processing...')
+            utility.progress_window(loading_progress, size * 100 / len(metadata), 'processing...')
 
         thread_id += 1
 
@@ -52,36 +52,22 @@ def load_data(matches, video_type, run_as_widget, loading_progress, url = '', vi
     return video_add_args
 
 
-def video_load_match(video_id, video_type, url, lock, rets, thread_id):
-    load_match_internal(thread_id, lock, rets, video_id, video_type, url=url)
-
-
-def view_activity_load_match(item, video_type, lock, rets, thread_id):
-    series_id = 0
-    is_episode = False
-    video_id = unicode(item['movieID'])
-    date = item['dateStr']
-    try:
-        series_id = item['series']
-        series_title = item['seriesTitle']
-        title = item['title']
-        title = series_title + ' ' + title
-    except Exception:
-        title = item['title']
-    title = date + ' - ' + title
-    if series_id > 0:
-        is_episode = True
-
-    load_match_internal(thread_id, lock, rets, video_id, video_type, title=title, is_episode=is_episode)
-
-
-def load_match_internal(thread_id, lock, rets, video_id, video_type, title='', url='', is_episode =False):
-    #    utility.log('loading '+unicode(video_id))
+def load_match(thread_id, lock, rets, metadata, is_episode = False, viewing_activity = False):
+#    utility.log('loading '+unicode(video_id))
     ret = None
+
+    custom_title = None
+    series_title = None
+    if viewing_activity==True:
+        video_id = metadata['id']
+        custom_title = metadata['title']
+        series_title = metadata['series_title']
+    else:
+        video_id = metadata
     success = False
     while (success == False):
         try:
-            ret = video(video_id, title, '', is_episode, False, video_type, url, lock)
+            ret = video(video_id, is_episode, lock, custom_title = custom_title, series_title = series_title)
             success = True
         except requests.exceptions.HTTPError, e:
             if e.response.status_code == 429:

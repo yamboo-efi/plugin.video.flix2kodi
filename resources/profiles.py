@@ -22,7 +22,6 @@ def switch_profile(profile_id):
     profile_switch_url = utility.profile_switch() + 'switchProfileGuid=' + profile_id + '&authURL=' + auth_id
     ret = connect.load_netflix_site(profile_switch_url)
 #    utility.log(ret)
-    connect.save_netflix_session()
     connect.set_chrome_netflix_cookies()
 
 def choose():
@@ -59,5 +58,4 @@ def update_displayed():
     menu_path = xbmc.getInfoLabel('Container.FolderPath')
     if not utility.get_setting('show_profiles') == 'true':
         utility.set_setting('selected_profile', None)
-        connect.save_netflix_session()
     xbmc.executebuiltin('Container.Update(' + menu_path + ')')

@@ -10,7 +10,7 @@ from resources import queue
 from resources import search
 from resources import utility
 
-utility.log('\n\nStart of plugin')
+# utility.log('\n\nStart of plugin')
 
 while (utility.get_setting('username') or utility.get_setting('password')) == '':
     utility.open_setting()

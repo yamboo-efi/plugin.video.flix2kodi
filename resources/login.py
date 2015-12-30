@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import json
 import re
+
 import xbmc
 import xbmcgui
 
@@ -16,10 +17,10 @@ def login():
     utility.progress_window(login_progress, 25, utility.get_string(30201))
     content = connect.load_netflix_site(utility.main_url + 'Login', new_session=True)
     if not 'Sorry, Netflix ' in content:
-        match = re.compile('name="authURL" value="(.+?)"', re.DOTALL).findall(content)
+        match = re.compile('name="authURL" value="(.+?)"', re.DOTALL| re.UNICODE).findall(content)
 #        utility.log('Setting authorization url: ' + match[0])
         utility.set_setting('authorization_url', match[0])
-        match = re.compile('locale: "(.+?)"', re.DOTALL).findall(content)
+        match = re.compile('locale: "(.+?)"', re.DOTALL|re.UNICODE).findall(content)
         utility.set_setting('language', match[0])
         post_data = {'authURL': utility.get_setting('authorization_url'), 'email': utility.get_setting('username'),
                      'password': utility.get_setting('password'), 'RememberMe': 'on'}
@@ -31,7 +32,7 @@ def login():
         if 'id="page-LOGIN"' in content:
             utility.notification(utility.get_string(30303))
             return False
-        match = re.compile('"apiUrl":"(.+?)",').findall(content)
+        match = re.compile('"apiUrl":"(.+?)",', re.UNICODE).findall(content)
         utility.set_setting('api_url', match[0])
         connect.set_chrome_netflix_cookies()
         utility.progress_window(login_progress, 75, utility.get_string(30203))

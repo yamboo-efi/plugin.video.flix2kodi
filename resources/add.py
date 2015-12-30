@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
 import sys
@@ -36,21 +35,39 @@ def directory(name, url, mode, thumb, type='', context_enable=True):
     return directory_item
 
 
-def video(name, url, mode, thumb, video_type='', description='', duration='', year='', mpaa='', director='', genre='',
-          rating=0.0, playcount=0, remove=False):
+def video(video_metadata, removable = False, viewing_activity = False):
+#    utility.log(str(video_metadata))
+
+    title = video_metadata['title']
+    video_id = video_metadata['video_id']
+    thumb_url = video_metadata['thumb_url']
+    type = video_metadata['type']
+    description = video_metadata['description']
+    duration = video_metadata['duration']
+    year = video_metadata['year']
+    mpaa = video_metadata['mpaa']
+    director = video_metadata['director']
+    genre = video_metadata['genre']
+    rating = video_metadata['rating']
+    playcount = video_metadata['playcount']
+
+    next_mode = 'play_video_main'
+    if viewing_activity == False and utility.get_setting('browse_tv_shows') == 'true' and (type == 'tvshow' or type == 'episode'):
+        next_mode = 'list_seasons'
+
     entries = []
-    cover_file, fanart_file = utility.cover_fanart(url)
+    cover_file, fanart_file = utility.cover_fanart(video_id)
     if xbmcvfs.exists(cover_file):
-        thumb = cover_file
+        thumb_url = cover_file
     u = sys.argv[0]
-    u += '?url=' + urllib.quote_plus(url)
-    u += '&mode=' + mode
-    u += '&name=' + urllib.quote_plus(utility.encode(name))
-    u += '&thumb=' + urllib.quote_plus(thumb)
-    list_item = xbmcgui.ListItem(name)
-    list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb})
+    u += '?url=' + urllib.quote_plus(video_id)
+    u += '&mode=' + next_mode
+    u += '&name=' + urllib.quote_plus(utility.encode(title))
+    u += '&thumb=' + urllib.quote_plus(thumb_url)
+    list_item = xbmcgui.ListItem(title)
+    list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb_url})
     list_item.setInfo(type='video',
-                      infoLabels={'title': name, 'plot': description, 'duration': duration, 'year': int(year),
+                      infoLabels={'title': title, 'plot': description, 'duration': unicode(duration), 'year': int(year),
                                   'mpaa': mpaa, 'director': director, 'genre': genre, 'rating': rating,
                                   'playcount': playcount})
     list_item.setProperty('IsPlayable', 'true');
@@ -60,48 +77,48 @@ def video(name, url, mode, thumb, video_type='', description='', duration='', ye
         list_item.setProperty('fanart_image', cover_file)
     else:
         list_item.setProperty('fanart_image', utility.addon_fanart())
-    if video_type == 'tvshow':
+    if type == 'tvshow':
         if utility.get_setting('browse_tv_shows') == 'true':
             entries.append((utility.get_string(30151),
                             'Container.Update(plugin://%s/?mode=play_video_main&url=%s&thumb=%s)' % (
-                                utility.addon_id, urllib.quote_plus(url), urllib.quote_plus(thumb))))
+                                utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
         else:
             entries.append((utility.get_string(30152),
                             'Container.Update(plugin://%s/?mode=list_seasons&url=%s&thumb=%s)' % (
-                                utility.addon_id, urllib.quote_plus(url), urllib.quote_plus(thumb))))
-    if video_type != 'episode':
+                                utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
+    if type != 'episode':
         entries.append((utility.get_string(30153), 'RunPlugin(plugin://%s/?mode=play_trailer&url=%s&type=%s)' % (
-            utility.addon_id, urllib.quote_plus(utility.encode(name)), video_type)))
-        if remove:
+            utility.addon_id, urllib.quote_plus(utility.encode(title)), type)))
+        if removable:
             entries.append((utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
-                utility.addon_id, urllib.quote_plus(url))))
+                utility.addon_id, urllib.quote_plus(video_id))))
         else:
             entries.append((utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
-                utility.addon_id, urllib.quote_plus(url))))
+                utility.addon_id, urllib.quote_plus(video_id))))
         entries.append((utility.get_string(30156),
                         'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=movie)' % (
-                            utility.addon_id, urllib.quote_plus(utility.main_url + 'WiMovie/' + url))))
+                            utility.addon_id, urllib.quote_plus(utility.main_url + 'WiMovie/' + video_id))))
         entries.append((utility.get_string(30157), 'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=tv)' % (
-            utility.addon_id, urllib.quote_plus(utility.main_url + 'WiMovie/' + url))))
-    if video_type == 'tvshow':
+            utility.addon_id, urllib.quote_plus(utility.main_url + 'WiMovie/' + video_id))))
+    if type == 'tvshow':
         entries.append((utility.get_string(30150),
                         'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
-                            utility.addon_id, urllib.quote_plus(utility.encode(name.strip())), urllib.quote_plus(url))))
-    elif video_type == 'movie':
-        title_utf8 = name.strip()+' ('+str(year)+')'
+                            utility.addon_id, urllib.quote_plus(utility.encode(title.strip())), urllib.quote_plus(video_id))))
+    elif type == 'movie':
+        title_utf8 = title.strip() + ' (' + str(year) + ')'
         title = urllib.quote_plus(title_utf8.encode('utf-8'))
 #        utility.log(title)
 #        utility.log(urllib.unquote_plus(title).decode('utf-8'))
 #        utility.log(str(isinstance(title, unicode)))
         entries.append((utility.get_string(30150),
                         'RunPlugin(plugin://%s/?mode=add_movie_to_library&url=%s&name=%s)' % (
-                            utility.addon_id, urllib.quote_plus(url),
+                            utility.addon_id, urllib.quote_plus(video_id),
                             title)))
 #    utility.log(str(entries))
     list_item.addContextMenuItems(entries)
 
     folder = True
-    if mode == 'play_video_main':
+    if next_mode == 'play_video_main':
         folder = False
 #    utility.log(u)
     directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=folder)
