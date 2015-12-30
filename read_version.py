@@ -1,5 +1,5 @@
 import xmltodict
 
-with open('addon.xml') as fd:
+with open('plugin.video.flix2kodi/addon.xml') as fd:
     doc = xmltodict.parse(fd.read())
     print doc['addon']['@version']
