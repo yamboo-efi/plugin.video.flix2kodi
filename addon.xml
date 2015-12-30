@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.netflix"
-       name="Netflix"
+<addon id="plugin.video.flix2kodi"
+       name="Flix2Kodi"
        version="0.1"
-       provider-name="zero">
+       provider-name="logi85 and many others (especially z-e-r-o)">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.requests" version="2.8.1"/>
@@ -25,8 +25,8 @@
         <language>en de</language>
         <platform>all</platform>
         <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
-        <forum>http://forum.xbmc.org/showthread.php?tid=166099</forum>
-        <website/>
+        <forum>http://forum.kodi.tv/showthread.php?tid=254263</forum>
+        <website>https://github.com/logi85/plugin.video.flix2kodi</website>
         <email/>
         <source/>
     </extension>

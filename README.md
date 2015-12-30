@@ -1,4 +1,4 @@
-# plugin.video.netflix
+# plugin.video.flix2kodi
 kodi addon
 
 Python newer than 2.7.6 is necessary otherwise you get an EOF error during request of https urls.
@@ -13,3 +13,5 @@ Under Linux this will be something like:
 Under Windows like: C:\Users\myuser\AppData\Roaming\Kodi\...
 After adding the path, you have to set the scrapper to movies or series.
 Then you can add items to library in the plugin and they will appear in your library.
+
+Big thanks to z-e-r-o and many others making this addon possible.

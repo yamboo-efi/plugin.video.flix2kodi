@@ -1,4 +1,4 @@
-version 0.1
+version 0.1 (30.12.2015)
 
-  * start of coding
+  * first release, big thanks to z-e-r-o (this started as a fork of his great work)
  
