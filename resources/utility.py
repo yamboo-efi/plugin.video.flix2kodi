@@ -14,8 +14,8 @@ except Exception:
 
 
 
-addon_id = 'plugin.video.netflix'
-addon_name = 'Netflix'
+addon_id = 'plugin.video.flix2kodi'
+addon_name = 'Flix2Kodi'
 if test == False:
     addon_handle = xbmcaddon.Addon(addon_id)
 
