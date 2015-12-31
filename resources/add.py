@@ -100,7 +100,8 @@ def video(video_metadata, removable = False, viewing_activity = False):
                             utility.addon_id, urllib.quote_plus(utility.main_url + 'WiMovie/' + video_id))))
         entries.append((utility.get_string(30157), 'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=tv)' % (
             utility.addon_id, urllib.quote_plus(utility.main_url + 'WiMovie/' + video_id))))
-    if type == 'tvshow':
+    utility.log(type)
+    if type in ('tvshow', 'episode'):
         entries.append((utility.get_string(30150),
                         'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
                             utility.addon_id, urllib.quote_plus(utility.encode(title.strip())), urllib.quote_plus(video_id))))
