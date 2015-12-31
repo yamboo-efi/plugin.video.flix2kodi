@@ -177,6 +177,7 @@ class LogiPlayer(xbmcgui.Window):
         launchScript = 'launchBrowser'
         if(utility.get_setting('chromelauncher')== 'true'):
             launchScript = 'launchChromeLauncher'
+        utility.debug('launching: '+'sh '''+addon_path+'/resources/'+launchScript+'.sh'' ' + url)
         os.system('sh '''+addon_path+'/resources/'+launchScript+'.sh'' ' + url)
 
     def launch_browser_windows(self, url):
@@ -188,8 +189,10 @@ class LogiPlayer(xbmcgui.Window):
         if(utility.get_setting('chromelauncher')== 'true'):
             launchScript = 'launchChromeLauncher'
 
+        utility.debug('launching '+'"'+addon_path+'\\resources\\'+launchScript+'.cmd" ' + url, startupinfo=info)
         process = subprocess.Popen('"'+addon_path+'\\resources\\'+launchScript+'.cmd" ' + url, startupinfo=info)
         process.wait()
+        utility.debug('browser terminated')
 
     def __init__(self):
         global addon_path, launch_browser, control

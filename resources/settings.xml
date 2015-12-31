@@ -10,7 +10,7 @@
     </category>
     <category label="30010">
         <setting label="30000" type="lsep"/>
-        <setting id="debug" type="bool" label="30011" default="true"/>
+        <setting id="debug" type="bool" label="30011" default="false"/>
         <setting id="library_path" type="folder" label="30012"
                  default="special://profile/addon_data/plugin.video.flix2kodi/library"/>
         <setting id="chromelauncher" type="bool" label="30016" default="false"/>

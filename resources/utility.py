@@ -112,6 +112,10 @@ def evaluator():
 def profile_switch():
     return profile_switch_url % get_setting('api_url')
 
+def debug(message):
+    if get_setting('debug') == 'true':
+        log(message, xbmc.LOGDEBUG)
+
 def log(message, loglevel = None):
     logmsg = ("[%s] %s" % (addon_id, message)).encode('utf-8')
     if test == False:
