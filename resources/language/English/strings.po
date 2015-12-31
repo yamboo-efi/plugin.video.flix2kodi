@@ -1,6 +1,6 @@
 ﻿# Kodi Media Center language file
-# Addon Name: Netflix
-# Addon id: plugin.video.netflix
+# Addon Name: Flix2Kodi
+# Addon id: plugin.video.flix2kodi
 # Addon Provider: zero
 msgid ""
 msgstr ""

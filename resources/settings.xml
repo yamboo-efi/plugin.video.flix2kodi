@@ -12,7 +12,7 @@
         <setting label="30000" type="lsep"/>
         <setting id="debug" type="bool" label="30011" default="true"/>
         <setting id="library_path" type="folder" label="30012"
-                 default="special://profile/addon_data/plugin.video.netflix/library"/>
+                 default="special://profile/addon_data/plugin.video.flix2kodi/library"/>
         <setting id="chromelauncher" type="bool" label="30016" default="false"/>
         <setting label="30013" type="lsep"/>
         <setting id="ssl_enabled" type="bool" label="30014" default="true"/>
@@ -32,8 +32,8 @@
     </category>
     <category label="30030">
         <setting label="30000" type="lsep"/>
-        <setting label="30031" type="action" action="RunPlugin(plugin://plugin.video.netflix/?mode=delete_cache)"/>
-        <setting label="30032" type="action" action="RunPlugin(plugin://plugin.video.netflix/?mode=delete_cookies)"/>
-        <setting label="30033" type="action" action="RunPlugin(plugin://plugin.video.netflix/?mode=reset_addon)"/>
+        <setting label="30031" type="action" action="RunPlugin(plugin://plugin.video.flix2kodi/?mode=delete_cache)"/>
+        <setting label="30032" type="action" action="RunPlugin(plugin://plugin.video.flix2kodi/?mode=delete_cookies)"/>
+        <setting label="30033" type="action" action="RunPlugin(plugin://plugin.video.flix2kodi/?mode=reset_addon)"/>
     </category>
 </settings>
