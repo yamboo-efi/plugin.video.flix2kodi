@@ -1,34 +1,35 @@
 from __future__ import unicode_literals
 
-import re
+import json
 import time
 import xbmc
 import xbmcvfs
-import json
 
 import login
 import search
-from resources import utility, connect
+from resources import connect
+from resources.utility import generic_utility
+
 
 def videos_matches(video_type, page, url):
     post_data = ''
     video_ids = []
-    if not xbmcvfs.exists(utility.cookies_file()):
+    if not xbmcvfs.exists(generic_utility.cookies_file()):
         login.login()
 
-    items_per_page = int(utility.get_setting('items_per_page'))
+    items_per_page = int(generic_utility.get_setting('items_per_page'))
     off_from = page * items_per_page
     off_to = off_from + items_per_page - 2
 
     if 'recently-added' in url:
-        post_data = utility.recently_added % (off_from, off_to, utility.get_setting('authorization_url'))
+        post_data = generic_utility.recently_added % (off_from, off_to, generic_utility.get_setting('authorization_url'))
     elif 'genre' in url:
-        post_data = utility.genre % (url.split('?')[1], off_from, off_to, utility.get_setting('authorization_url'))
+        post_data = generic_utility.genre % (url.split('?')[1], off_from, off_to, generic_utility.get_setting('authorization_url'))
     elif 'my-list' in url:
-        mylist_id = utility.get_setting('mylist_id')
-        post_data = utility.mylist % (mylist_id, off_from, off_to, utility.get_setting('authorization_url'))
+        mylist_id = generic_utility.get_setting('mylist_id')
+        post_data = generic_utility.mylist % (mylist_id, off_from, off_to, generic_utility.get_setting('authorization_url'))
 
-    target_url = utility.evaluator()
+    target_url = generic_utility.evaluator()
     response = connect.load_netflix_site(target_url, post=post_data)
 #    utility.log('response: '+response)
     video_ids = extract_other_video_ids(response, video_ids, video_type)
@@ -54,7 +55,7 @@ def filter_videos_by_type(videos, video_type):
 
 
 def viewing_activity_matches(video_type):
-    if not xbmcvfs.exists(utility.cookies_file()):
+    if not xbmcvfs.exists(generic_utility.cookies_file()):
         login.login()
     content = viewing_activity_info()
     matches = json.loads(content)['viewedItems']
@@ -136,7 +137,7 @@ def episodes_data(season, series_id):
                 try:
                     thumb = item['stills'][0]['url']
                 except:
-                    thumb = utility.addon_fanart()
+                    thumb = generic_utility.addon_fanart()
 
                 episode = series_id, episode_id, episode_title, description, episode_nr, season, duration, thumb, playcount
                 episodes.append(episode)
@@ -144,7 +145,7 @@ def episodes_data(season, series_id):
 
 
 def search_matches(search_string):
-    if not xbmcvfs.exists(utility.cookies_file()):
+    if not xbmcvfs.exists(generic_utility.cookies_file()):
         login.login()
     content = search_results(search_string)
     matches = json.loads(content)['value']['videos']
@@ -153,7 +154,7 @@ def search_matches(search_string):
 
 def genre_data(video_type):
     match = []
-    if not xbmcvfs.exists(utility.cookies_file()):
+    if not xbmcvfs.exists(generic_utility.cookies_file()):
         login.login()
 
     content = genre_info(video_type)
@@ -172,33 +173,33 @@ def genre_data(video_type):
 
 def video_info(video_id, lock = None):
     content = ''
-    cache_file = xbmc.translatePath(utility.cache_dir() + video_id + '.cache')
+    cache_file = xbmc.translatePath(generic_utility.cache_dir() + video_id + '.cache')
     if xbmcvfs.exists(cache_file):
         file_handler = xbmcvfs.File(cache_file, 'rb')
-        content = utility.decode(file_handler.read())
+        content = generic_utility.decode(file_handler.read())
         file_handler.close()
     if not content:
-        post_data = utility.video_info % (video_id, video_id, video_id, video_id,
-                                         utility.get_setting('authorization_url'))
-        content = connect.load_netflix_site(utility.evaluator(), post=post_data, lock = lock)
+        post_data = generic_utility.video_info % (video_id, video_id, video_id, video_id,
+                                                  generic_utility.get_setting('authorization_url'))
+        content = connect.load_netflix_site(generic_utility.evaluator(), post=post_data, lock = lock)
         file_handler = xbmcvfs.File(cache_file, 'wb')
-        file_handler.write(utility.encode(content))
+        file_handler.write(generic_utility.encode(content))
         file_handler.close()
     return content
 
 
 def series_info(series_id):
     content = ''
-    cache_file = xbmc.translatePath(utility.cache_dir() + series_id + '_episodes.cache')
+    cache_file = xbmc.translatePath(generic_utility.cache_dir() + series_id + '_episodes.cache')
     if xbmcvfs.exists(cache_file) and (time.time() - xbmcvfs.Stat(cache_file).st_mtime() < 60 * 5):
         file_handler = xbmcvfs.File(cache_file, 'rb')
-        content = utility.decode(file_handler.read())
+        content = generic_utility.decode(file_handler.read())
         file_handler.close()
     if not content:
-        url = utility.series_url % (utility.get_setting('api_url'), series_id)
+        url = generic_utility.series_url % (generic_utility.get_setting('api_url'), series_id)
         content = connect.load_netflix_site(url)
         file_handler = xbmcvfs.File(cache_file, 'wb')
-        file_handler.write(utility.encode(content))
+        file_handler.write(generic_utility.encode(content))
         file_handler.close()
     return content
 
@@ -210,18 +211,18 @@ def cover_and_fanart(video_type, video_id, title, year):
 
         poster_path = content['poster_path']
         if poster_path:
-            cover_url = utility.picture_url + poster_path
+            cover_url = generic_utility.picture_url + poster_path
             cover(video_id, cover_url)
 
         backdrop_path = content['backdrop_path']
         if backdrop_path:
-            fanart_url = utility.picture_url + backdrop_path
+            fanart_url = generic_utility.picture_url + backdrop_path
             fanart(video_id, fanart_url)
 
 
 def fanart(video_id, fanart_url):
     filename = video_id + '.jpg'
-    fanart_file = xbmc.translatePath(utility.fanart_cache_dir() + filename)
+    fanart_file = xbmc.translatePath(generic_utility.fanart_cache_dir() + filename)
     try:
         content_jpg = connect.load_other_site(fanart_url)
         file_handler = open(fanart_file, 'wb')
@@ -235,8 +236,8 @@ def cover(video_id, cover_url):
     filename = video_id + '.jpg'
     filename_none = video_id + '.none'
 
-    cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
-    cover_file_none = xbmc.translatePath(utility.cover_cache_dir() + filename_none)
+    cover_file = xbmc.translatePath(generic_utility.cover_cache_dir() + filename)
+    cover_file_none = xbmc.translatePath(generic_utility.cover_cache_dir() + filename_none)
 
     try:
         content_jpg = connect.load_other_site(cover_url)
@@ -257,7 +258,7 @@ def trailer(video_type, title):
         tmdb_id = content['id']
         content = search.trailer(video_type, tmdb_id)
     else:
-        utility.notification(utility.get_string(30305))
+        generic_utility.notification(generic_utility.get_string(30305))
         content = None
     return content
 
@@ -265,25 +266,25 @@ def trailer(video_type, title):
 def genre_info(video_type):
     post_data = ''
     if video_type == 'tv':
-        post_data = utility.series_genre % utility.get_setting('authorization_url')
+        post_data = generic_utility.series_genre % generic_utility.get_setting('authorization_url')
     elif video_type == 'movie':
-        post_data = utility.movie_genre % utility.get_setting('authorization_url')
+        post_data = generic_utility.movie_genre % generic_utility.get_setting('authorization_url')
     else:
         pass
-    content = connect.load_netflix_site(utility.evaluator(), post=post_data)
+    content = connect.load_netflix_site(generic_utility.evaluator(), post=post_data)
     return content
 
 
 def search_results(search_string):
     post_data = '{"paths":[["search","%s",{"from":0,"to":48},["summary","title"]],["search","%s",["id","length",' \
                 '"name","trackIds","requestId"]]],"authURL":"%s"}' % (search_string, search_string,
-                                                                      utility.get_setting('authorization_url'))
-    content = connect.load_netflix_site(utility.evaluator(), post=post_data)
+                                                                      generic_utility.get_setting('authorization_url'))
+    content = connect.load_netflix_site(generic_utility.evaluator(), post=post_data)
     return content
 
 
 def viewing_activity_info():
-    content = connect.load_netflix_site(utility.activity_url % (utility.get_setting('api_url'),
-                                                                               utility.get_setting(
+    content = connect.load_netflix_site(generic_utility.activity_url % (generic_utility.get_setting('api_url'),
+                                                                        generic_utility.get_setting(
                                                                                    'authorization_url')))
     return content

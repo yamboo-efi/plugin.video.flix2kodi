@@ -16,111 +16,135 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-msgctxt "#30000"
+msgctxt "#11000"
 msgid "General"
 msgstr ""
 
-msgctxt "#30001"
+msgctxt "#11001"
 msgid "Username"
 msgstr ""
 
-msgctxt "#30002"
+msgctxt "#11002"
 msgid "Password"
 msgstr ""
 
-msgctxt "#30003"
+msgctxt "#11100"
+msgid "General"
+msgstr ""
+
+msgctxt "#11101"
+msgid "Browser"
+msgstr ""
+
+msgctxt "#111011"
+msgid "Chrome"
+msgstr ""
+
+msgctxt "#111012"
+msgid "Chromelauncher"
+msgstr ""
+
+msgctxt "#111013"
+msgid "Internet Explorer"
+msgstr ""
+
+msgctxt "#111014"
+msgid "Edge"
+msgstr ""
+
+msgctxt "#111015"
+msgid "Safari"
+msgstr ""
+
+msgctxt "#11102"
 msgid "Update library after adding"
 msgstr ""
 
-msgctxt "#30004"
+msgctxt "#11200"
 msgid "Profil settings"
 msgstr ""
 
-msgctxt "#30005"
+msgctxt "#11201"
 msgid "Single-user account"
 msgstr ""
 
-msgctxt "#30006"
+msgctxt "#11202"
 msgid "Show profile selection on each start"
 msgstr ""
 
-msgctxt "#30010"
+msgctxt "#12000"
 msgid "Advanced"
 msgstr ""
 
-msgctxt "#30011"
+msgctxt "#12001"
 msgid "Debug logging"
 msgstr ""
 
-msgctxt "#30012"
+msgctxt "#12002"
 msgid "Library path"
 msgstr ""
 
-msgctxt "#30016"
-msgid "Use Chrome Launcher"
-msgstr ""
-
-msgctxt "#30013"
+msgctxt "#12100"
 msgid "SSL settings"
 msgstr ""
 
-msgctxt "#30014"
+msgctxt "#12101"
 msgid "Use advanced SSL"
 msgstr ""
 
-msgctxt "#30015"
+msgctxt "#12102"
 msgid "SSL version"
 msgstr ""
 
-msgctxt "#30020"
+msgctxt "#13000"
 msgid "Views"
 msgstr ""
 
-msgctxt "#30021"
+msgctxt "#13001"
 msgid "Get covers & fanart images from TMDb"
 msgstr ""
 
-msgctxt "#30022"
+msgctxt "#13002"
 msgid "Browse TV-Shows instead of autoplaying"
 msgstr ""
 
-msgctxt "#30028"
+msgctxt "#13003"
 msgid "Items per page"
 msgstr ""
 
-msgctxt "#30023"
+msgctxt "#13100"
 msgid "Appearance"
 msgstr ""
 
-msgctxt "#30024"
+msgctxt "#13101"
 msgid "Force view"
 msgstr ""
 
-msgctxt "#30025"
+msgctxt "#13102"
 msgid "View ID - videos"
 msgstr ""
 
-msgctxt "#30026"
+msgctxt "#13103"
 msgid "View ID - episodes"
 msgstr ""
 
-msgctxt "#30027"
+msgctxt "#13104"
 msgid "View ID - viewing activity"
 msgstr ""
 
-msgctxt "#30030"
+msgctxt "#14000"
 msgid "User data"
 msgstr ""
 
-msgctxt "#30031"
+msgctxt "#14001"
 msgid "Delete cache"
 msgstr ""
 
-msgctxt "#30032"
+msgctxt "#14002"
 msgid "Delete cookies / session"
 msgstr ""
 
-msgctxt "#30033"
+msgctxt "#14003"
 msgid "Reset Addon"
 msgstr ""
 
@@ -266,4 +290,12 @@ msgstr ""
 
 msgctxt "#30309"
 msgid "Cache has been deleted!"
+msgstr ""
+
+msgctxt "#50001"
+msgid "No browser selected in settings!"
+msgstr ""
+
+msgctxt "#99999"
+msgid ""
 msgstr ""

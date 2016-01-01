@@ -1,11 +1,12 @@
 from __future__ import unicode_literals
-import json
 
+import json
 import xbmc
 import xbmcvfs
 
 import get
-import utility
+from resources.utility import generic_utility
+
 
 def video(video_id, is_episode, lock = None, custom_title = None, series_title = None):
 
@@ -34,7 +35,7 @@ def video(video_id, is_episode, lock = None, custom_title = None, series_title =
     if type == 'tvshow':
         duration = ''
 
-    if utility.get_setting('use_tmdb') == 'true':
+    if generic_utility.get_setting('use_tmdb') == 'true':
         type_tmdb = 'movie' if type =='movie' else 'tv'
         title_tmdb = series_title if series_title != None else title
         load_tmdb_cover_fanart(title_tmdb, video_id, type_tmdb, year)
@@ -131,7 +132,7 @@ def extract_thumb_url(match):
         try:
             thumb_url = match['boxarts']['_342x192']['jpg']['url']
         except Exception:
-            thumb_url = utility.addon_fanart()
+            thumb_url = generic_utility.addon_fanart()
     return thumb_url
 
 
@@ -142,11 +143,11 @@ def load_tmdb_cover_fanart(title, video_id, video_type_temp, year):
         title_temp = title_temp[title_temp.index(' - '):]
     filename = video_id + '.jpg'
     filename_none = video_id + '.none'
-    cover_file = xbmc.translatePath(utility.cover_cache_dir() + filename)
-    cover_file_none = xbmc.translatePath(utility.cover_cache_dir() + filename_none)
+    cover_file = xbmc.translatePath(generic_utility.cover_cache_dir() + filename)
+    cover_file_none = xbmc.translatePath(generic_utility.cover_cache_dir() + filename_none)
     if not (xbmcvfs.exists(cover_file) or xbmcvfs.exists(cover_file_none)):
-        utility.log('Downloading cover art. type: %s, video_id: %s, title: %s, year: %s' % (video_type_temp,
-                                                                                            video_id, title_temp,
-                                                                                            year_temp), xbmc.LOGDEBUG)
+        generic_utility.log('Downloading cover art. type: %s, video_id: %s, title: %s, year: %s' % (video_type_temp,
+                                                                                                    video_id, title_temp,
+                                                                                                    year_temp), xbmc.LOGDEBUG)
         get.cover_and_fanart(video_type_temp, video_id, title_temp, year_temp)
 

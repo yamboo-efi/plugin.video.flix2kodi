@@ -1,15 +1,13 @@
 from __future__ import unicode_literals
+
 import sqlite3
-import os
-import sys
 import xbmc
 
-windows = os.name == 'nt'
-darwin = sys.platform == 'darwin'
+from resources.utility import generic_utility
 
-if windows:
+if generic_utility.windows():
     import win32crypt
-elif darwin:
+elif generic_utility.darwin():
     import keyring
 else:
     from Crypto.Cipher import AES
@@ -18,8 +16,7 @@ else:
 from os.path import expanduser
 
 import datetime
-
-from resources import utility
+from resources.utility import generic_utility
 
 
 def to_chrome_date_str(actual):
@@ -31,7 +28,7 @@ def get_cipher():
     iv = b' ' * 16
     length = 16
 
-    if darwin:
+    if generic_utility.darwin():
         my_pass = keyring.get_password('Chrome Safe Storage', 'Chrome')
         iterations = 1003
     else:
@@ -44,7 +41,7 @@ def get_cipher():
 
 def encrypt(str):
     encrypted = None
-    if windows:
+    if generic_utility.windows():
         encrypted = win32crypt.CryptProtectData(str, None, None, None, None, 0)
     else:
         length = 16 - (len(str) % 16)
@@ -89,9 +86,9 @@ def set_cookie(conn, name, value, expires, only_secure = False):
 
 def connect():
     db_path = expanduser("~")
-    if windows:
-        db_path += '\AppData\Local\Google\Chrome\User Data\Default\Cookies'
-    elif darwin:
+    if generic_utility.windows():
+        db_path += '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cookies'
+    elif generic_utility.darwin():
         db_path += "/Library/Application Support/Google/Chrome/Default/Cookies"
     else:
         db_path += '/.config/google-chrome/Default/Cookies'
@@ -114,4 +111,4 @@ def set_netflix_cookies(cookies):
         conn.commit()
         conn.close()
     except Exception as e:
-        utility.log('Error setting Chrome-Cookie: '+str(e), xbmc.LOGERROR)
+        generic_utility.log('Error setting Chrome-Cookie: ' + str(e), xbmc.LOGERROR)

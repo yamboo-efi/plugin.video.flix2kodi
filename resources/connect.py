@@ -6,7 +6,6 @@ import ssl
 
 test = False
 try:
-    import xbmcvfs
     from resources import chrome_cookie
 except Exception:
     test = True
@@ -16,7 +15,8 @@ from requests.packages.urllib3.exceptions import InsecurePlatformWarning
 from requests.packages.urllib3.poolmanager import PoolManager
 
 import resources.lib.certifi as certifi
-import utility
+from resources.utility import generic_utility
+from resources.utility import file_utility
 
 requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 
@@ -47,48 +47,40 @@ def save_cookies(session):
     cookies =  pickle.dumps(requests.utils.dict_from_cookiejar(session.cookies))
 
     if test == False:
-        cookies_file = utility.cookies_file()
-        file_handler = xbmcvfs.File(cookies_file, 'wb')
+        file_name = generic_utility.cookies_file()
     else:
-        file_handler = open('cookies', 'wb')
+        file_name = 'cookies'
 
-    file_handler.write(cookies)
-    file_handler.close()
+    file_utility.write(file_name, cookies)
 
 def read_cookies():
     if test == False:
-        file_handler = xbmcvfs.File(utility.cookies_file(), 'rb')
+        file_name = generic_utility.cookies_file()
     else:
-        file_handler = open('cookies', 'rb')
-
-    content = file_handler.read()
-    file_handler.close()
+        file_name = 'cookies'
+    content = file_utility.read(file_name)
     return requests.utils.cookiejar_from_dict(pickle.loads(content))
 
 def save_headers(session):
     headers =  pickle.dumps(session.headers)
 
     if test == False:
-        headers_file = utility.headers_file()
-        file_handler = xbmcvfs.File(headers_file, 'wb')
+        headers_file = generic_utility.headers_file()
     else:
-        file_handler = open('headers', 'wb')
+        headers_file = 'headers'
 
-    file_handler.write(headers)
-    file_handler.close()
+    file_utility.write(headers_file, headers)
 
 def read_headers():
     if test == False:
-        file_handler = xbmcvfs.File(utility.headers_file(), 'rb')
+        headers_file = generic_utility.headers_file()
     else:
-        file_handler = open('headers', 'rb')
-
-    content = file_handler.read()
-    file_handler.close()
+        headers_file = 'headers'
+    content = file_utility.read(headers_file)
     return pickle.loads(content)
 
 def load_netflix_site(url, post=None, new_session=False, lock = None):
-    utility.debug('Loading netflix: '+url+' Post: '+ str(post))
+    generic_utility.debug('Loading netflix: ' + url + ' Post: ' + str(post))
     if lock != None:
         lock.acquire()
 
@@ -111,7 +103,7 @@ def load_netflix_site(url, post=None, new_session=False, lock = None):
 
 
 def load_other_site(url):
-    utility.log('loading-other: '+url)
+    generic_utility.log('loading-other: ' + url)
     session = create_session()
     content = load_site_internal(url, session)
     return content

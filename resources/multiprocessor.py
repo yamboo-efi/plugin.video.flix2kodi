@@ -1,14 +1,15 @@
 from __future__ import unicode_literals
+
+import requests
 import thread
 import threading
 import time
 import traceback
-
-import requests
 import xbmc
 
-from resources import utility
+from resources.utility import generic_utility
 from resources.video_parser import video
+
 
 def load_data(metadatas, video_type, run_as_widget, loading_progress, is_episode=False, viewing_activity = False):
     video_add_args = []
@@ -38,7 +39,7 @@ def load_data(metadatas, video_type, run_as_widget, loading_progress, is_episode
         #        utility.log('thread '+str(i)+' started')
         size += 1
         if not run_as_widget:
-            utility.progress_window(loading_progress, size * 100 / len(metadata), 'processing...')
+            generic_utility.progress_window(loading_progress, size * 100 / len(metadata), 'processing...')
 
         thread_id += 1
 
@@ -73,10 +74,10 @@ def load_match(thread_id, lock, rets, metadata, is_episode = False, viewing_acti
             if e.response.status_code == 429:
                 time.sleep(2)
             else:
-                utility.log('error loading video ' + unicode(video_id) + '\n' + traceback.format_exc(), xbmc.LOGERROR)
+                generic_utility.log('error loading video ' + unicode(video_id) + '\n' + traceback.format_exc(), xbmc.LOGERROR)
                 break
         except Exception as e:
-            utility.log('error loading video ' + unicode(video_id) + '\n' + traceback.format_exc(), xbmc.LOGERROR)
+            generic_utility.log('error loading video ' + unicode(video_id) + '\n' + traceback.format_exc(), xbmc.LOGERROR)
             break
         #    utility.log('finished '+video_id)
     rets[thread_id] = ret

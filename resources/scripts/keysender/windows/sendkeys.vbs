@@ -1,5 +1,6 @@
 Dim action
-key = WScript.Arguments.Item(0)
+windowName = WScript.Arguments.Item(0)
+key = WScript.Arguments.Item(1)
 
 set shell = CreateObject("WScript.Shell")
 
@@ -18,7 +19,6 @@ elseif key="up" then
 	cmd = "{RIGHT}{RIGHT} "
 end if
 
-Wscript.Echo cmd
-if shell.AppActivate("Google Chrome") = true then
+if shell.AppActivate(windowName) = true then
 	shell.SendKeys cmd
 end if

@@ -5,6 +5,7 @@ import os
 import urllib
 import json
 import re
+import sys
 
 test = False
 try:
@@ -221,6 +222,10 @@ def keyboard():
 
 def windows():
     return os.name == 'nt'
+
+def darwin():
+    return  sys.platform == 'darwin'
+
 
 def parse_falkorcache(response):
     match = re.compile('netflix.falkorCache = ({.*});</script><script>window.netflix', re.DOTALL | re.UNICODE).findall(

@@ -1,36 +1,37 @@
 ﻿from __future__ import unicode_literals
 
+import traceback
+import xbmc
+import xbmcgui
+
 from resources import delete
 from resources import general
 from resources import library
 from resources import list
+from resources import login
 from resources import play
 from resources import profiles
 from resources import queue
 from resources import search
-from resources import utility
-from resources import login
-
-import traceback
-import xbmcgui, xbmc
+from resources.utility import generic_utility
 
 # utility.log('\n\nStart of plugin')
 
-while (utility.get_setting('username') or utility.get_setting('password')) == '':
-    utility.open_setting()
+while (generic_utility.get_setting('username') or generic_utility.get_setting('password')) == '':
+    generic_utility.open_setting()
 
-utility.prepare_folders()
+generic_utility.prepare_folders()
 
-parameters = utility.parameters_to_dictionary(sys.argv[2])
-name = utility.get_parameter(parameters, 'name')
-url = utility.get_parameter(parameters, 'url')
-mode = utility.get_parameter(parameters, 'mode')
-thumb = utility.get_parameter(parameters, 'thumb')
-video_type = utility.get_parameter(parameters, 'type')
-season = utility.get_parameter(parameters, 'season')
-series_id = utility.get_parameter(parameters, 'series_id')
-page = utility.get_parameter(parameters, 'page')
-run_as_widget = utility.get_parameter(parameters, 'widget') == 'true'
+parameters = generic_utility.parameters_to_dictionary(sys.argv[2])
+name = generic_utility.get_parameter(parameters, 'name')
+url = generic_utility.get_parameter(parameters, 'url')
+mode = generic_utility.get_parameter(parameters, 'mode')
+thumb = generic_utility.get_parameter(parameters, 'thumb')
+video_type = generic_utility.get_parameter(parameters, 'type')
+season = generic_utility.get_parameter(parameters, 'season')
+series_id = generic_utility.get_parameter(parameters, 'series_id')
+page = generic_utility.get_parameter(parameters, 'page')
+run_as_widget = generic_utility.get_parameter(parameters, 'widget') == 'true'
 
 def handle_request():
     if mode == 'main':
@@ -80,10 +81,10 @@ def handle_request():
 try:
     handle_request()
 except:
-    utility.log('parameters: '+sys.argv[2])
-    utility.log(traceback.format_exc(), xbmc.LOGERROR)
+    generic_utility.log('parameters: ' + sys.argv[2])
+    generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
     dialog = xbmcgui.Dialog()
     do_fresh_login = dialog.yesno('Sorry', 'Flix2Kodi crashed.', 'Try to refresh your login?')
     if do_fresh_login:
         if login.login()==True:
-            utility.notification('Login refreshed. please try again.')
+            generic_utility.notification('Login refreshed. please try again.')

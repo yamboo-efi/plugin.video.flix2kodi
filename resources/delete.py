@@ -3,37 +3,36 @@ from __future__ import unicode_literals
 import xbmcgui
 import xbmcvfs
 
-import utility
-from resources import connect
+from resources.utility import generic_utility
 
 
 def addon():
     dialog = xbmcgui.Dialog()
-    if dialog.yesno(utility.addon_name + ':', utility.get_string(30307)):
+    if dialog.yesno(generic_utility.addon_name + ':', generic_utility.get_string(30307)):
         try:
-            xbmcvfs.rmdir(utility.data_dir(), force=True)
-            utility.log('Addon userdata folder deleted.')
-            utility.notification(utility.get_string(30308))
+            xbmcvfs.rmdir(generic_utility.data_dir(), force=True)
+            generic_utility.log('Addon userdata folder deleted.')
+            generic_utility.notification(generic_utility.get_string(30308))
         except Exception:
             pass
 
 
 def cache():
     try:
-        xbmcvfs.rmdir(utility.cache_dir(), force=True)
-        utility.log('Cache folder deleted.')
-        utility.notification(utility.get_string(30309))
+        xbmcvfs.rmdir(generic_utility.cache_dir(), force=True)
+        generic_utility.log('Cache folder deleted.')
+        generic_utility.notification(generic_utility.get_string(30309))
     except Exception:
         pass
 
 
 def cookies():
-    if xbmcvfs.exists(utility.cookie_file()):
-        xbmcvfs.delete(utility.cookie_file())
-        utility.log('Cookie file deleted.')
-        utility.notification(30301)
+    if xbmcvfs.exists(generic_utility.cookie_file()):
+        xbmcvfs.delete(generic_utility.cookie_file())
+        generic_utility.log('Cookie file deleted.')
+        generic_utility.notification(30301)
 
-    if xbmcvfs.exists(utility.headers_file()):
-        xbmcvfs.delete(utility.headers_file())
-        utility.log('Header file deleted.')
-        utility.notification(30302)
+    if xbmcvfs.exists(generic_utility.headers_file()):
+        xbmcvfs.delete(generic_utility.headers_file())
+        generic_utility.log('Header file deleted.')
+        generic_utility.notification(30302)

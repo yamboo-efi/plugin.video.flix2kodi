@@ -1,13 +1,15 @@
 # from __future__ import unicode_literals
 
-import re
 import json
+import pickle
 import pprint
-
+import re
 import sys
 from requests.packages import urllib3
 
-from resources import connect, utility
+from resources import connect
+from resources.utility import generic_utility
+from resources.utility import file_utility
 
 urllib3.disable_warnings()
 
@@ -116,9 +118,14 @@ if do_login:
 ############################################################################
 ############################################################################
 
+browsers = {'chrome' : 'Google Chrome', 'firefox' : 'Firefox', 'iexplore': 'Internet Explorer', 'edge' : 'Edge', 'safari' : 'Safari'}
+file_utility.write('browser_window_names', pickle.dumps(browsers))
+exit()
+
+
 content = connect.load_netflix_site("https://www.netflix.com/", new_session=False)
 #pprint.pprint(content)
-falkor_cache = utility.parse_falkorcache(content)
+falkor_cache = generic_utility.parse_falkorcache(content)
 pprint.pprint(falkor_cache)
 
 pprint.pprint(extract_mylist_id(falkor_cache))

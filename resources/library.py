@@ -2,44 +2,44 @@ from __future__ import unicode_literals
 
 import json
 import re
-
 import xbmc
 import xbmcvfs
 
 import get
-import utility
+from resources.utility import generic_utility
 
 
 def movie(movie_id, title, single_update=True):
-    utility.log(title)
+    generic_utility.log(title)
     pattern = re.compile('^\d\d.\d\d.\d\d \- .*')
     if pattern.match(title) != None:
         title = title[11:]
-    filename = utility.clean_filename(title, ' .')
-    movie_dir = xbmc.translatePath(utility.movie_dir() + filename)
+    filename = generic_utility.clean_filename(title, ' .')
+    movie_dir = xbmc.translatePath(generic_utility.movie_dir() + filename)
     if not xbmcvfs.exists(movie_dir):
         xbmcvfs.mkdir(movie_dir)
 
-    movie_file = utility.clean_filename(title + '.strm', ' .').strip(' .')
-    file_handler = xbmcvfs.File(utility.create_pathname(movie_dir.decode('utf-8'), movie_file), 'w')
-    file_handler.write(utility.encode('plugin://%s/?mode=play_video&url=%s' % (utility.addon_id, movie_id)))
+    movie_file = generic_utility.clean_filename(title + '.strm', ' .').strip(' .')
+    file_handler = xbmcvfs.File(generic_utility.create_pathname(movie_dir.decode('utf-8'), movie_file), 'w')
+    file_handler.write(
+        generic_utility.encode('plugin://%s/?mode=play_video&url=%s' % (generic_utility.addon_id, movie_id)))
     file_handler.close()
-    if utility.get_setting('update_db') and single_update:
+    if generic_utility.get_setting('update_db') and single_update:
         xbmc.executebuiltin('UpdateLibrary(video)')
 
 
 def series(series_id, series_title, season, single_update=True):
-    filename = utility.clean_filename(series_title, ' .')
-    series_file = xbmc.translatePath(utility.tv_dir() + filename)
+    filename = generic_utility.clean_filename(series_title, ' .')
+    series_file = xbmc.translatePath(generic_utility.tv_dir() + filename)
     if not xbmcvfs.exists(series_file):
         xbmcvfs.mkdir(series_file)
     content = get.series_info(series_id)
-    utility.log(str(content))
+    generic_utility.log(str(content))
     content = json.loads(content)['video']['seasons']
     for test in content:
         episode_season = unicode(test['seq'])
         if episode_season == season or season == '':
-            season_dir = utility.create_pathname(series_file.decode('utf-8'), test['title'])
+            season_dir = generic_utility.create_pathname(series_file.decode('utf-8'), test['title'])
             if not xbmcvfs.exists(season_dir):
                 xbmcvfs.mkdir(season_dir)
             for item in test['episodes']:
@@ -52,10 +52,11 @@ def series(series_id, series_title, season, single_update=True):
                 if len(season_nr) == 1:
                     season_nr = '0' + season_nr
                 filename = 'S' + season_nr + 'E' + episode_nr + ' - ' + episode_title + '.strm'
-                filename = utility.clean_filename(filename, ' .')
-                file_handler = xbmcvfs.File(utility.create_pathname(season_dir, filename), 'w')
+                filename = generic_utility.clean_filename(filename, ' .')
+                file_handler = xbmcvfs.File(generic_utility.create_pathname(season_dir, filename), 'w')
                 file_handler.write(
-                    utility.encode('plugin://%s/?mode=play_video&url=%s' % (utility.addon_id, episode_id)))
+                    generic_utility.encode('plugin://%s/?mode=play_video&url=%s' % (
+                    generic_utility.addon_id, episode_id)))
                 file_handler.close()
-    if utility.get_setting('update_db') and single_update:
+    if generic_utility.get_setting('update_db') and single_update:
         xbmc.executebuiltin('UpdateLibrary(video)')
