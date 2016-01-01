@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 import HTMLParser
 import os
 import urllib
+import json
+import re
 
 test = False
 try:
@@ -34,6 +36,8 @@ mylist_url = 'http://www.netflix.com/browse/my-list'
 # post data information
 recently_added = '{"paths":[["recentlyadded","su",{"from":%s,"to":%s},"title"]],"authURL":"%s"}'
 genre = '{"paths":[["genres",%s,"su",{"from":%s,"to":%s},["summary","title"]]],"authURL":"%s"}'
+mylist = '{"paths":[["lists","%s",{"from":%s,"to":%s},["summary", "title"]]],"authURL":"%s"}'
+
 movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]]],"authURL":"%s"}'
 series_genre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"]],"authURL":"%s"}'
 video_info = '{"paths":[["videos",%s,["availability","bookmarkPosition","details","episodeCount","maturity",' \
@@ -113,9 +117,11 @@ def profile_switch():
     return profile_switch_url % get_setting('api_url')
 
 def debug(message):
-    if get_setting('debug') == 'true':
-        log(message, xbmc.LOGDEBUG)
-
+    if test == False:
+        if get_setting('debug') == 'true':
+            log(message)
+    else:
+        log(message)
 def log(message, loglevel = None):
     logmsg = ("[%s] %s" % (addon_id, message)).encode('utf-8')
     if test == False:
@@ -215,3 +221,10 @@ def keyboard():
 
 def windows():
     return os.name == 'nt'
+
+def parse_falkorcache(response):
+    match = re.compile('netflix.falkorCache = ({.*});</script><script>window.netflix', re.DOTALL | re.UNICODE).findall(
+        response)
+    content = match[0]
+    jsondata = json.loads(content)
+    return jsondata

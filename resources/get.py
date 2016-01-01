@@ -15,7 +15,6 @@ def videos_matches(video_type, page, url):
     video_ids = []
     if not xbmcvfs.exists(utility.cookies_file()):
         login.login()
-    target_url = utility.evaluator()
 
     items_per_page = int(utility.get_setting('items_per_page'))
     off_from = page * items_per_page
@@ -24,48 +23,60 @@ def videos_matches(video_type, page, url):
     if 'recently-added' in url:
         post_data = utility.recently_added % (off_from, off_to, utility.get_setting('authorization_url'))
     elif 'genre' in url:
-        #        utility.log('from:' + str(off_from)+' to: '+str(off_to))
         post_data = utility.genre % (url.split('?')[1], off_from, off_to, utility.get_setting('authorization_url'))
     elif 'my-list' in url:
-        post_data = None
-        target_url = utility.mylist_url
+        mylist_id = utility.get_setting('mylist_id')
+        post_data = utility.mylist % (mylist_id, off_from, off_to, utility.get_setting('authorization_url'))
+
+    target_url = utility.evaluator()
     response = connect.load_netflix_site(target_url, post=post_data)
 #    utility.log('response: '+response)
-    if 'my-list' in url:
-        extract_my_list_video_ids(response, video_ids, video_type)
-    else:
-        video_ids = extract_other_video_ids(response, video_ids)
+    video_ids = extract_other_video_ids(response, video_ids, video_type)
     return video_ids
 
 
-def extract_other_video_ids(response, video_ids):
+def extract_other_video_ids(response, video_ids, video_type):
     content = response
     jsondata = json.loads(content)
 #    utility.log('jsondata: ' + str(jsondata))
     if 'videos' in jsondata['value']:
-        video_ids = jsondata['value']['videos']
+        videos = jsondata['value']['videos']
+        video_ids = filter_videos_by_type(videos, video_type)
     return video_ids
 
 
-def extract_my_list_video_ids(response, video_ids, video_type):
-    match = re.compile('netflix.falkorCache = ({.*});</script><script>window.netflix', re.DOTALL | re.UNICODE).findall(
-        response)
-    content = match[0]
-    jsondata = json.loads(content)
-    if 'videos' in jsondata:
-        videos = jsondata['videos']
-        utility.log(unicode(videos))
-        for video in videos:
-            if not video in ('$size', 'size'):
-                video_id = video
-                metadata_type = get_metadata_type_my_list(video, videos)
-                utility.log('type: ' + metadata_type)
-
-                if video_type == metadata_type:
-                    video_ids.append(video_id)
+def filter_videos_by_type(videos, video_type):
+    for video in videos.keys():
+        metatdata_type = get_metadata_type_my_list(videos, video)
+        if video_type != metatdata_type:
+            del videos[video]
+    return videos
 
 
-def get_metadata_type_my_list(video, videos):
+def viewing_activity_matches(video_type):
+    if not xbmcvfs.exists(utility.cookies_file()):
+        login.login()
+    content = viewing_activity_info()
+    matches = json.loads(content)['viewedItems']
+
+    metadata = []
+#    utility.log('activity: '+unicode(matches))
+    for match in matches:
+#        utility.log(match)
+
+        if 'seriesTitle' in match:
+            metadata_type = 'tv'
+            series_title = match['seriesTitle']
+        else:
+            metadata_type = 'movie'
+            series_title = None
+
+        if video_type == metadata_type:
+            metadata.append({'id':unicode(match['movieID']), 'title':get_viewing_activity_title(match), 'series_title':series_title})
+
+    return metadata
+
+def get_metadata_type_my_list(videos, video):
     type = 'unknown'
     if 'summary' in videos[video]:
         summary = videos[video]['summary']
@@ -80,30 +91,6 @@ def get_metadata_type_my_list(video, videos):
         metadata_type = 'tv'
 
     return metadata_type
-
-
-def viewing_activity_matches(video_type):
-    if not xbmcvfs.exists(utility.cookies_file()):
-        login.login()
-    content = viewing_activity_info()
-    matches = json.loads(content)['viewedItems']
-
-    metadata = []
-    utility.log('activity: '+unicode(matches))
-    for match in matches:
-        utility.log(match)
-
-        if 'seriesTitle' in match:
-            metadata_type = 'tv'
-            series_title = match['seriesTitle']
-        else:
-            metadata_type = 'movie'
-            series_title = None
-
-        if video_type == metadata_type:
-            metadata.append({'id':unicode(match['movieID']), 'title':get_viewing_activity_title(match), 'series_title':series_title})
-
-    return metadata
 
 def get_viewing_activity_title(item):
     date = item['dateStr']
@@ -120,7 +107,7 @@ def get_viewing_activity_title(item):
 def seasons_data(series_id):
     seasons = []
     content = series_info(series_id)
-    utility.log(str(content))
+#    utility.log(str(content))
     content = json.loads(content)['video']['seasons']
     for item in content:
         season = item['title'], item['seq']

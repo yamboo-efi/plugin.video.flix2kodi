@@ -44,33 +44,51 @@ def create_session(netflix = False):
     return session
 
 def save_cookies(session):
-    cookies_file = utility.cookies_file()
     cookies =  pickle.dumps(requests.utils.dict_from_cookiejar(session.cookies))
-    file_handler = xbmcvfs.File(cookies_file, 'wb')
+
+    if test == False:
+        cookies_file = utility.cookies_file()
+        file_handler = xbmcvfs.File(cookies_file, 'wb')
+    else:
+        file_handler = open('cookies', 'wb')
+
     file_handler.write(cookies)
     file_handler.close()
 
 def read_cookies():
-    file_handler = xbmcvfs.File(utility.cookies_file(), 'rb')
+    if test == False:
+        file_handler = xbmcvfs.File(utility.cookies_file(), 'rb')
+    else:
+        file_handler = open('cookies', 'rb')
+
     content = file_handler.read()
     file_handler.close()
     return requests.utils.cookiejar_from_dict(pickle.loads(content))
 
 def save_headers(session):
-    headers_file = utility.headers_file()
     headers =  pickle.dumps(session.headers)
-    file_handler = xbmcvfs.File(headers_file, 'wb')
+
+    if test == False:
+        headers_file = utility.headers_file()
+        file_handler = xbmcvfs.File(headers_file, 'wb')
+    else:
+        file_handler = open('headers', 'wb')
+
     file_handler.write(headers)
     file_handler.close()
 
 def read_headers():
-    file_handler = xbmcvfs.File(utility.headers_file(), 'rb')
+    if test == False:
+        file_handler = xbmcvfs.File(utility.headers_file(), 'rb')
+    else:
+        file_handler = open('headers', 'rb')
+
     content = file_handler.read()
     file_handler.close()
     return pickle.loads(content)
 
 def load_netflix_site(url, post=None, new_session=False, lock = None):
-#    utility.log('Loading: '+url+' Post: '+ str(post))
+    utility.debug('Loading netflix: '+url+' Post: '+ str(post))
     if lock != None:
         lock.acquire()
 
@@ -81,15 +99,14 @@ def load_netflix_site(url, post=None, new_session=False, lock = None):
         session.headers = read_headers()
         session.cookies = read_cookies()
     ret = load_site_internal(url, session, post)
-
+    ret = ret.decode('utf-8')
     save_cookies(session)
     save_headers(session)
 
     if lock != None:
         lock.release()
-    ret = ret.decode('utf-8')
 
-#    utility.log('Returning : '+ret)
+#    utility.debug('Returning : '+ret)
     return ret
 
 
@@ -114,3 +131,6 @@ def load_site_internal(url, session, post=None, options=False, headers=None, coo
 def set_chrome_netflix_cookies():
     if test == False:
         chrome_cookie.set_netflix_cookies(read_cookies())
+
+def logged_in(content):
+    return 'netflix.falkorCache' in content

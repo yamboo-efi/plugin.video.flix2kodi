@@ -99,3 +99,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+test/cookies
+test/headers
+test/login_content
+test/test.html

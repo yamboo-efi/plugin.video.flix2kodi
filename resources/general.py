@@ -4,22 +4,20 @@ import sys
 import xbmcplugin
 
 import add
-import login
 import utility
 
 plugin_handle = int(sys.argv[1])
 
 
 def index():
-    if login.login():
-        add.directory(utility.get_string(30100), '', 'main', '', 'movie')
-        add.directory(utility.get_string(30101), '', 'main', '', 'tv')
-        add.directory(utility.get_string(30102), '', 'wi_home', '', 'both')
-        if not utility.get_setting('single_profile') == 'true':
-            add.directory(
-                utility.get_string(30103) + ' - [COLOR FF8E0000]' + utility.get_setting('profile_name') + '[/COLOR]',
-                '', 'update_displayed_profile', 'DefaultAddonService.png', '', context_enable=False)
-        xbmcplugin.endOfDirectory(plugin_handle)
+    add.directory(utility.get_string(30100), '', 'main', '', 'movie', login_context=True)
+    add.directory(utility.get_string(30101), '', 'main', '', 'tv', login_context=True)
+    add.directory(utility.get_string(30102), '', 'wi_home', '', 'both', login_context=True)
+    if not utility.get_setting('single_profile') == 'true':
+        add.directory(
+            utility.get_string(30103) + ' - [COLOR FF8E0000]' + utility.get_setting('profile_name') + '[/COLOR]',
+            '', 'update_displayed_profile', 'DefaultAddonService.png', '', context_enable=False)
+    xbmcplugin.endOfDirectory(plugin_handle)
 
 
 def main(video_type):

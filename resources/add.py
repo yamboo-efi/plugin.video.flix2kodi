@@ -12,7 +12,7 @@ import utility
 plugin_handle = int(sys.argv[1])
 
 
-def directory(name, url, mode, thumb, type='', context_enable=True):
+def directory(name, url, mode, thumb, type='', context_enable=True, login_context = False):
     entries = []
     name = utility.unescape(name)
     u = sys.argv[0]
@@ -28,6 +28,11 @@ def directory(name, url, mode, thumb, type='', context_enable=True):
             (utility.get_string(30150), 'RunPlugin(plugin://%s/?mode=add_my_list_to_library)' % utility.addon_id))
     list_item.setProperty('fanart_image', utility.addon_fanart())
     if context_enable:
+        if login_context == True:
+            entries.append(('Relogin',
+                            'RunPlugin(plugin://%s/?mode=relogin)' % (
+                                utility.addon_id)))
+
         list_item.addContextMenuItems(entries)
     else:
         list_item.addContextMenuItems([], replaceItems=True)
