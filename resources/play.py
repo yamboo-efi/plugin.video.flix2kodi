@@ -151,10 +151,10 @@ class LogiPlayer(xbmcgui.Window):
             info = subprocess.STARTUPINFO()
             info.dwFlags = subprocess.STARTF_USESTDHANDLES | subprocess.STARTF_USESHOWWINDOW
             info.wShowWindow = subprocess.SW_HIDE
-
         script = self.get_launch_script('keysender')
+#        generic_utility.log('launching keysender: '+script+' with key: '+key)
         if script:
-            process = subprocess.Popen([script + ' ' +key], startupinfo=info, shell=True)
+            process = subprocess.Popen(script + ' ' +key, startupinfo=info, shell=True)
             process.wait()
 
     def launch_browser(self, url):
@@ -169,7 +169,7 @@ class LogiPlayer(xbmcgui.Window):
         if script:
             generic_utility.debug('launching: '+script)
 
-            process = subprocess.Popen([script + ' ' +url], startupinfo=info, shell=True)
+            process = subprocess.Popen(script + ' ' +url, startupinfo=info, shell=True)
             process.wait()
             generic_utility.debug('browser terminated')
 
@@ -189,14 +189,19 @@ class LogiPlayer(xbmcgui.Window):
             ending = '.sh'
         browser_name = self.get_browser_scriptname(browser_name)
 
-        script = double_quotes+path+browser_name+ending+double_quotes
-        custom_script = double_quotes+path+browser_name+"_custom"+ending+double_quotes
+        script = path+browser_name+ending
+        custom_script = path+browser_name+"_custom"+ending
+		
+        if generic_utility.windows():
+            script = script.replace('/','\\')
+            custom_script = custom_script.replace('/','\\')
+        
         if os.path.isfile(custom_script):
             script = custom_script
         elif not os.path.isfile(script):
             generic_utility.log('Script: '+script+' not found!')
             script = ''
-        return script
+        return double_quotes+script+double_quotes
 
     def get_browser_scriptname(self, browser_name):
         if self.browser == BROWSER_CHROME:
