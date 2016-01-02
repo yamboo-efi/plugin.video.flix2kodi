@@ -26,6 +26,7 @@ def videos_matches(video_type, page, url):
     elif 'genre' in url:
         post_data = generic_utility.genre % (url.split('?')[1], off_from, off_to, generic_utility.get_setting('authorization_url'))
     elif 'my-list' in url:
+        read_mylists()
         mylist_id = generic_utility.get_setting('mylist_id')
         post_data = generic_utility.mylist % (mylist_id, off_from, off_to, generic_utility.get_setting('authorization_url'))
 
@@ -288,3 +289,38 @@ def viewing_activity_info():
                                                                         generic_utility.get_setting(
                                                                                    'authorization_url')))
     return content
+
+
+def read_mylists():
+    content = connect.load_netflix_site("https://www.netflix.com/")
+    falkor_cache = generic_utility.parse_falkorcache(content)
+    generic_utility.set_setting('mylist_id', extract_mylist_id(falkor_cache))
+
+
+def extract_mylist_id(jsondata):
+    mylist_id = None
+    try:
+        assert 'lolomos' in jsondata
+        lolomos = jsondata['lolomos']
+        filter_size(lolomos)
+        assert len(lolomos)==1
+        root_list_id = lolomos.keys()[0]
+        lists = filter_size(lolomos[root_list_id])
+        assert 'mylist' in lists
+        mylist_ref = lists['mylist']
+        assert len(mylist_ref) == 3
+        mylist_idx = mylist_ref[2]
+        assert mylist_idx in lists
+        mylist = lists[mylist_idx]
+        assert len(mylist) == 2
+        mylist_id = mylist[1]
+    except Exception as ex:
+        print('cannot find mylist_id')
+        print repr(ex)
+    return mylist_id
+
+def filter_size(lolomos):
+    for key in lolomos.keys():
+        if key in ('$size', 'size'):
+            del lolomos[key]
+    return lolomos

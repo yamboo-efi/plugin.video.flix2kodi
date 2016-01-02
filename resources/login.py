@@ -9,10 +9,6 @@ import profiles
 from resources.utility import generic_utility
 
 
-def read_mylists():
-    content = connect.load_netflix_site("https://www.netflix.com/")
-    falkor_cache = generic_utility.parse_falkorcache(content)
-    generic_utility.set_setting('mylist_id', extract_mylist_id(falkor_cache))
 
 
 
@@ -47,8 +43,6 @@ def login():
 
         profile_selection()
 
-        read_mylists()        
-
         if login_progress:
             if not generic_utility.progress_window(login_progress, 100, generic_utility.get_string(30204)):
                 return False
@@ -72,31 +66,3 @@ def profile_selection():
     elif not ((generic_utility.get_setting('single_profile') and generic_utility.get_setting('show_profiles')) == 'true'):
         profiles.load()
 
-
-def extract_mylist_id(jsondata):
-    mylist_id = None
-    try:
-        assert 'lolomos' in jsondata
-        lolomos = jsondata['lolomos']
-        filter_size(lolomos)
-        assert len(lolomos)==1
-        root_list_id = lolomos.keys()[0]
-        lists = filter_size(lolomos[root_list_id])
-        assert 'mylist' in lists
-        mylist_ref = lists['mylist']
-        assert len(mylist_ref) == 3
-        mylist_idx = mylist_ref[2]
-        assert mylist_idx in lists
-        mylist = lists[mylist_idx]
-        assert len(mylist) == 2
-        mylist_id = mylist[1]
-    except Exception as ex:
-        print('cannot find mylist_id')
-        print repr(ex)
-    return mylist_id
-
-def filter_size(lolomos):
-    for key in lolomos.keys():
-        if key in ('$size', 'size'):
-            del lolomos[key]
-    return lolomos
