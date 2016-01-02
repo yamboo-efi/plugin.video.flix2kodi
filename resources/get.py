@@ -13,7 +13,6 @@ from resources.utility import generic_utility
 
 def videos_matches(video_type, page, url):
     post_data = ''
-    video_ids = []
     if not xbmcvfs.exists(generic_utility.cookies_file()):
         login.login()
 
@@ -21,38 +20,37 @@ def videos_matches(video_type, page, url):
     off_from = page * items_per_page
     off_to = off_from + items_per_page - 2
 
-    if 'recently-added' in url:
-        post_data = generic_utility.recently_added % (off_from, off_to, generic_utility.get_setting('authorization_url'))
-    elif 'genre' in url:
+    if 'genre' in url:
         post_data = generic_utility.genre % (url.split('?')[1], off_from, off_to, generic_utility.get_setting('authorization_url'))
-    elif 'my-list' in url:
-        read_mylists()
-        mylist_id = generic_utility.get_setting('mylist_id')
-        post_data = generic_utility.mylist % (mylist_id, off_from, off_to, generic_utility.get_setting('authorization_url'))
+    elif 'list?' in url:
+        data = url.split('?')[1]
+        if('mylist' in data):
+            list_id = data.split('&')[0]
+        else:
+            list_id = data
+        post_data = generic_utility.list_paths % (list_id, off_from, off_to, generic_utility.get_setting('authorization_url'))
 
     target_url = generic_utility.evaluator()
     response = connect.load_netflix_site(target_url, post=post_data)
 #    utility.log('response: '+response)
-    video_ids = extract_other_video_ids(response, video_ids, video_type)
+    video_ids = extract_other_video_ids(response, video_type)
     return video_ids
 
 
-def extract_other_video_ids(response, video_ids, video_type):
-    content = response
+def search_matches(search_string, video_type):
+    if not xbmcvfs.exists(generic_utility.cookies_file()):
+        login.login()
+    content = search_results(search_string)
+    return extract_other_video_ids(content, video_type)
+
+
+def extract_other_video_ids(content, video_type):
+    video_ids = []
     jsondata = json.loads(content)
-#    utility.log('jsondata: ' + str(jsondata))
     if 'videos' in jsondata['value']:
         videos = jsondata['value']['videos']
         video_ids = filter_videos_by_type(videos, video_type)
     return video_ids
-
-
-def filter_videos_by_type(videos, video_type):
-    for video in videos.keys():
-        metatdata_type = get_metadata_type_my_list(videos, video)
-        if video_type != metatdata_type:
-            del videos[video]
-    return videos
 
 
 def viewing_activity_matches(video_type):
@@ -77,6 +75,14 @@ def viewing_activity_matches(video_type):
             metadata.append({'id':unicode(match['movieID']), 'title':get_viewing_activity_title(match), 'series_title':series_title})
 
     return metadata
+
+
+def filter_videos_by_type(videos, video_type):
+    for video in videos.keys():
+        metatdata_type = get_metadata_type_my_list(videos, video)
+        if video_type != metatdata_type:
+            del videos[video]
+    return videos
 
 def get_metadata_type_my_list(videos, video):
     type = 'unknown'
@@ -144,13 +150,6 @@ def episodes_data(season, series_id):
                 episodes.append(episode)
     return episodes
 
-
-def search_matches(search_string):
-    if not xbmcvfs.exists(generic_utility.cookies_file()):
-        login.login()
-    content = search_results(search_string)
-    matches = json.loads(content)['value']['videos']
-    return matches
 
 
 def genre_data(video_type):
@@ -290,37 +289,3 @@ def viewing_activity_info():
                                                                                    'authorization_url')))
     return content
 
-
-def read_mylists():
-    content = connect.load_netflix_site("https://www.netflix.com/")
-    falkor_cache = generic_utility.parse_falkorcache(content)
-    generic_utility.set_setting('mylist_id', extract_mylist_id(falkor_cache))
-
-
-def extract_mylist_id(jsondata):
-    mylist_id = None
-    try:
-        assert 'lolomos' in jsondata
-        lolomos = jsondata['lolomos']
-        filter_size(lolomos)
-        assert len(lolomos)==1
-        root_list_id = lolomos.keys()[0]
-        lists = filter_size(lolomos[root_list_id])
-        assert 'mylist' in lists
-        mylist_ref = lists['mylist']
-        assert len(mylist_ref) == 3
-        mylist_idx = mylist_ref[2]
-        assert mylist_idx in lists
-        mylist = lists[mylist_idx]
-        assert len(mylist) == 2
-        mylist_id = mylist[1]
-    except Exception as ex:
-        print('cannot find mylist_id')
-        print repr(ex)
-    return mylist_id
-
-def filter_size(lolomos):
-    for key in lolomos.keys():
-        if key in ('$size', 'size'):
-            del lolomos[key]
-    return lolomos

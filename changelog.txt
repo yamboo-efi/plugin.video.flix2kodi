@@ -1,3 +1,6 @@
+version 0.4 (02.12.2015)
+  * fixed search, added dynamic lists.
+
 version 0.1 (30.12.2015)
 
   * first release, big thanks to z-e-r-o (this started as a fork of his great work)

@@ -53,9 +53,13 @@ def load_videos_to_directory(loading_progress, run_as_widget, metadatas, video_t
     for video_metadata in sorted_video_metadata:
         if (video_metadata != None):
             video_add(video_metadata, removable, viewing_activity)
-    if (url != None and ('genre' in url or 'recently-added' in url) and len(video_metadatas) > 0):
-        add.add_next_item('Next', page + 1, url, video_type, 'list_videos', '')
+#    generic_utility.log(url)
 
+    items_per_page = int(generic_utility.get_setting('items_per_page'))
+    if ((url == None or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page):
+        add.add_next_item('Next', page + 1, url, video_type, 'list_videos', '')
+    if len(video_metadatas) == 0:
+        generic_utility.notification(generic_utility.get_string(30306))
 
 def show_loading_progress(run_as_widget):
     loading_progress = None
@@ -76,19 +80,13 @@ def search(search_string, video_type, run_as_widget=False):
         loading_progress.create('Netflix', generic_utility.get_string(30205) + '...')
         generic_utility.progress_window(loading_progress, 0, '...')
     xbmcplugin.setContent(plugin_handle, 'movies')
-    try:
-        matches = get.search_matches(search_string)
-        for k in matches:
-            if not run_as_widget:
-                generic_utility.progress_window(loading_progress, i * 100 / len(matches), '...')
-            video_add(video(unicode(matches[k]['summary']['id']), '', '', False, False, video_type, ''))
-            i += 1
-        if generic_utility.get_setting('force_view') and not run_as_widget:
-            xbmc.executebuiltin('Container.SetViewMode(' + generic_utility.get_setting('view_id_videos') + ')')
-        xbmcplugin.endOfDirectory(plugin_handle)
-    except Exception:
-        generic_utility.notification(generic_utility.get_string(30306))
-        pass
+
+    video_ids = get.search_matches(search_string, video_type)
+    load_videos_to_directory(loading_progress, run_as_widget, video_ids, video_type, 0, '')
+
+    if generic_utility.get_setting('force_view') and not run_as_widget:
+        xbmc.executebuiltin('Container.SetViewMode(' + generic_utility.get_setting('view_id_videos') + ')')
+    xbmcplugin.endOfDirectory(plugin_handle)
 
 
 def seasons(series_name, series_id, thumb):

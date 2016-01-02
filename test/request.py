@@ -110,45 +110,80 @@ if do_login:
         print 'loading data from disk'
         content = read_login_content()
         set_api_url(content)
-        authorization_url = '1451670084901.8mhaxKFm4s75bFyJ/Ajk66cEfUV8='
+        authorization_url = sys.argv[3]
 
 
 
 
 ############################################################################
 ############################################################################
-
-browsers = {'chrome' : 'Google Chrome', 'firefox' : 'Firefox', 'iexplore': 'Internet Explorer', 'edge' : 'Edge', 'safari' : 'Safari'}
-file_utility.write('browser_window_names', pickle.dumps(browsers))
-exit()
-
 
 content = connect.load_netflix_site("https://www.netflix.com/", new_session=False)
 #pprint.pprint(content)
 falkor_cache = generic_utility.parse_falkorcache(content)
-pprint.pprint(falkor_cache)
 
-pprint.pprint(extract_mylist_id(falkor_cache))
+print 'mylist: '+extract_mylist_id(falkor_cache)
 
-#if logged_in(content) == True:
-#    print 'logged in'
-#else:
-#    print 'not logged in'
 
-#response = connect.load_netflix_site('http://www.netflix.com/')
+def read_lists():
+    lists = falkor_cache['lists']
+    lists = filter_size(lists)
+    rets = []
+    videos=[]
+    for list_key in lists:
+        list = lists[list_key]
+        list = filter_size(list)
+        if 'displayName' in list:
+            display_name = unicode(list['displayName']['value'])
+            ret = {'id': list_key, 'name': display_name}
+            rets.append(ret)
+    return rets
 
-#print response
-#jsondata = utility.parse_falkorcache(content)
-#print jsondata
-#mylist_id = extract_mylist_id(jsondata)
+lists = read_lists()
+#for list in read_lists():
+#    print 'id: '+list['id']+' name: '+list['name']
 
-#url = api_url+'/pathEvaluator?materialize=true&model=harris'
-#pprint_json('')
 
-post = '{"paths":['
-list = '1'
-post += '["lists","'+list+'",{"from":0,"to":19},["summary", "title"]]'
+list = lists[0]['id']
 
-content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa7f72/pathEvaluator?materialize=true&model=harris', post)
+#post = '{"paths":['
+#post += '["lists","'+list+'",{"from":0,"to":19},["summary", "title"]]'
+#post += '],"authURL":"%s"}' % authorization_url
+
+
+post = '{"paths":[["search","%s",{"from":0,"to":48},["summary","title"]],["search","%s",["id","length",' \
+            '"name","trackIds","requestId"]]],"authURL":"%s"}' % ('Hobbit', 'Hobbit',
+                                                                  authorization_url)
+
+
+content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/pathEvaluator?materialize=true&model=harris', post)
+
+matches = json.loads(content)['value']['videos']
+pprint.pprint(matches)
 #pprint.pprint(json.loads(content))
-print content
+#print content
+
+
+
+def extract_mylist_id(jsondata):
+    mylist_id = None
+    try:
+        assert 'lolomos' in jsondata
+        lolomos = jsondata['lolomos']
+        filter_size(lolomos)
+        assert len(lolomos)==1
+        root_list_id = lolomos.keys()[0]
+        lists = filter_size(lolomos[root_list_id])
+        assert 'mylist' in lists
+        mylist_ref = lists['mylist']
+        assert len(mylist_ref) == 3
+        mylist_idx = mylist_ref[2]
+        assert mylist_idx in lists
+        mylist = lists[mylist_idx]
+        assert len(mylist) == 2
+        mylist_id = mylist[1]
+    except Exception as ex:
+        print('cannot find mylist_id')
+        print repr(ex)
+    return mylist_id
+

@@ -32,12 +32,10 @@ picture_url = 'https://image.tmdb.org/t/p/original'
 series_url = '%s/metadata?movieid=%s&imageFormat=jpg'
 tmdb_url = 'https://api.themoviedb.org/3/search/%s?api_key=%s&query=%s&language=de'
 activity_url = '%s/viewingactivity?_retry=0&authURL=%s'
-mylist_url = 'http://www.netflix.com/browse/my-list'
 
 # post data information
-recently_added = '{"paths":[["recentlyadded","su",{"from":%s,"to":%s},"title"]],"authURL":"%s"}'
 genre = '{"paths":[["genres",%s,"su",{"from":%s,"to":%s},["summary","title"]]],"authURL":"%s"}'
-mylist = '{"paths":[["lists","%s",{"from":%s,"to":%s},["summary", "title"]]],"authURL":"%s"}'
+list_paths = '{"paths":[["lists","%s",{"from":%s,"to":%s},["summary", "title"]]],"authURL":"%s"}'
 
 movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]]],"authURL":"%s"}'
 series_genre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"]],"authURL":"%s"}'
@@ -112,7 +110,7 @@ def create_pathname(path, item):
 
 
 def evaluator():
-    return evaluator_url % get_setting('api_url')  #.replace('http','https')
+    return evaluator_url % get_setting('api_url')
 
 def profile_switch():
     return profile_switch_url % get_setting('api_url')

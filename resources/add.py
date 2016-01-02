@@ -106,7 +106,7 @@ def video(video_metadata, removable = False, viewing_activity = False):
                                 generic_utility.main_url + 'WiMovie/' + video_id))))
         entries.append((generic_utility.get_string(30157), 'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=tv)' % (
             generic_utility.addon_id, urllib.quote_plus(generic_utility.main_url + 'WiMovie/' + video_id))))
-    generic_utility.log(type)
+#    generic_utility.log(type)
     if type in ('tvshow', 'episode'):
         entries.append((generic_utility.get_string(30150),
                         'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
