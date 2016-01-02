@@ -1,3 +1,6 @@
+version 0.4.1 (02.12.2015)
+  * changed default view-ids and fanart
+
 version 0.4 (02.12.2015)
   * fixed search, added dynamic lists.
 

@@ -24,9 +24,9 @@
         <setting id="items_per_page" type="number" label="13003" default="100"/>
         <setting label="13100" type="lsep"/>
         <setting id="force_view" type="bool" label="13101" default="true"/>
-        <setting id="view_id_videos" type="number" label="13102" enable="eq(-1,true)" default="500"/>
+        <setting id="view_id_videos" type="number" label="13102" enable="eq(-1,true)" default="504"/>
         <setting id="view_id_episodes" type="number" label="13103" enable="eq(-2,true)" default="503"/>
-        <setting id="view_id_activity" type="number" label="13104" enable="eq(-3,true)" default="51"/>
+        <setting id="view_id_activity" type="number" label="13104" enable="eq(-3,true)" default="504"/>
     </category>
     <category label="14000">
         <setting label="14001" type="action" action="RunPlugin(plugin://plugin.video.flix2kodi/?mode=delete_cache)"/>

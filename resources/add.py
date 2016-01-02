@@ -80,7 +80,7 @@ def video(video_metadata, removable = False, viewing_activity = False):
     elif xbmcvfs.exists(cover_file):
         list_item.setProperty('fanart_image', cover_file)
     else:
-        list_item.setProperty('fanart_image', generic_utility.addon_fanart())
+        list_item.setProperty('fanart_image', thumb_url)
     if type == 'tvshow':
         if generic_utility.get_setting('browse_tv_shows') == 'true':
             entries.append((generic_utility.get_string(30151),
