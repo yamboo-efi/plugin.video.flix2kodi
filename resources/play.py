@@ -177,6 +177,7 @@ class LogiPlayer(xbmcgui.Window):
         path = addon_path + '/resources/scripts/'+type+'/'
         browser_name = None
         double_quotes=''
+        bash = ''
         if generic_utility.windows():
             path += 'windows/'
             ending = '.cmd'
@@ -184,9 +185,11 @@ class LogiPlayer(xbmcgui.Window):
         elif generic_utility.darwin():
             path += 'darwin/'
             ending = '.sh'
+            bash = 'sh '
         else:
             path += 'linux/'
             ending = '.sh'
+            bash = 'sh '
         browser_name = self.get_browser_scriptname(browser_name)
 
         script = path+browser_name+ending
@@ -201,7 +204,7 @@ class LogiPlayer(xbmcgui.Window):
         elif not os.path.isfile(script):
             generic_utility.log('Script: '+script+' not found!')
             script = ''
-        return double_quotes+script+double_quotes
+        return bash + double_quotes+script+double_quotes
 
     def get_browser_scriptname(self, browser_name):
         if self.browser == BROWSER_CHROME:
