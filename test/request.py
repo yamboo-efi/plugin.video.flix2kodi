@@ -53,27 +53,6 @@ def login():
     else:
         return False
 
-def extract_mylist_id(jsondata):
-    mylist_id = None
-    try:
-        assert 'lolomos' in jsondata
-        lolomos = jsondata['lolomos']
-        filter_size(lolomos)
-        assert len(lolomos)==1
-        root_list_id = lolomos.keys()[0]
-        lists = filter_size(lolomos[root_list_id])
-        assert 'mylist' in lists
-        mylist_ref = lists['mylist']
-        assert len(mylist_ref) == 3
-        mylist_idx = mylist_ref[2]
-        assert mylist_idx in lists
-        mylist = lists[mylist_idx]
-        assert len(mylist) == 2
-        mylist_id = mylist[1]
-    except Exception as ex:
-        print('cannot find mylist_id')
-        print repr(ex)
-    return mylist_id
 
 def filter_size(lolomos):
     for key in lolomos.keys():
@@ -113,17 +92,23 @@ if do_login:
         authorization_url = sys.argv[3]
 
 
-
+#profile-switcher
+content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/profiles/switch?switchProfileGuid=HC2AFIZSMRHCDPZ76LZZRENGSI&authURL=%s' % authorization_url)
 
 ############################################################################
 ############################################################################
+
+
 
 content = connect.load_netflix_site("https://www.netflix.com/", new_session=False)
 #pprint.pprint(content)
 falkor_cache = generic_utility.parse_falkorcache(content)
 
+#pprint.pprint(falkor_cache['lolomos'])
+
 print 'mylist: '+extract_mylist_id(falkor_cache)
 
+#content = connect.load_netflix_site("https://www.netflix.com/my-list", new_session=False)
 
 def read_lists():
     lists = falkor_cache['lists']
@@ -140,36 +125,48 @@ def read_lists():
     return rets
 
 lists = read_lists()
-#for list in read_lists():
-#    print 'id: '+list['id']+' name: '+list['name']
+for list in read_lists():
+    print 'id: '+list['id']+' name: '+list['name']
 
 
-list = lists[0]['id']
+'''    u'0': [u'lists',
+           u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_2967196'],
+    u'1': [u'lists',
+           u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101754'],
+    u'2': [u'lists',
+           u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101755'],
+    u'3': [u'lists',
+           u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101756'],
+    u'36': [u'lists',
+            u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101758'],
+'''
+
+#list = '402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101754'
 
 #post = '{"paths":['
 #post += '["lists","'+list+'",{"from":0,"to":19},["summary", "title"]]'
 #post += '],"authURL":"%s"}' % authorization_url
 
 
-post = '{"paths":[["search","%s",{"from":0,"to":48},["summary","title"]],["search","%s",["id","length",' \
-            '"name","trackIds","requestId"]]],"authURL":"%s"}' % ('Hobbit', 'Hobbit',
-                                                                  authorization_url)
+#post = '{"paths":[["search","%s",{"from":0,"to":48},["summary","title"]],["search","%s",["id","length",' \
+#            '"name","trackIds","requestId"]]],"authURL":"%s"}' % ('Hobbit', 'Hobbit',
+#                                                                  authorization_url)
 
 
-content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/pathEvaluator?materialize=true&model=harris', post)
+#content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/pathEvaluator?materialize=true&model=harris', post)
 
-matches = json.loads(content)['value']['videos']
-pprint.pprint(matches)
+#matches = json.loads(content)#['value']['videos']
+#pprint.pprint(matches)
 #pprint.pprint(json.loads(content))
 #print content
 
 
 
-def extract_mylist_id(jsondata):
+def extract_mylist_id(falkor_cache):
     mylist_id = None
     try:
-        assert 'lolomos' in jsondata
-        lolomos = jsondata['lolomos']
+        assert 'lolomos' in falkor_cache
+        lolomos = falkor_cache['lolomos']
         filter_size(lolomos)
         assert len(lolomos)==1
         root_list_id = lolomos.keys()[0]

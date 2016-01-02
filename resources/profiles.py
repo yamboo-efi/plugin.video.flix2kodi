@@ -20,7 +20,7 @@ def switch_profile(profile_id):
     auth_id = generic_utility.get_setting('authorization_url')
     profile_switch_url = generic_utility.profile_switch() + 'switchProfileGuid=' + profile_id + '&authURL=' + auth_id
     ret = connect.load_netflix_site(profile_switch_url)
-#    utility.log(ret)
+#    generic_utility.log('switch-profile: '+ret)
     connect.set_chrome_netflix_cookies()
 
 def choose():

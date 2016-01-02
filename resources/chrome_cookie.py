@@ -1,6 +1,8 @@
-from __future__ import unicode_literals
+#from __future__ import unicode_literals
 
 import sqlite3
+import traceback
+
 import xbmc
 
 from resources.utility import generic_utility
@@ -111,4 +113,4 @@ def set_netflix_cookies(cookies):
         conn.commit()
         conn.close()
     except Exception as e:
-        generic_utility.log('Error setting Chrome-Cookie: ' + str(e), xbmc.LOGERROR)
+        generic_utility.log('Error setting Chrome-Cookie: ' +traceback.format_exc(), xbmc.LOGERROR)
