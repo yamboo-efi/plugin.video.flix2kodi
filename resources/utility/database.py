@@ -3,21 +3,39 @@ import os
 import sqlite3
 
 import xbmc
+import re
 
-def update_playcount(video_id, playcount):
-    database_path = get_database_path()
+from resources.utility import generic_utility
 
-    conn = sqlite3.connect(database_path)
-    conn.text_factory = str
+def update_playcounts(metadatas):
+    conn = get_connection()
+    for metadata in metadatas:
+        update_playcount(metadata['video_id'], metadata['playcount'], conn)
+    conn.commit()
+    conn.close()
 
+def update_playcount(video_id, playcount, conn = None):
+    should_close = False
+    if conn == None:
+        conn = get_connection()
+        should_close = True
     id_file = get_file_id(conn, video_id)
     if id_file:
         c = conn.cursor()
-        c.execute('UPDATE files SET playCount=? WHERE idFile = ?', (playcount, id_file))
+        c.execute('UPDATE files SET playCount=? WHERE idFile = ?', (None if playcount == 0 else playcount, id_file))
         c.close()
-        conn.commit()
 
-    conn.close()
+    if should_close:
+        generic_utility.log('close it!')
+        conn.commit()
+        conn.close()
+
+
+def get_connection():
+    database_path = get_database_path()
+    conn = sqlite3.connect(database_path)
+    conn.text_factory = str
+    return conn
 
 
 def get_file_id(conn, video_id):

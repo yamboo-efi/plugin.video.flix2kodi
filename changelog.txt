@@ -1,3 +1,6 @@
+version 0.4.4 (03.12.2015)
+  * playback now updates whole library items cause seems to be fast enough.
+
 version 0.4.3 (03.12.2015)
   * added 'remove from library'
   * added workaround for mac

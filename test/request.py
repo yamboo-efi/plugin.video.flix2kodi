@@ -102,17 +102,18 @@ content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772
 
 sleep(1)
 
-content = connect.load_netflix_site("http://www.netflix.com/browse", new_session=False)
+#content = connect.load_netflix_site("http://www.netflix.com/browse", new_session=False)
 #pprint.pprint(content)
-falkor_cache = generic_utility.parse_falkorcache(content)
-pprint.pprint(falkor_cache['videos'])
+#falkor_cache = generic_utility.parse_falkorcache(content)
+#pprint.pprint(falkor_cache['videos'])
 
 
 #list = '402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101754'
 
-#post = '{"paths":['
+post = '{"paths":['
 #post += '["lists","'+list+'",{"from":0,"to":19},["summary", "title"]]'
-#post += '],"authURL":"%s"}' % authorization_url
+post += '["videos",["70122827","70122838"],["bookmarkPosition", "runtime"]]'
+post += '],"authURL":"%s"}' % authorization_url
 
 
 #post = '{"paths":[["search","%s",{"from":0,"to":48},["summary","title"]],["search","%s",["id","length",' \
@@ -120,10 +121,10 @@ pprint.pprint(falkor_cache['videos'])
 #                                                                  authorization_url)
 
 
-#content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/pathEvaluator?materialize=true&model=harris', post)
+content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/pathEvaluator?materialize=true&model=harris', post)
 
-#matches = json.loads(content)#['value']['videos']
-#pprint.pprint(matches)
+matches = json.loads(content)#['value']['videos']
+pprint.pprint(matches)
 #pprint.pprint(json.loads(content))
 #print content
 

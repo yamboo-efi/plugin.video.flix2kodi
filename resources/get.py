@@ -298,3 +298,11 @@ def viewing_activity_info():
                                                                                    'authorization_url')))
     return content
 
+def video_playback_info(video_ids):
+    ids_str = ''
+    for video_id in video_ids:
+        ids_str+='"'+video_id+'",'
+    ids_str = ids_str[:-1]
+    post_data = generic_utility.video_playback_info % (ids_str, generic_utility.get_setting('authorization_url'))
+    content = connect.load_netflix_site(generic_utility.evaluator(), post=post_data)
+    return content

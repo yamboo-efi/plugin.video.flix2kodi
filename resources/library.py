@@ -7,7 +7,9 @@ import xbmc
 import xbmcvfs
 
 import get
+from resources import video_parser
 from resources.utility import generic_utility
+from resources.utility import database
 
 
 def add_movie(movie_id, title, single_update=True):
@@ -82,3 +84,32 @@ def remove_series(series_title):
     series_file = get_series_dir(series_title)
     xbmcvfs.rmdir(series_file+os.sep, force=True)
     xbmc.executebuiltin('CleanLibrary(video)')
+
+def update_playcounts():
+    tv_dir = xbmc.translatePath(generic_utility.tv_dir())
+    movie_dir = xbmc.translatePath(generic_utility.movie_dir())
+
+    video_ids = []
+    video_ids.extend(get_video_ids(tv_dir))
+    video_ids.extend(get_video_ids(movie_dir))
+
+    playback_infos = get.video_playback_info(video_ids)
+    videos = json.loads(playback_infos)['value']['videos']
+    update_metadatas = []
+    for video_id in videos:
+        playcount = video_parser.parse_duration_playcount(videos[video_id])[1]
+        update_metadatas.append({'video_id': video_id, 'playcount': playcount})
+    database.update_playcounts(update_metadatas)
+    xbmc.executebuiltin("Container.Refresh")
+
+def get_video_ids(directory):
+    video_ids = []
+    files= []
+    for dirpath, dirnames, filenames in os.walk(directory+os.sep):
+        for filename in [f for f in filenames if f.decode('utf-8').endswith("V.strm")]:
+            files.append(os.path.join(dirpath, filename).decode('utf-8'))
+
+    for curfile in files:
+        video_id = re.search('\.V(.*)V\.strm', curfile).group(1)
+        video_ids.append(video_id)
+    return video_ids
