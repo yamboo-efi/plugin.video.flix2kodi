@@ -93,12 +93,14 @@ if do_login:
 
 
 #profile-switcher
-content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/profiles/switch?switchProfileGuid=HC2AFIZSMRHCDPZ76LZZRENGSI&authURL=%s' % authorization_url)
+#content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/profiles/switch?switchProfileGuid=HC2AFIZSMRHCDPZ76LZZRENGSI&authURL=%s' % authorization_url)
 
 ############################################################################
 ############################################################################
 
 
+
+exit()
 
 content = connect.load_netflix_site("https://www.netflix.com/", new_session=False)
 #pprint.pprint(content)

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import json
+import os
 import re
 import xbmc
 import xbmcvfs
@@ -9,15 +10,11 @@ import get
 from resources.utility import generic_utility
 
 
-def movie(movie_id, title, single_update=True):
+def add_movie(movie_id, title, single_update=True):
     generic_utility.log(title)
-    pattern = re.compile('^\d\d.\d\d.\d\d \- .*')
-    if pattern.match(title) != None:
-        title = title[11:]
-    filename = generic_utility.clean_filename(title, ' .')
-    movie_dir = xbmc.translatePath(generic_utility.movie_dir() + filename)
-    if not xbmcvfs.exists(movie_dir):
-        xbmcvfs.mkdir(movie_dir)
+    movie_dir, title = get_movie_dir(title)
+    if not xbmcvfs.exists(movie_dir+os.sep):
+        xbmcvfs.mkdir(movie_dir+os.sep)
 
     movie_file = generic_utility.clean_filename(title + '.strm', ' .').strip(' .')
     file_handler = xbmcvfs.File(generic_utility.create_pathname(movie_dir.decode('utf-8'), movie_file), 'w')
@@ -28,11 +25,24 @@ def movie(movie_id, title, single_update=True):
         xbmc.executebuiltin('UpdateLibrary(video)')
 
 
-def series(series_id, series_title, season, single_update=True):
-    filename = generic_utility.clean_filename(series_title, ' .')
-    series_file = xbmc.translatePath(generic_utility.tv_dir() + filename)
-    if not xbmcvfs.exists(series_file):
-        xbmcvfs.mkdir(series_file)
+def get_movie_dir(title):
+    pattern = re.compile('^\d\d.\d\d.\d\d \- .*')
+    if pattern.match(title) != None:
+        title = title[11:]
+    filename = generic_utility.clean_filename(title, ' .')
+    movie_dir = xbmc.translatePath(generic_utility.movie_dir() + filename)
+    return movie_dir, title
+
+
+def remove_movie(title):
+    movie_dir = get_movie_dir(title)[0]
+    xbmcvfs.rmdir(movie_dir+os.sep, force=True)
+    xbmc.executebuiltin('CleanLibrary(video)')
+
+def add_series(series_id, series_title, season, single_update=True):
+    series_file = get_series_dir(series_title)
+    if not xbmcvfs.exists(series_file+os.sep):
+        xbmcvfs.mkdir(series_file+os.sep)
     content = get.series_info(series_id)
     generic_utility.log(str(content))
     content = json.loads(content)['video']['seasons']
@@ -40,8 +50,8 @@ def series(series_id, series_title, season, single_update=True):
         episode_season = unicode(test['seq'])
         if episode_season == season or season == '':
             season_dir = generic_utility.create_pathname(series_file.decode('utf-8'), test['title'])
-            if not xbmcvfs.exists(season_dir):
-                xbmcvfs.mkdir(season_dir)
+            if not xbmcvfs.exists(season_dir+os.sep):
+                xbmcvfs.mkdir(season_dir+os.sep)
             for item in test['episodes']:
                 episode_id = unicode(item['episodeId'])
                 episode_nr = unicode(item['seq'])
@@ -60,3 +70,15 @@ def series(series_id, series_title, season, single_update=True):
                 file_handler.close()
     if generic_utility.get_setting('update_db') and single_update:
         xbmc.executebuiltin('UpdateLibrary(video)')
+
+
+def get_series_dir(series_title):
+    filename = generic_utility.clean_filename(series_title, ' .')
+    series_file = xbmc.translatePath(generic_utility.tv_dir() + filename)
+    return series_file
+
+
+def remove_series(series_title):
+    series_file = get_series_dir(series_title)
+    xbmcvfs.rmdir(series_file+os.sep, force=True)
+    xbmc.executebuiltin('CleanLibrary(video)')

@@ -49,9 +49,13 @@ def handle_request():
     elif mode == 'remove_from_queue':
         queue.remove(url)
     elif mode == 'add_movie_to_library':
-        library.movie(url, name)
+        library.add_movie(url, name)
+    elif mode == 'remove_movie_from_library':
+        library.remove_movie(name)
     elif mode == 'add_series_to_library':
-        library.series(series_id, name, url)
+        library.add_series(series_id, name, url)
+    elif mode == 'remove_series_from_library':
+        library.remove_series(name)
     elif mode == 'play_trailer':
         play.trailer(url, video_type)
     elif mode == 'choose_profile':

@@ -1,11 +1,13 @@
 from __future__ import unicode_literals
 
+import os
 import sys
 import urllib
 import xbmcgui
 import xbmcplugin
 import xbmcvfs
 
+from resources import library
 from resources.utility import generic_utility
 
 plugin_handle = int(sys.argv[1])
@@ -127,19 +129,31 @@ def video(video_metadata, removable = False, viewing_activity = False):
             generic_utility.addon_id, urllib.quote_plus(generic_utility.main_url + 'WiMovie/' + video_id))))
 #    generic_utility.log(type)
     if type in ('tvshow', 'episode'):
-        entries.append((generic_utility.get_string(30150),
-                        'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
-                            generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())), urllib.quote_plus(video_id))))
+        series_dir = library.get_series_dir(title.strip())
+#        generic_utility.log('series-dir: '+series_dir)
+        if xbmcvfs.exists(series_dir+os.sep) == False:
+            entries.append((generic_utility.get_string(30150),
+                            'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
+                                generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())), urllib.quote_plus(video_id))))
+        else:
+            entries.append((generic_utility.get_string(301501),
+                            'RunPlugin(plugin://%s/?mode=remove_series_from_library&url=&name=%s)' % (
+                                generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())))))
+
     elif type == 'movie':
         title_utf8 = title.strip() + ' (' + str(year) + ')'
         title = urllib.quote_plus(title_utf8.encode('utf-8'))
-#        utility.log(title)
-#        utility.log(urllib.unquote_plus(title).decode('utf-8'))
-#        utility.log(str(isinstance(title, unicode)))
-        entries.append((generic_utility.get_string(30150),
-                        'RunPlugin(plugin://%s/?mode=add_movie_to_library&url=%s&name=%s)' % (
-                            generic_utility.addon_id, urllib.quote_plus(video_id),
-                            title)))
+        movie_dir = library.get_movie_dir(title_utf8)[0]
+        if xbmcvfs.exists(movie_dir+os.sep) == False:
+            entries.append((generic_utility.get_string(30150),
+                            'RunPlugin(plugin://%s/?mode=add_movie_to_library&url=%s&name=%s)' % (
+                                generic_utility.addon_id, urllib.quote_plus(video_id),
+                                title)))
+        else:
+            entries.append((generic_utility.get_string(301501),
+                            'RunPlugin(plugin://%s/?mode=remove_movie_from_library&url=&name=%s)' % (
+                                generic_utility.addon_id, title)))
+
 #    utility.log(str(entries))
     list_item.addContextMenuItems(entries)
 

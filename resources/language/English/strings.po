@@ -200,6 +200,10 @@ msgctxt "#30150"
 msgid "Add to library"
 msgstr ""
 
+msgctxt "#301501"
+msgid "Remove from library"
+msgstr ""
+
 msgctxt "#30151"
 msgid "Continue watching"
 msgstr ""
