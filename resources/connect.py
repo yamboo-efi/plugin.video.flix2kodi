@@ -5,10 +5,10 @@ import requests
 import ssl
 
 test = False
-try:
-    from resources import chrome_cookie
-except Exception:
-    test = True
+#try:
+from resources import chrome_cookie
+#except Exception:
+#    test = True
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.exceptions import InsecurePlatformWarning
@@ -59,7 +59,11 @@ def read_cookies():
     else:
         file_name = 'cookies'
     content = file_utility.read(file_name)
-    return requests.utils.cookiejar_from_dict(pickle.loads(content))
+    if len(content) > 0:
+        return requests.utils.cookiejar_from_dict(pickle.loads(content))
+    else:
+        generic_utility.log('warning, read empty cookies-file')
+        return None
 
 def save_headers(session):
     headers =  pickle.dumps(session.headers)
@@ -77,8 +81,11 @@ def read_headers():
     else:
         headers_file = 'headers'
     content = file_utility.read(headers_file)
-    return pickle.loads(content)
-
+    if len(content) > 0:
+        return pickle.loads(content)
+    else:
+        generic_utility.log('warning, read empty headers-file')
+        return None
 def load_netflix_site(url, post=None, new_session=False, lock = None):
     generic_utility.debug('Loading netflix: ' + url + ' Post: ' + str(post))
     if lock != None:
