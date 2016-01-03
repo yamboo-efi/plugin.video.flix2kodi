@@ -149,7 +149,7 @@ class LogiPlayer(xbmcgui.Window):
         info = None
         if generic_utility.windows():
             info = subprocess.STARTUPINFO()
-            info.dwFlags = subprocess.STARTF_USESTDHANDLES | subprocess.STARTF_USESHOWWINDOW
+            info.dwFlags = subprocess.STARTF_USESHOWWINDOW
             info.wShowWindow = subprocess.SW_HIDE
         script = self.get_launch_script('keysender')
 #        generic_utility.log('launching keysender: '+script+' with key: '+key)
@@ -161,7 +161,7 @@ class LogiPlayer(xbmcgui.Window):
         info = None
         if generic_utility.windows():
             info = subprocess.STARTUPINFO()
-            info.dwFlags = subprocess.STARTF_USESTDHANDLES | subprocess.STARTF_USESHOWWINDOW
+            info.dwFlags = subprocess.STARTF_USESHOWWINDOW
             info.wShowWindow = subprocess.SW_HIDE
 
         script = self.get_launch_script('launcher')

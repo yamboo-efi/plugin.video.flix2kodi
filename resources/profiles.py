@@ -26,6 +26,7 @@ def switch_profile(profile_id):
 def choose():
     profiles = []
     content = connect.load_netflix_site(generic_utility.profile_url)
+#    generic_utility.log('choose: '+content)
     match = json.loads(content)['profiles']
     for item in match:
         profile = {'name': item['firstName'], 'token': item['guid'], 'is_kid': item['experience'] == 'jfk'}

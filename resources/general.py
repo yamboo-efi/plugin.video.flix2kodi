@@ -18,9 +18,9 @@ def index():
     add.directory(generic_utility.get_string(30101), '', 'main', '', 'tv', login_context=True)
     add.directory(generic_utility.get_string(30102), '', 'wi_home', '', 'both', login_context=True)
     if not generic_utility.get_setting('single_profile') == 'true':
-        add.directory(
+        add.item(
             generic_utility.get_string(30103) + ' - [COLOR FF8E0000]' + generic_utility.get_setting('profile_name') + '[/COLOR]',
-            '', 'update_displayed_profile', 'DefaultAddonService.png', '', context_enable=False)
+            'choose_profile', login_context=True)
     xbmcplugin.endOfDirectory(plugin_handle)
 
 

@@ -27,8 +27,8 @@ def cache():
 
 
 def cookies():
-    if xbmcvfs.exists(generic_utility.cookie_file()):
-        xbmcvfs.delete(generic_utility.cookie_file())
+    if xbmcvfs.exists(generic_utility.cookies_file()):
+        xbmcvfs.delete(generic_utility.cookies_file())
         generic_utility.log('Cookie file deleted.')
         generic_utility.notification(30301)
 

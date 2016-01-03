@@ -15,8 +15,6 @@ from resources import queue
 from resources import search
 from resources.utility import generic_utility
 
-# utility.log('\n\nStart of plugin')
-
 while (generic_utility.get_setting('username') or generic_utility.get_setting('password')) == '':
     generic_utility.open_setting()
 
@@ -32,8 +30,8 @@ season = generic_utility.get_parameter(parameters, 'season')
 series_id = generic_utility.get_parameter(parameters, 'series_id')
 page = generic_utility.get_parameter(parameters, 'page')
 run_as_widget = generic_utility.get_parameter(parameters, 'widget') == 'true'
-
 def handle_request():
+#    generic_utility.log('mode: '+mode)
     if mode == 'main':
         general.main(video_type)
     elif mode == 'list_videos':
@@ -56,7 +54,8 @@ def handle_request():
         library.series(series_id, name, url)
     elif mode == 'play_trailer':
         play.trailer(url, video_type)
-    elif mode == 'update_displayed_profile':
+    elif mode == 'choose_profile':
+        profiles.choose()
         profiles.update_displayed()
     elif mode == 'search':
         search.netflix(video_type)
@@ -74,6 +73,7 @@ def handle_request():
         play.video(url);
     elif mode == 'relogin':
         login.login()
+        profiles.update_displayed()
     else:
         general.index()
 

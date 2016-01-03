@@ -1,1 +1,1 @@
-cscript %~dp0\sendkeys.vbs "Google Chrome" %1
+cscript %~dp0\sendkeys.vbs "Netflix - Chrome" %1

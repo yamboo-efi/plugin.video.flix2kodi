@@ -38,6 +38,25 @@ def directory(name, url, mode, thumb, type='', context_enable=True, login_contex
     directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=True)
     return directory_item
 
+def item(name, mode, login_context = False, context_enable = True):
+    entries = []
+    name = generic_utility.unescape(name)
+    u = sys.argv[0]
+    u += '?mode=' + mode
+#    generic_utility.log(u)
+
+    list_item = xbmcgui.ListItem(name)
+    if context_enable:
+        if login_context == True:
+            entries.append(('Relogin',
+                            'RunPlugin(plugin://%s/?mode=relogin)' % (
+                                generic_utility.addon_id)))
+
+        list_item.addContextMenuItems(entries)
+    else:
+        list_item.addContextMenuItems([], replaceItems=True)
+    directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=False)
+    return directory_item
 
 def video(video_metadata, removable = False, viewing_activity = False):
 #    utility.log(str(video_metadata))

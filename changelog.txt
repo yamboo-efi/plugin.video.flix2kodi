@@ -1,3 +1,9 @@
+version 0.4.2 (03.12.2015)
+  * added support to switch profile (just select 'Who's watching')
+  * delete cookies should now work
+  * changed launch-parameters for windows
+  * changed window-name for chrome (windows)
+
 version 0.4.1 (02.12.2015)
   * changed default view-ids and fanart
 
