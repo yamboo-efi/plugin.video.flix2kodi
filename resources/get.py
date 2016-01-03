@@ -122,6 +122,15 @@ def seasons_data(series_id):
         seasons.append(season)
     return seasons
 
+def season_title(series_id, seq):
+    title = None
+    datas = seasons_data(series_id)
+    for data in datas:
+        if data[1] == seq:
+            title = data[0]
+            break;
+    return title
+
 
 def episodes_data(season, series_id):
     episodes = []
@@ -171,10 +180,10 @@ def genre_data(video_type):
     return match
 
 
-def video_info(video_id, lock = None):
+def video_info(video_id, lock = None, ignore_cache = False):
     content = ''
     cache_file = xbmc.translatePath(generic_utility.cache_dir() + video_id + '.cache')
-    if xbmcvfs.exists(cache_file):
+    if not ignore_cache and xbmcvfs.exists(cache_file):
         file_handler = xbmcvfs.File(cache_file, 'rb')
         content = generic_utility.decode(file_handler.read())
         file_handler.close()

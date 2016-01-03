@@ -6,12 +6,14 @@ import pprint
 import re
 import sys
 from requests.packages import urllib3
+from time import sleep
 
 from resources import connect
 from resources.utility import generic_utility
 from resources.utility import file_utility
 
 urllib3.disable_warnings()
+connect.set_test()
 
 authorization_url = None
 language = None
@@ -93,55 +95,18 @@ if do_login:
 
 
 #profile-switcher
-#content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/profiles/switch?switchProfileGuid=HC2AFIZSMRHCDPZ76LZZRENGSI&authURL=%s' % authorization_url)
+content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/profiles/switch?switchProfileGuid=HC2AFIZSMRHCDPZ76LZZRENGSI&authURL=%s' % authorization_url)
 
 ############################################################################
 ############################################################################
 
+sleep(1)
 
-
-exit()
-
-content = connect.load_netflix_site("https://www.netflix.com/", new_session=False)
+content = connect.load_netflix_site("http://www.netflix.com/browse", new_session=False)
 #pprint.pprint(content)
 falkor_cache = generic_utility.parse_falkorcache(content)
+pprint.pprint(falkor_cache['videos'])
 
-#pprint.pprint(falkor_cache['lolomos'])
-
-print 'mylist: '+extract_mylist_id(falkor_cache)
-
-#content = connect.load_netflix_site("https://www.netflix.com/my-list", new_session=False)
-
-def read_lists():
-    lists = falkor_cache['lists']
-    lists = filter_size(lists)
-    rets = []
-    videos=[]
-    for list_key in lists:
-        list = lists[list_key]
-        list = filter_size(list)
-        if 'displayName' in list:
-            display_name = unicode(list['displayName']['value'])
-            ret = {'id': list_key, 'name': display_name}
-            rets.append(ret)
-    return rets
-
-lists = read_lists()
-for list in read_lists():
-    print 'id: '+list['id']+' name: '+list['name']
-
-
-'''    u'0': [u'lists',
-           u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_2967196'],
-    u'1': [u'lists',
-           u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101754'],
-    u'2': [u'lists',
-           u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101755'],
-    u'3': [u'lists',
-           u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101756'],
-    u'36': [u'lists',
-            u'402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101758'],
-'''
 
 #list = '402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101754'
 

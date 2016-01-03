@@ -4,11 +4,7 @@ import pickle
 import requests
 import ssl
 
-test = False
-#try:
 from resources import chrome_cookie
-#except Exception:
-#    test = True
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.exceptions import InsecurePlatformWarning
@@ -27,7 +23,11 @@ class HTTPSAdapter(HTTPAdapter):
                                        maxsize=maxsize,
                                        block=block,
                                        ssl_version=ssl.PROTOCOL_TLSv1)
+test = False
 
+def set_test():
+    global test
+    test = True
 
 def create_session(netflix = False):
     session = requests.Session()

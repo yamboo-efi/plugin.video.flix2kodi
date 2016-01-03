@@ -71,10 +71,10 @@ def handle_request():
         delete.addon()
     elif mode == 'play_video':
         #    utility.log('play_video: '+url)
-        play.video(url);
+        play.video(url, series_id);
     elif mode == 'play_video_main':
         #    utility.log('play_video_main: '+url)
-        play.video(url);
+        play.video(url, series_id);
     elif mode == 'relogin':
         login.login()
         profiles.update_displayed()

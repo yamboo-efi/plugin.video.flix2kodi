@@ -45,6 +45,16 @@ def viewing_activity(video_type, run_as_widget=False):
         xbmc.executebuiltin('Container.SetViewMode(' + generic_utility.get_setting('view_id_activity') + ')')
     xbmcplugin.endOfDirectory(plugin_handle)
 
+
+def add_sort_methods():
+    xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_TITLE)
+    xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+    xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
+    xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_RUNTIME)
+
+
+
+
 def load_videos_to_directory(loading_progress, run_as_widget, metadatas, video_type, page = None, url=None, viewing_activity = False):
     video_metadatas = multiprocessor.load_data(metadatas, video_type, run_as_widget, loading_progress, url, viewing_activity)
     removable = url != None and 'my-list' in url
@@ -60,6 +70,7 @@ def load_videos_to_directory(loading_progress, run_as_widget, metadatas, video_t
         add.add_next_item('Next', page + 1, url, video_type, 'list_videos', '')
     if len(video_metadatas) == 0:
         generic_utility.notification(generic_utility.get_string(30306))
+    add_sort_methods()
 
 def show_loading_progress(run_as_widget):
     loading_progress = None

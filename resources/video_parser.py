@@ -8,12 +8,23 @@ import get
 from resources.utility import generic_utility
 
 
-def video(video_id, is_episode, lock = None, custom_title = None, series_title = None):
+def parse_episode_seasion(match):
+    episode = None
+    season = None
+    if 'summary' in match:
+        summary = match['summary']
+        episode = get_value(summary, 'episode')
+        season = get_value(summary, 'season')
 
-    video_details = get.video_info(video_id, lock)
+    return episode, season
+
+
+def video(video_id, is_episode, lock = None, custom_title = None, series_title = None, ignore_cache = False):
+
+    video_details = get.video_info(video_id, lock, ignore_cache = ignore_cache)
     match = json.loads(video_details)['value']['videos'][video_id]
 
-#    utility.log('parsing videodata: '+unicode(match))
+#    generic_utility.log('parsing videodata: '+str(match))
 
     if custom_title != None:
         title = custom_title
@@ -30,6 +41,8 @@ def video(video_id, is_episode, lock = None, custom_title = None, series_title =
 
     playcount = parse_playcount(duration, match)
 
+    episode, season = parse_episode_seasion(match)
+
     type = parse_type(is_episode, match)
 
     if type == 'tvshow':
@@ -45,9 +58,8 @@ def video(video_id, is_episode, lock = None, custom_title = None, series_title =
     genre = parse_genre(match)
 
     rating = parse_rating(match)
-
     movie_metadata = {'title':title, 'video_id':video_id, 'thumb_url': thumb_url, 'type': type, 'description': description, 'duration':duration, 'year':year, 'mpaa':mpaa, \
-                      'director':director, 'genre':genre, 'rating':rating, 'playcount':playcount}
+                      'director':director, 'genre':genre, 'rating':rating, 'playcount':playcount, 'episode' : episode, 'season': season}
 #    utility.log(str(video_add_args))
     return movie_metadata
 
@@ -84,9 +96,11 @@ def parse_playcount(duration, match):
     playcount = 0
     try:
         offset = match['bookmarkPosition']
-        if (duration > 0 and float(offset) / float(duration)) >= 0.9:
+        generic_utility.log('duration: ' + str(duration)+' offset: '+str(offset))
+        if (duration > 0 and float(offset) / float(duration)) >= 0.8:
             playcount = 1
     except Exception:
+        generic_utility.log('cannot parse playcount. match: '+str(match))
         pass
     return playcount
 

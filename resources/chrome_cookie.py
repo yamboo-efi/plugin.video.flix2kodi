@@ -3,7 +3,10 @@
 import sqlite3
 import traceback
 
-import xbmc
+try:
+    import xbmc
+except Exception:
+    test = True
 
 from resources.utility import generic_utility
 

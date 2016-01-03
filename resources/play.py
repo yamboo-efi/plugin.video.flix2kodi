@@ -11,9 +11,12 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 import xbmcplugin
+import xbmcvfs
 from thread import start_new_thread
 
 import get
+from resources import video_parser
+from resources.utility import database
 from resources.utility import generic_utility
 
 plugin_handle = int(sys.argv[1])
@@ -50,11 +53,11 @@ def trailer(title, video_type):
         pass
 
 
-def video(url):
+def video(video_id, series_id):
     xbmc.Player().stop()
     player = LogiPlayer()
     if player.has_valid_browser():
-        player.play( url )
+        player.play(video_id, series_id)
     listitem = xbmcgui.ListItem(path=generic_utility.addon_dir() + '/resources/fakeVid.mp4')
     xbmcplugin.setResolvedUrl(plugin_handle, True, listitem)
     xbmc.PlayList(xbmc.PLAYLIST_VIDEO).clear()
@@ -74,23 +77,33 @@ class LogiPlayer(xbmcgui.Window):
     def has_valid_browser(self):
         return self.valid_browser
 
-    def play ( self, url):
-        start_new_thread(self.playInternal, (url,))
+    def play (self, video_id, series_id):
+        start_new_thread(self.playInternal, (video_id, series_id,))
         start_new_thread(self.after_chrome_launched, ())
 
-    def playInternal (self, url):
+    def playInternal (self, video_id, series_id):
         xbmc.audioSuspend()
         self.disable_screensaver()
 
         try:
-            self.launch_browser('https://www.netflix.com/watch/%s' % url)
+            self.launch_browser('https://www.netflix.com/watch/%s' % video_id)
         except:
             generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
             generic_utility.notification('Error launching browser. See logfile')
 
         self.enable_screensaver()
         xbmc.audioResume()
+        try:
+            self.update_playcount(video_id)
+        except:
+            generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
+            generic_utility.notification('Cannot update playcount. See logfile')
         self.close()
+
+    def update_playcount(self, video_id):
+        video_metadata = video_parser.video(video_id, False, ignore_cache = True)
+        playcount = video_metadata['playcount']
+        database.update_playcount(video_id, playcount)
 
     def disable_screensaver(self):
         ret = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.getSettingValue", "params": {"setting":"screensaver.mode" } }')

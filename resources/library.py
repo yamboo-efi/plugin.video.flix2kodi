@@ -16,7 +16,7 @@ def add_movie(movie_id, title, single_update=True):
     if not xbmcvfs.exists(movie_dir+os.sep):
         xbmcvfs.mkdir(movie_dir+os.sep)
 
-    movie_file = generic_utility.clean_filename(title + '.strm', ' .').strip(' .')
+    movie_file = generic_utility.clean_filename(title + '.V' + movie_id + 'V' + '.strm', ' .').strip(' .')
     file_handler = xbmcvfs.File(generic_utility.create_pathname(movie_dir.decode('utf-8'), movie_file), 'w')
     file_handler.write(
         generic_utility.encode('plugin://%s/?mode=play_video&url=%s' % (generic_utility.addon_id, movie_id)))
@@ -61,7 +61,7 @@ def add_series(series_id, series_title, season, single_update=True):
                 season_nr = episode_season
                 if len(season_nr) == 1:
                     season_nr = '0' + season_nr
-                filename = 'S' + season_nr + 'E' + episode_nr + ' - ' + episode_title + '.strm'
+                filename = 'S' + season_nr + 'E' + episode_nr + ' - ' + episode_title + '.V' + episode_id + 'V'+ '.strm'
                 filename = generic_utility.clean_filename(filename, ' .')
                 file_handler = xbmcvfs.File(generic_utility.create_pathname(season_dir, filename), 'w')
                 file_handler.write(

@@ -1,3 +1,8 @@
+version 0.4.3 (03.12.2015)
+  * added 'remove from library'
+  * added workaround for mac
+  * playback now updates library item after finish if exists
+
 version 0.4.2 (03.12.2015)
   * added support to switch profile (just select 'Who's watching')
   * delete cookies should now work
