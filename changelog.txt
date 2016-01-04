@@ -1,3 +1,8 @@
+version 0.4.5 (04.12.2015)
+  * Fixed: 'Cannot update playcount'
+  * Hopefully fixed macos issues with keyring
+  * Fixed: added switch in chrome-launcher-script (windows) to call right path on 32 bit windows
+
 version 0.4.4 (03.12.2015)
   * playback now updates whole library items cause seems to be fast enough.
 
