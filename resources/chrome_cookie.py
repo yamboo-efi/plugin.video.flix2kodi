@@ -1,7 +1,9 @@
 #from __future__ import unicode_literals
-
+import os
 import sqlite3
 import traceback
+
+import sys
 
 try:
     import xbmc
@@ -13,6 +15,9 @@ from resources.utility import generic_utility
 if generic_utility.windows():
     import win32crypt
 elif generic_utility.darwin():
+    resources_dir = os.path.dirname(os.path.realpath(__file__))
+    addon_dir = os.path.join(resources_dir, '..', 'lib')
+    sys.path.append(addon_dir)
     import keyring
 else:
     from Crypto.Cipher import AES
