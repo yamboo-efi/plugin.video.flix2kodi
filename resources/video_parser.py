@@ -37,7 +37,6 @@ def video(video_id, is_episode, lock = None, custom_title = None, series_title =
 
     mpaa = get_mpaa(match)
 
-
     duration, playcount = parse_duration_playcount(match)
 
     episode, season = parse_episode_seasion(match)
@@ -93,16 +92,19 @@ def get_value(match, key, default = None):
 
 def parse_duration_playcount(match):
     duration = get_value(match, 'runtime', 0)
-
     playcount = 0
+
+    offset = get_value(match, 'bookmarkPosition', None)
+    watched = get_value(match, 'watched', None)
+
     try:
-        offset = match['bookmarkPosition']
-#        generic_utility.log('duration: ' + str(duration)+' offset: '+str(offset))
-        if (duration > 0 and float(offset) / float(duration)) >= 0.8:
+        if offset:
+            if (duration > 0 and float(offset) / float(duration)) >= 0.8:
+                playcount = 1
+        elif watched:
             playcount = 1
     except Exception:
         generic_utility.log('cannot parse playcount. match: '+str(match))
-        pass
     return duration, playcount
 
 
