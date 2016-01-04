@@ -7,9 +7,11 @@ import xbmc
 import connect
 from resources.utility import generic_utility
 
+my_list = '{"paths":[["lolomo",{"from":2,"to":2},{"from":0,"to":50},["summary","title"]],' \
+          '["lolomo",{"from":1,"to":2},["trackIds","displayName"]]],"authURL":"%s"}'
 
 def add(video_id):
-    post_data = generic_utility.my_list % generic_utility.get_setting('authorization_url')
+    post_data = my_list % generic_utility.get_setting('authorization_url')
     content = connect.load_netflix_site(generic_utility.evaluator(), post=post_data)
     match = json.loads(content)['value']['videos']
     headers = {'Access-Control-Request-Headers': 'content-type, accept','Access-Control-Request-Method': 'POST',
