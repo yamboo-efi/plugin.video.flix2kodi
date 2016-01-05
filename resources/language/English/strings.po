@@ -61,7 +61,7 @@ msgid "Update library after adding"
 msgstr ""
 
 msgctxt "#11200"
-msgid "Profil settings"
+msgid "Profile settings"
 msgstr ""
 
 msgctxt "#11201"
