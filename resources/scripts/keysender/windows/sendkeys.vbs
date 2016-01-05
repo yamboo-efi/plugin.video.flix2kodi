@@ -17,6 +17,8 @@ elseif key="forward" then
 	cmd = "{RIGHT} "
 elseif key="up" then
 	cmd = "{RIGHT}{RIGHT} "
+elseif key="maximize" then
+	cmd = "% x"
 end if
 
 if shell.AppActivate(windowName) = true then
