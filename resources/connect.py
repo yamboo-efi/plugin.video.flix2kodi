@@ -1,10 +1,12 @@
 from __future__ import unicode_literals
 
+import os
 import pickle
 import requests
 import ssl
 
 from resources import chrome_cookie
+from resources import login
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.exceptions import InsecurePlatformWarning
@@ -25,9 +27,11 @@ class HTTPSAdapter(HTTPAdapter):
                                        ssl_version=ssl.PROTOCOL_TLSv1)
 test = False
 
+
 def set_test():
     global test
     test = True
+
 
 def create_session(netflix = False):
     session = requests.Session()
@@ -86,37 +90,76 @@ def read_headers():
     else:
         generic_utility.log('warning, read empty headers-file')
         return None
-def load_netflix_site(url, post=None, new_session=False, lock = None):
+
+
+def should_retry(url, status_code):
+    should = False
+    if status_code == 404 and 'pathEvaluator' in url:
+        should = True
+
+    return should
+
+
+def load_netflix_site(url, post=None, new_session=False, lock = None, login_process = False):
+
     generic_utility.debug('Loading netflix: ' + url + ' Post: ' + str(post))
     if lock != None:
         lock.acquire()
 
+    session = get_netflix_session(new_session)
+
+    ret, status_code = load_site_internal(url, session, post, netflix=True)
+    ret = ret.decode('utf-8')
+    not_logged_in = '"template":"torii/nonmemberHome.jsx"' in ret
+    if status_code != requests.codes.ok or not_logged_in:
+        if not login_process and (should_retry(url, status_code) or not_logged_in):
+            if lock:
+                lock.release()
+            if do_login():
+                session = get_netflix_session(new_session)
+                ret, status_code = load_site_internal(url, session, post, netflix=True)
+                ret = ret.decode('utf-8')
+                if status_code != requests.codes.ok:
+                        raise ValueError('!HTTP-ERROR!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
+            else:
+                raise ValueError('re-login failed')
+
+        else:
+            raise ValueError('!HTTP-ERROR!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
+
+    save_cookies(session)
+    save_headers(session)
+
+    if lock:
+        lock.release()
+
+#    generic_utility.debug('Returning : '+ret)
+    return ret
+
+
+def get_netflix_session(new_session):
     if new_session == True:
         session = create_session(netflix=True)
     else:
         session = requests.Session()
-        session.headers = read_headers()
-        session.cookies = read_cookies()
-    ret = load_site_internal(url, session, post)
-    ret = ret.decode('utf-8')
-    save_cookies(session)
-    save_headers(session)
+        cached_headers = read_headers()
+        if cached_headers:
+            session.headers = cached_headers
 
-    if lock != None:
-        lock.release()
-
-#    utility.debug('Returning : '+ret)
-    return ret
+        cached_cookies = read_cookies()
+        if cached_cookies:
+            session.cookies = cached_cookies
+    return session
 
 
 def load_other_site(url):
     generic_utility.log('loading-other: ' + url)
     session = create_session()
-    content = load_site_internal(url, session)
+    content = load_site_internal(url, session)[0]
     return content
 
-def load_site_internal(url, session, post=None, options=False, headers=None, cookies=None):
-
+def load_site_internal(url, session, post=None, options=False, headers=None, cookies=None, netflix=False):
+    generic_utility.log(str(cookies))
     if post:
         response = session.post(url, headers=headers, cookies=cookies, data=post, verify=certifi.where())
     elif options:
@@ -125,7 +168,8 @@ def load_site_internal(url, session, post=None, options=False, headers=None, coo
         response = session.get(url, headers=headers, cookies=cookies, verify=certifi.where())
 
     content = response.content
-    return content
+    status = response.status_code
+    return content, status
 
 def set_chrome_netflix_cookies():
     if test == False:
@@ -133,3 +177,9 @@ def set_chrome_netflix_cookies():
 
 def logged_in(content):
     return 'netflix.falkorCache' in content
+
+def choose_profile():
+    login.choose_profile()
+
+def do_login():
+    return login.login()

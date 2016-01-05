@@ -115,6 +115,12 @@ def evaluator():
 def profile_switch():
     return profile_switch_url % get_setting('api_url')
 
+def error(message):
+    if test == False:
+        log(message, xbmc.LOGERROR)
+    else:
+        log(message)
+
 def debug(message):
     if test == False:
         if get_setting('debug') == 'true':

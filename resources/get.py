@@ -5,7 +5,6 @@ import time
 import xbmc
 import xbmcvfs
 
-import login
 import search
 from resources import connect
 from resources.utility import generic_utility
@@ -13,8 +12,6 @@ from resources.utility import generic_utility
 
 def videos_matches(video_type, page, url):
     post_data = ''
-    if not xbmcvfs.exists(generic_utility.cookies_file()):
-        login.login()
 
     items_per_page = int(generic_utility.get_setting('items_per_page'))
     off_from = page * items_per_page
@@ -38,8 +35,6 @@ def videos_matches(video_type, page, url):
 
 
 def search_matches(search_string, video_type):
-    if not xbmcvfs.exists(generic_utility.cookies_file()):
-        login.login()
     content = search_results(search_string)
     return extract_other_video_ids(content, video_type)
 
@@ -54,8 +49,6 @@ def extract_other_video_ids(content, video_type):
 
 
 def viewing_activity_matches(video_type):
-    if not xbmcvfs.exists(generic_utility.cookies_file()):
-        login.login()
     content = viewing_activity_info()
     matches = json.loads(content)['viewedItems']
 
@@ -163,8 +156,6 @@ def episodes_data(season, series_id):
 
 def genre_data(video_type):
     match = []
-    if not xbmcvfs.exists(generic_utility.cookies_file()):
-        login.login()
 
     content = genre_info(video_type)
 

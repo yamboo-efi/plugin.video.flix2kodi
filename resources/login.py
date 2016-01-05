@@ -16,7 +16,7 @@ def login():
     login_progress = xbmcgui.DialogProgress()
     login_progress.create('Netflix', generic_utility.get_string(30200) + '...')
     generic_utility.progress_window(login_progress, 25, generic_utility.get_string(30201))
-    content = connect.load_netflix_site(generic_utility.main_url + 'Login', new_session=True)
+    content = connect.load_netflix_site(generic_utility.main_url + 'Login', new_session=True, login_process=True)
     if not 'Sorry, Netflix ' in content:
         match = re.compile('name="authURL" value="(.+?)"', re.DOTALL| re.UNICODE).findall(content)
 #        utility.log('Setting authorization url: ' + match[0])
@@ -28,7 +28,7 @@ def login():
         generic_utility.progress_window(login_progress, 50, generic_utility.get_string(30202))
         content = connect.load_netflix_site(
             generic_utility.main_url + 'Login?locale=' + generic_utility.get_setting('language'),
-            post=post_data)
+            post=post_data, login_process=True)
 #        utility.log(content)
 
         if 'id="page-LOGIN"' in content:
@@ -55,6 +55,10 @@ def login():
             login_progress.close()
         return False
 
+def choose_profile():
+    profiles.choose()
+    profiles.update_displayed()
+
 
 def profile_selection():
     if not (
@@ -65,4 +69,5 @@ def profile_selection():
         profiles.choose()
     elif not ((generic_utility.get_setting('single_profile') and generic_utility.get_setting('show_profiles')) == 'true'):
         profiles.load()
+    profiles.update_displayed()
 

@@ -19,13 +19,13 @@ def load():
 def switch_profile(profile_id):
     auth_id = generic_utility.get_setting('authorization_url')
     profile_switch_url = generic_utility.profile_switch() + 'switchProfileGuid=' + profile_id + '&authURL=' + auth_id
-    ret = connect.load_netflix_site(profile_switch_url)
+    ret = connect.load_netflix_site(profile_switch_url, login_process=True)
 #    generic_utility.log('switch-profile: '+ret)
     connect.set_chrome_netflix_cookies()
 
 def choose():
     profiles = []
-    content = connect.load_netflix_site(generic_utility.profile_url)
+    content = connect.load_netflix_site(generic_utility.profile_url, login_process=True)
 #    generic_utility.log('choose: '+content)
     match = json.loads(content)['profiles']
     for item in match:
@@ -56,6 +56,6 @@ def force_choose():
 
 def update_displayed():
     menu_path = xbmc.getInfoLabel('Container.FolderPath')
-    if not generic_utility.get_setting('show_profiles') == 'true':
+    if menu_path and not generic_utility.get_setting('show_profiles') == 'true':
         generic_utility.set_setting('selected_profile', None)
     xbmc.executebuiltin('Container.Update(' + menu_path + ')')

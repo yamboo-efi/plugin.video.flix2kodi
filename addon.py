@@ -8,11 +8,10 @@ from resources import delete
 from resources import general
 from resources import library
 from resources import list
-from resources import login
 from resources import play
-from resources import profiles
 from resources import queue
 from resources import search
+from resources import connect
 from resources.utility import generic_utility
 
 while (generic_utility.get_setting('username') or generic_utility.get_setting('password')) == '':
@@ -59,8 +58,7 @@ def handle_request():
     elif mode == 'play_trailer':
         play.trailer(url, video_type)
     elif mode == 'choose_profile':
-        profiles.choose()
-        profiles.update_displayed()
+        connect.choose_profile()
     elif mode == 'search':
         search.netflix(video_type)
     elif mode == 'delete_cookies':
@@ -76,8 +74,7 @@ def handle_request():
         #    utility.log('play_video_main: '+url)
         play.video(url, series_id);
     elif mode == 'relogin':
-        login.login()
-        profiles.update_displayed()
+        connect.do_login()
     else:
         general.index()
 
