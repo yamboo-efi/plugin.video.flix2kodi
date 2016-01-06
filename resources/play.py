@@ -161,32 +161,68 @@ class LogiPlayer(xbmcgui.Window):
             generic_utility.log('unknown action: ' + str(action.getId()))
 
     def control(self, key):
-        info = None
-        if generic_utility.windows():
-            info = subprocess.STARTUPINFO()
-            info.dwFlags = subprocess.STARTF_USESHOWWINDOW
-            info.wShowWindow = subprocess.SW_HIDE
         script = self.get_launch_script('keysender')
-#        generic_utility.log('launching keysender: '+script+' with key: '+key)
         if script:
-            process = subprocess.Popen(script + ' ' +key, startupinfo=info, shell=True)
-            process.wait()
+            callcmd = script + ' ' + key
+            self.call_script(callcmd)
 
     def launch_browser(self, url):
+        self.before_launch()
+
+        if not self.call_custom_script('playback', url):
+            script = self.get_launch_script('launcher')
+
+            if script:
+                callstr = script + ' ' + url
+                self.call_script(callstr)
+                generic_utility.debug('browser terminated')
+        self.after_launch()
+
+    def before_launch(self):
+        self.call_custom_script('before_playback')
+
+    def after_launch(self):
+        self.call_custom_script('after_playback')
+
+    def call_custom_script(self, name, params = ''):
+        data_dir = generic_utility.data_dir()
+        if not generic_utility.windows():
+            bash = 'sh '
+            ending = '.sh'
+            double_quotes = ''
+        else:
+            bash = ''
+            ending = '.cmd'
+            double_quotes = '"'
+        custom_script = data_dir + 'custom' + os.sep + name + ending
+
+        if generic_utility.windows():
+            custom_script = custom_script.replace('/','\\')
+
+#        generic_utility.log('custom: '+custom_script)
+        if os.path.isfile(custom_script):
+            generic_utility.debug('calling: '+custom_script)
+            if params != '':
+                params = ' '+params
+            if generic_utility.darwin():
+                custom_script = generic_utility.sh_escape(custom_script)
+            else:
+                custom_script = double_quotes+custom_script+double_quotes
+
+            self.call_script(bash+custom_script+params)
+            return True
+
+        return False
+
+    def call_script(self, callstr):
+        generic_utility.debug('launching: ' + callstr)
         info = None
         if generic_utility.windows():
             info = subprocess.STARTUPINFO()
             info.dwFlags = subprocess.STARTF_USESHOWWINDOW
             info.wShowWindow = subprocess.SW_HIDE
-
-        script = self.get_launch_script('launcher')
-
-        if script:
-            generic_utility.debug('launching: '+script)
-
-            process = subprocess.Popen(script + ' ' +url, startupinfo=info, shell=True)
-            process.wait()
-            generic_utility.debug('browser terminated')
+        process = subprocess.Popen(callstr, startupinfo=info, shell=True)
+        process.wait()
 
     def get_launch_script(self, type):
         path = addon_path + '/resources/scripts/'+type+'/'
@@ -217,7 +253,7 @@ class LogiPlayer(xbmcgui.Window):
             script = ''
 
         if generic_utility.darwin():
-            script = generic_utility.sh_escape(script)
+            script = bash + generic_utility.sh_escape(script)
         else:
             script = bash + double_quotes+script+double_quotes
 
