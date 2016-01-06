@@ -102,6 +102,12 @@ def connect():
         db_path += "/Library/Application Support/Google/Chrome/Default/Cookies"
     else:
         db_path += '/.config/google-chrome/Default/Cookies'
+        if not os.path.isfile(db_path):
+            db_path += '/storage/.kodi/userdata/addon_data/browser.chromium/profile'
+
+    if not os.path.isfile(db_path):
+        raise ValueError('Cannot find cookie-file in: '+db_path)
+
     conn = sqlite3.connect(db_path)
     conn.text_factory = str
     return conn

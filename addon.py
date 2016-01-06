@@ -14,6 +14,7 @@ from resources import search
 from resources import connect
 from resources.utility import generic_utility
 
+
 while (generic_utility.get_setting('username') or generic_utility.get_setting('password')) == '':
     generic_utility.open_setting()
 
