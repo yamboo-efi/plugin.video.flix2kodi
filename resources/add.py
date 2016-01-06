@@ -77,7 +77,7 @@ def video(video_metadata, removable = False, viewing_activity = False):
     playcount = video_metadata['playcount']
 
     next_mode = 'play_video_main'
-    if viewing_activity == False and generic_utility.get_setting('browse_tv_shows') == 'true' and (type == 'tvshow' or type == 'episode'):
+    if viewing_activity == False and generic_utility.get_setting('browse_tv_shows') == 'true' and (type == 'show'):
         next_mode = 'list_seasons'
 
     entries = []
@@ -102,7 +102,7 @@ def video(video_metadata, removable = False, viewing_activity = False):
         list_item.setProperty('fanart_image', cover_file)
     else:
         list_item.setProperty('fanart_image', thumb_url)
-    if type == 'tvshow':
+    if type == 'show':
         if generic_utility.get_setting('browse_tv_shows') == 'true':
             entries.append((generic_utility.get_string(30151),
                             'Container.Update(plugin://%s/?mode=play_video_main&url=%s&thumb=%s)' % (
@@ -111,7 +111,18 @@ def video(video_metadata, removable = False, viewing_activity = False):
             entries.append((generic_utility.get_string(30152),
                             'Container.Update(plugin://%s/?mode=list_seasons&url=%s&thumb=%s)' % (
                                 generic_utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
-    if type != 'episode':
+
+        series_dir = library.get_series_dir(title.strip())
+        #        generic_utility.log('series-dir: '+series_dir)
+        if xbmcvfs.exists(series_dir+os.sep) == False:
+            entries.append((generic_utility.get_string(30150),
+                            'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
+                                generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())), urllib.quote_plus(video_id))))
+        else:
+            entries.append((generic_utility.get_string(301501),
+                            'RunPlugin(plugin://%s/?mode=remove_series_from_library&url=&name=%s)' % (
+                                generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())))))
+    else:
         entries.append((
                        generic_utility.get_string(30153), 'RunPlugin(plugin://%s/?mode=play_trailer&url=%s&type=%s)' % (
                            generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title)), type)))
@@ -128,19 +139,8 @@ def video(video_metadata, removable = False, viewing_activity = False):
         entries.append((generic_utility.get_string(30157), 'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=tv)' % (
             generic_utility.addon_id, urllib.quote_plus(generic_utility.main_url + 'WiMovie/' + video_id))))
 #    generic_utility.log(type)
-    if type in ('tvshow', 'episode'):
-        series_dir = library.get_series_dir(title.strip())
-#        generic_utility.log('series-dir: '+series_dir)
-        if xbmcvfs.exists(series_dir+os.sep) == False:
-            entries.append((generic_utility.get_string(30150),
-                            'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
-                                generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())), urllib.quote_plus(video_id))))
-        else:
-            entries.append((generic_utility.get_string(301501),
-                            'RunPlugin(plugin://%s/?mode=remove_series_from_library&url=&name=%s)' % (
-                                generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())))))
 
-    elif type == 'movie':
+    if type == 'movie':
         title_utf8 = title.strip() + ' (' + str(year) + ')'
         title = urllib.quote_plus(title_utf8.encode('utf-8'))
         movie_dir = library.get_movie_dir(title_utf8)[0]

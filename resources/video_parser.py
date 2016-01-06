@@ -19,8 +19,7 @@ def parse_episode_seasion(match):
     return episode, season
 
 
-def video(video_id, is_episode, lock = None, custom_title = None, series_title = None, ignore_cache = False):
-
+def video(video_id, lock = None, custom_title = None, series_title = None, ignore_cache = False):
     video_details = get.video_info(video_id, lock, ignore_cache = ignore_cache)
     match = json.loads(video_details)['value']['videos'][video_id]
 
@@ -37,13 +36,15 @@ def video(video_id, is_episode, lock = None, custom_title = None, series_title =
 
     mpaa = get_mpaa(match)
 
-    duration, playcount = parse_duration_playcount(match)
 
     episode, season = parse_episode_seasion(match)
+    type = parse_type(match)
 
-    type = parse_type(is_episode, match)
-
-    if type == 'tvshow':
+    # series has no playcount
+    if type is not 'show':
+        duration, playcount = parse_duration_playcount(match)
+    else:
+        playcount = 0
         duration = ''
 
     if generic_utility.get_setting('use_tmdb') == 'true':
@@ -132,13 +133,10 @@ def parse_director(match):
     return director
 
 
-def parse_type(is_episode, match):
+def parse_type(match):
     type = match['summary']['type']
-    if type != 'movie':
-        if is_episode:
-            type = 'episode'
-        else:
-            type = 'tvshow'
+    if type not in ('movie', 'show', 'episode'):
+        generic_utility.error('Unknown type: "'+type+'"')
     return type
 
 

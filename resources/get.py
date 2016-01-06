@@ -147,7 +147,7 @@ def episodes_data(season, series_id):
                     thumb = item['stills'][0]['url']
                 except:
                     thumb = generic_utility.addon_fanart()
-
+#                generic_utility.log('episode-title: '+episode_title)
                 episode = series_id, episode_id, episode_title, description, episode_nr, season, duration, thumb, playcount
                 episodes.append(episode)
     return episodes

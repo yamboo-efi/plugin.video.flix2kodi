@@ -47,7 +47,7 @@ video_info = '{"paths":[["videos",%s,["availability","bookmarkPosition","details
 add_list = '{"callPath":["lolomos","%s","addToList"],"params":["%s",2,["videos",%s],%s,null,null],"paths":[],' \
            '"pathSuffixes":[[["length","trackIds","context","displayName"]],[{"to":%s}],["watchedEvidence",' \
            '{"to":2}]],"authURL":"%s"}'
-video_playback_info = '{"paths": [["videos",[%s],["bookmarkPosition", "runtime"]]],"authURL":"%s"}'
+video_playback_info = '{"paths": [["videos",[%s],["bookmarkPosition","runtime","summary"]]],"authURL":"%s"}'
 
 def data_dir():
     return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/')

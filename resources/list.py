@@ -56,7 +56,7 @@ def add_sort_methods():
 
 
 def load_videos_to_directory(loading_progress, run_as_widget, metadatas, video_type, page = None, url=None, viewing_activity = False):
-    video_metadatas = multiprocessor.load_data(metadatas, video_type, run_as_widget, loading_progress, url, viewing_activity)
+    video_metadatas = multiprocessor.load_data(metadatas, video_type, run_as_widget, loading_progress, viewing_activity=viewing_activity)
     removable = url != None and 'my-list' in url
 
     sorted_video_metadata = sorted(video_metadatas, key=lambda t: t['title'], reverse = viewing_activity)

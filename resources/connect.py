@@ -164,7 +164,7 @@ def load_other_site(url):
 
 def load_site_internal(url, session, post=None, options=False, headers=None, cookies=None, netflix=False):
 #    generic_utility.log(str(cookies))
-    session.max_redirects = 5
+    session.max_redirects = 10
     if post:
         response = session.post(url, headers=headers, cookies=cookies, data=post, verify=certifi.where())
     elif options:

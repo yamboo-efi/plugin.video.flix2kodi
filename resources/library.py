@@ -98,10 +98,13 @@ def update_playcounts():
         videos = json.loads(playback_infos)['value']['videos']
         update_metadatas = []
         for video_id in videos:
-            playcount = video_parser.parse_duration_playcount(videos[video_id])[1]
-            update_metadatas.append({'video_id': video_id, 'playcount': playcount})
-        database.update_playcounts(update_metadatas)
-        xbmc.executebuiltin("Container.Refresh")
+            type = video_parser.parse_type(videos[video_id])
+            if type is not 'show':
+                playcount = video_parser.parse_duration_playcount(videos[video_id])[1]
+                update_metadatas.append({'video_id': video_id, 'playcount': playcount})
+        if len(update_metadatas) > 0:
+            database.update_playcounts(update_metadatas)
+            xbmc.executebuiltin("Container.Refresh")
 
 def get_video_ids(directory):
     video_ids = []

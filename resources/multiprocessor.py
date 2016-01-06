@@ -11,7 +11,7 @@ from resources.utility import generic_utility
 from resources.video_parser import video
 
 
-def load_data(metadatas, video_type, run_as_widget, loading_progress, is_episode=False, viewing_activity = False):
+def load_data(metadatas, video_type, run_as_widget, loading_progress, viewing_activity = False):
     video_add_args = []
 
     lock = thread.allocate_lock()
@@ -33,7 +33,7 @@ def load_data(metadatas, video_type, run_as_widget, loading_progress, is_episode
 
         #        utility.log(video_id)
 
-        threads[thread_id] = threading.Thread(target=load_match, args=(thread_id, lock, rets, metadata, is_episode, viewing_activity))
+        threads[thread_id] = threading.Thread(target=load_match, args=(thread_id, lock, rets, metadata, viewing_activity))
 
         threads[thread_id].start()
         #        utility.log('thread '+str(i)+' started')
@@ -53,7 +53,7 @@ def load_data(metadatas, video_type, run_as_widget, loading_progress, is_episode
     return video_add_args
 
 
-def load_match(thread_id, lock, rets, metadata, is_episode = False, viewing_activity = False):
+def load_match(thread_id, lock, rets, metadata, viewing_activity = False):
 #    utility.log('loading '+unicode(video_id))
     ret = None
 
@@ -68,7 +68,7 @@ def load_match(thread_id, lock, rets, metadata, is_episode = False, viewing_acti
     success = False
     while (success == False):
         try:
-            ret = video(video_id, is_episode, lock, custom_title = custom_title, series_title = series_title)
+            ret = video(video_id, lock, custom_title = custom_title, series_title = series_title)
             success = True
         except requests.exceptions.HTTPError, e:
             if e.response.status_code == 429:
