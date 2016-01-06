@@ -1,1 +1,1 @@
-cscript %~dp0\sendkeys.vbs "Edge" %1
+cscript %~dp0\sendkeys.vbs "Netflix - Microsoft Edge" %1
