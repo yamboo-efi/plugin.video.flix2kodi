@@ -208,18 +208,20 @@ class LogiPlayer(xbmcgui.Window):
         browser_name = self.get_browser_scriptname(browser_name)
 
         script = path+browser_name+ending
-        custom_script = path+browser_name+"_custom"+ending
-		
+
         if generic_utility.windows():
             script = script.replace('/','\\')
-            custom_script = custom_script.replace('/','\\')
-        
-        if os.path.isfile(custom_script):
-            script = custom_script
-        elif not os.path.isfile(script):
-            generic_utility.log('Script: '+script+' not found!')
+
+        if not os.path.isfile(script):
+            generic_utility.error('Script: '+script+' not found!')
             script = ''
-        return bash + double_quotes+script+double_quotes
+
+        if generic_utility.darwin():
+            script = generic_utility.sh_escape(script)
+        else:
+            script = bash + double_quotes+script+double_quotes
+
+        return script
 
     def get_browser_scriptname(self, browser_name):
         if self.browser == BROWSER_CHROME:

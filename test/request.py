@@ -27,8 +27,14 @@ def get_video_ids(directory):
         video_ids.append(video_id)
     return video_ids
 
-ids = get_video_ids('/home/logi/tmp/')
-pprint.pprint(ids)
+def sh_escape(s):
+    return s.replace("(","\\(").replace(")","\\)").replace(" ","\\ ").replace("&", "\\&")
+
+strs = '/home/logi/.jdownloader/downloads/Clubland-2016-vol. 1/Tiesto & Don Diablo - Chemicals (Original Mix) (feat. Thomas Troelsen).mp3'
+strs = sh_escape(strs)
+print strs
+if os.path.isfile(strs):
+    print 'found'
 
 exit()
 

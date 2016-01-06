@@ -170,6 +170,9 @@ def clean_filename(n, chars=None):
         return (''.join(c for c in n if c not in '/\\:?"*|<>')).strip(chars)
 
 
+def sh_escape(s):
+    return s.replace("(","\\(").replace(")","\\)").replace(" ","\\ ").replace("&", "\\&")
+
 def unescape(string):
     html_parser = HTMLParser.HTMLParser()
     return html_parser.unescape(string)
