@@ -94,7 +94,7 @@ def read_headers():
 
 def should_retry(url, status_code):
     should = False
-    if status_code == 404 and 'pathEvaluator' in url:
+    if 'redirected' == status_code or (status_code == 404 and 'pathEvaluator' in url):
         should = True
 
     return should
@@ -108,9 +108,13 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
 
     session = get_netflix_session(new_session)
 
-    ret, status_code = load_site_internal(url, session, post, netflix=True)
-    ret = ret.decode('utf-8')
-    not_logged_in = '"template":"torii/nonmemberHome.jsx"' in ret
+    try:
+        ret, status_code = load_site_internal(url, session, post, netflix=True)
+        ret = ret.decode('utf-8')
+        not_logged_in = '"template":"torii/nonmemberHome.jsx"' in ret
+    except requests.exceptions.TooManyRedirects:
+        status_code = 'redirected'
+
     if status_code != requests.codes.ok or not_logged_in:
         if not login_process and (should_retry(url, status_code) or not_logged_in):
             if lock:
@@ -159,7 +163,8 @@ def load_other_site(url):
     return content
 
 def load_site_internal(url, session, post=None, options=False, headers=None, cookies=None, netflix=False):
-    generic_utility.log(str(cookies))
+#    generic_utility.log(str(cookies))
+    session.max_redirects = 5
     if post:
         response = session.post(url, headers=headers, cookies=cookies, data=post, verify=certifi.where())
     elif options:

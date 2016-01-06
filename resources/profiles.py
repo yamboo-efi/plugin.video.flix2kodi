@@ -1,8 +1,12 @@
 from __future__ import unicode_literals
 
 import json
-import xbmc
-import xbmcgui
+
+try:
+    import xbmc
+    import xbmcgui
+except Exception:
+    pass
 
 import connect
 from resources.utility import generic_utility
