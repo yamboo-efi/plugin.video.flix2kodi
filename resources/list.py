@@ -59,7 +59,11 @@ def load_videos_to_directory(loading_progress, run_as_widget, metadatas, video_t
     video_metadatas = multiprocessor.load_data(metadatas, video_type, run_as_widget, loading_progress, viewing_activity=viewing_activity)
     removable = url != None and 'my-list' in url
 
-    sorted_video_metadata = sorted(video_metadatas, key=lambda t: t['title'], reverse = viewing_activity)
+    if not viewing_activity:
+        sorted_video_metadata = sorted(video_metadatas, key=lambda t: t['title'], reverse = viewing_activity)
+    else:
+        sorted_video_metadata = video_metadatas
+
     for video_metadata in sorted_video_metadata:
         if (video_metadata != None):
             video_add(video_metadata, removable, viewing_activity)
@@ -70,7 +74,8 @@ def load_videos_to_directory(loading_progress, run_as_widget, metadatas, video_t
         add.add_next_item('Next', page + 1, url, video_type, 'list_videos', '')
     if len(video_metadatas) == 0:
         generic_utility.notification(generic_utility.get_string(30306))
-    add_sort_methods()
+    if not viewing_activity:
+        add_sort_methods()
 
 def show_loading_progress(run_as_widget):
     loading_progress = None
