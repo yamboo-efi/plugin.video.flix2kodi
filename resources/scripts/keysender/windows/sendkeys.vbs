@@ -27,8 +27,8 @@ if shell.AppActivate(windowName) = true then
     Wscript.Sleep 500
 	shell.SendKeys cmd
 
-	if cmd2 != "" then
-    	Wscript.Sleep 500
-    	shell.SendKeys cmd2
+	if cmd2 <> "" then
+	    	Wscript.Sleep 500
+    		shell.SendKeys cmd2
 	end if
 end if
