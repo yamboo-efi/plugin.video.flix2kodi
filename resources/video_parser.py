@@ -41,7 +41,7 @@ def video(video_id, lock = None, custom_title = None, series_title = None, ignor
     type = parse_type(match)
 
     # series has no playcount
-    if type is not 'show':
+    if type != 'show':
         duration, playcount = parse_duration_playcount(match)
     else:
         playcount = 0
@@ -93,6 +93,7 @@ def get_value(match, key, default = None):
 
 def parse_duration_playcount(match):
     duration = get_value(match, 'runtime', 0)
+
     playcount = 0
 
     offset = get_value(match, 'bookmarkPosition', None)
@@ -100,7 +101,7 @@ def parse_duration_playcount(match):
 
     try:
         if offset:
-            if (duration > 0 and float(offset) / float(duration)) >= 0.8:
+            if (duration > 0 and duration > 0 and float(offset) / float(duration)) >= 0.8:
                 playcount = 1
         elif watched:
             playcount = 1

@@ -1,4 +1,11 @@
-version 0.4.7 (06.12.2015)
+version 0.4.8 (07.01.2016)
+  * removed ssl verification
+  * added some more debugging
+  * fixed remotes not working (which are captured by kodi) (windows only)
+  * fixed viewing-activity order
+  * added support to add to 'my list'
+
+version 0.4.7 (06.01.2016)
   * Fixed redirect issue (long wait, then crash)
   * Fixed type-handling (browse tv-shows should now work if enabled in settings or context-menu used)
   * Next try on edge
@@ -6,33 +13,33 @@ version 0.4.7 (06.12.2015)
   * MacOS?
   * Added custom scripts support
 
-version 0.4.6 (05.12.2015)
+version 0.4.6 (05.01.2016)
   * added auto-(re)connect
   * added edge-support
 
-version 0.4.5 (04.12.2015)
+version 0.4.5 (04.01.2016)
   * Fixed: 'Cannot update playcount'
   * Hopefully fixed macos issues with keyring
   * Fixed: added switch in chrome-launcher-script (windows) to call right path on 32 bit windows
 
-version 0.4.4 (03.12.2015)
+version 0.4.4 (03.01.2016)
   * playback now updates whole library items cause seems to be fast enough.
 
-version 0.4.3 (03.12.2015)
+version 0.4.3 (03.01.2016)
   * added 'remove from library'
   * added workaround for mac
   * playback now updates library item after finish if exists
 
-version 0.4.2 (03.12.2015)
+version 0.4.2 (03.01.2016)
   * added support to switch profile (just select 'Who's watching')
   * delete cookies should now work
   * changed launch-parameters for windows
   * changed window-name for chrome (windows)
 
-version 0.4.1 (02.12.2015)
+version 0.4.1 (02.01.2016)
   * changed default view-ids and fanart
 
-version 0.4 (02.12.2015)
+version 0.4 (02.01.2016)
   * fixed search, added dynamic lists.
 
 version 0.1 (30.12.2015)

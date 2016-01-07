@@ -297,3 +297,8 @@ def video_playback_info(video_ids):
     post_data = generic_utility.video_playback_info % (ids_str, generic_utility.get_setting('authorization_url'))
     content = connect.load_netflix_site(generic_utility.evaluator(), post=post_data)
     return content
+
+def track_id_list(list):
+    post_data = '{"paths":[["lists","%s","trackIds"]],"authURL":"%s"}' % (list, generic_utility.get_setting('authorization_url'))
+    content = connect.load_netflix_site(generic_utility.evaluator(), post=post_data)
+    return content

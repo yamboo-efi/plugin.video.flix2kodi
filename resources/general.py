@@ -1,11 +1,13 @@
 from __future__ import unicode_literals
 
 import sys
+
 import xbmcplugin
 
 import add
 from resources import connect
 from resources.utility import generic_utility
+from resources.utility.generic_utility import read_lists
 
 plugin_handle = int(sys.argv[1])
 
@@ -46,57 +48,3 @@ def main(video_type):
 
 
 
-def read_lists(falkor_cache):
-
-    mylist_id = extract_mylist_id(falkor_cache)
-
-    lists = falkor_cache['lists']
-    lists = filter_size(lists)
-    rets = []
-    videos=[]
-
-    list_contains_mylist = False
-    for list_key in lists:
-        list = lists[list_key]
-        list = filter_size(list)
-        if 'displayName' in list:
-            if list_key == mylist_id:
-                list_contains_mylist = True
-            display_name = unicode(list['displayName']['value'])
-            ret = {'id': list_key, 'name': display_name}
-            rets.append(ret)
-
-    if not list_contains_mylist:
-        ret = {'id': mylist_id, 'name': generic_utility.get_string(30104)}
-        rets.append(ret)
-
-    return rets
-
-def filter_size(lolomos):
-    for key in lolomos.keys():
-        if key in ('$size', 'size'):
-            del lolomos[key]
-    return lolomos
-
-
-def extract_mylist_id(falkor_cache):
-    mylist_id = None
-    try:
-        assert 'lolomos' in falkor_cache
-        lolomos = falkor_cache['lolomos']
-        filter_size(lolomos)
-        assert len(lolomos)==1
-        root_list_id = lolomos.keys()[0]
-        lists = filter_size(lolomos[root_list_id])
-        assert 'mylist' in lists
-        mylist_ref = lists['mylist']
-        assert len(mylist_ref) == 3
-        mylist_idx = mylist_ref[2]
-        assert mylist_idx in lists
-        mylist = lists[mylist_idx]
-        assert len(mylist) == 2
-        mylist_id = mylist[1]
-    except Exception as ex:
-        print('cannot find mylist_id')
-        print repr(ex)
-    return mylist_id

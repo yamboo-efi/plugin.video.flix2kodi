@@ -103,58 +103,9 @@ def video(video_metadata, removable = False, viewing_activity = False):
     else:
         list_item.setProperty('fanart_image', thumb_url)
     if type == 'show':
-        if generic_utility.get_setting('browse_tv_shows') == 'true':
-            entries.append((generic_utility.get_string(30151),
-                            'Container.Update(plugin://%s/?mode=play_video_main&url=%s&thumb=%s)' % (
-                                generic_utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
-        else:
-            entries.append((generic_utility.get_string(30152),
-                            'Container.Update(plugin://%s/?mode=list_seasons&url=%s&thumb=%s)' % (
-                                generic_utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
-
-        series_dir = library.get_series_dir(title.strip())
-        #        generic_utility.log('series-dir: '+series_dir)
-        if xbmcvfs.exists(series_dir+os.sep) == False:
-            entries.append((generic_utility.get_string(30150),
-                            'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
-                                generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())), urllib.quote_plus(video_id))))
-        else:
-            entries.append((generic_utility.get_string(301501),
-                            'RunPlugin(plugin://%s/?mode=remove_series_from_library&url=&name=%s)' % (
-                                generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())))))
+        add_context_menu_show(entries, removable, thumb_url, title, video_id)
     else:
-        entries.append((
-                       generic_utility.get_string(30153), 'RunPlugin(plugin://%s/?mode=play_trailer&url=%s&type=%s)' % (
-                           generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title)), type)))
-        if removable:
-            entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
-                generic_utility.addon_id, urllib.quote_plus(video_id))))
-        else:
-            entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
-                generic_utility.addon_id, urllib.quote_plus(video_id))))
-        entries.append((generic_utility.get_string(30156),
-                        'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=movie)' % (
-                            generic_utility.addon_id, urllib.quote_plus(
-                                generic_utility.main_url + 'WiMovie/' + video_id))))
-        entries.append((generic_utility.get_string(30157), 'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=tv)' % (
-            generic_utility.addon_id, urllib.quote_plus(generic_utility.main_url + 'WiMovie/' + video_id))))
-#    generic_utility.log(type)
-
-    if type == 'movie':
-        title_utf8 = title.strip() + ' (' + str(year) + ')'
-        title = urllib.quote_plus(title_utf8.encode('utf-8'))
-        movie_dir = library.get_movie_dir(title_utf8)[0]
-        if xbmcvfs.exists(movie_dir+os.sep) == False:
-            entries.append((generic_utility.get_string(30150),
-                            'RunPlugin(plugin://%s/?mode=add_movie_to_library&url=%s&name=%s)' % (
-                                generic_utility.addon_id, urllib.quote_plus(video_id),
-                                title)))
-        else:
-            entries.append((generic_utility.get_string(301501),
-                            'RunPlugin(plugin://%s/?mode=remove_movie_from_library&url=&name=%s)' % (
-                                generic_utility.addon_id, title)))
-
-#    utility.log(str(entries))
+        add_context_menu_movie(entries, removable, title, type, video_id, year)
     list_item.addContextMenuItems(entries)
 
     folder = True
@@ -163,6 +114,70 @@ def video(video_metadata, removable = False, viewing_activity = False):
 #    utility.log(u)
     directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=folder)
     return directory_item
+
+
+def add_context_menu_movie(entries, removable, title, type, video_id, year):
+    entries.append((
+        generic_utility.get_string(30153), 'RunPlugin(plugin://%s/?mode=play_trailer&url=%s&type=%s)' % (
+            generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title)), type)))
+    entries.append((generic_utility.get_string(30156),
+                    'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=movie)' % (
+                        generic_utility.addon_id, urllib.quote_plus(
+                                generic_utility.main_url + 'WiMovie/' + video_id))))
+    entries.append(
+            (generic_utility.get_string(30157), 'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=tv)' % (
+                generic_utility.addon_id, urllib.quote_plus(generic_utility.main_url + 'WiMovie/' + video_id))))
+    if removable:
+        entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
+            generic_utility.addon_id, urllib.quote_plus(video_id))))
+    else:
+        entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
+            generic_utility.addon_id, urllib.quote_plus(video_id))))
+    title_utf8 = title.strip() + ' (' + str(year) + ')'
+    title = urllib.quote_plus(title_utf8.encode('utf-8'))
+    movie_dir = library.get_movie_dir(title_utf8)[0]
+    if xbmcvfs.exists(movie_dir + os.sep) == False:
+        entries.append((generic_utility.get_string(30150),
+                        'RunPlugin(plugin://%s/?mode=add_movie_to_library&url=%s&name=%s)' % (
+                            generic_utility.addon_id, urllib.quote_plus(video_id),
+                            title)))
+    else:
+        entries.append((generic_utility.get_string(301501),
+                        'RunPlugin(plugin://%s/?mode=remove_movie_from_library&url=&name=%s)' % (
+                            generic_utility.addon_id, title)))
+
+    #    generic_utility.log(type)
+
+
+    #    utility.log(str(entries))
+
+
+def add_context_menu_show(entries, removable, thumb_url, title, video_id):
+    if generic_utility.get_setting('browse_tv_shows') == 'true':
+        entries.append((generic_utility.get_string(30151),
+                        'Container.Update(plugin://%s/?mode=play_video_main&url=%s&thumb=%s)' % (
+                            generic_utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
+    else:
+        entries.append((generic_utility.get_string(30152),
+                        'Container.Update(plugin://%s/?mode=list_seasons&url=%s&thumb=%s)' % (
+                            generic_utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
+    if removable:
+        entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
+            generic_utility.addon_id, urllib.quote_plus(video_id))))
+    else:
+        entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
+            generic_utility.addon_id, urllib.quote_plus(video_id))))
+    series_dir = library.get_series_dir(title.strip())
+    #        generic_utility.log('series-dir: '+series_dir)
+    if xbmcvfs.exists(series_dir + os.sep) == False:
+        entries.append((generic_utility.get_string(30150),
+                        'RunPlugin(plugin://%s/?mode=add_series_to_library&url=&name=%s&series_id=%s)' % (
+                            generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())),
+                            urllib.quote_plus(video_id))))
+    else:
+        entries.append((generic_utility.get_string(301501),
+                        'RunPlugin(plugin://%s/?mode=remove_series_from_library&url=&name=%s)' % (
+                            generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())))))
 
 
 def add_next_item(name, page, url, video_type, mode, iconimage):

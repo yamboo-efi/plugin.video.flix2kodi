@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import os
 import pickle
+import re
 import requests
 import ssl
 
@@ -87,7 +88,7 @@ def should_retry(url, status_code):
     return should
 
 
-def load_netflix_site(url, post=None, new_session=False, lock = None, login_process = False):
+def load_netflix_site(url, post=None, new_session=False, lock = None, login_process = False, options = True):
 
     generic_utility.debug('Loading netflix: ' + url + ' Post: ' + str(post))
     if lock != None:
@@ -96,7 +97,7 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
     session = get_netflix_session(new_session)
 
     try:
-        ret, status_code = load_site_internal(url, session, post, netflix=True)
+        ret, status_code = load_site_internal(url, session, post, netflix=True, options=True)
         ret = ret.decode('utf-8')
         not_logged_in = '"template":"torii/nonmemberHome.jsx"' in ret
     except requests.exceptions.TooManyRedirects:
@@ -108,7 +109,7 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
                 lock.release()
             if do_login():
                 session = get_netflix_session(new_session)
-                ret, status_code = load_site_internal(url, session, post, netflix=True)
+                ret, status_code = load_site_internal(url, session, post, netflix=True, options=True)
                 ret = ret.decode('utf-8')
                 if status_code != requests.codes.ok:
                         raise ValueError('!HTTP-ERROR!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
@@ -123,6 +124,12 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
 
     if lock:
         lock.release()
+
+    match = re.compile('"authURL":"(.+?)"', re.DOTALL| re.UNICODE).findall(ret)
+
+    if len(match) >0:
+        generic_utility.debug('Setting authorization url: ' + match[0])
+        generic_utility.set_setting('authorization_url', match[0])
 
 #    generic_utility.debug('Returning : '+ret)
     return ret
@@ -152,10 +159,14 @@ def load_other_site(url):
 def load_site_internal(url, session, post=None, options=False, headers=None, cookies=None, netflix=False):
 #    generic_utility.log(str(cookies))
     session.max_redirects = 10
+
+    if options:
+        response = session.options(url, headers=headers, cookies=cookies, verify=False)
+        if response.status_code != 200:
+            generic_utility.error('error options! url: '+url)
+            response.raise_for_status()
     if post:
         response = session.post(url, headers=headers, cookies=cookies, data=post, verify=False)
-    elif options:
-        response = session.options(url, headers=headers, cookies=cookies, verify=False)
     else:
         response = session.get(url, headers=headers, cookies=cookies, verify=False)
 

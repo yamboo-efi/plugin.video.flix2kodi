@@ -27,17 +27,6 @@ def get_video_ids(directory):
         video_ids.append(video_id)
     return video_ids
 
-def sh_escape(s):
-    return s.replace("(","\\(").replace(")","\\)").replace(" ","\\ ").replace("&", "\\&")
-
-strs = '/home/logi/.jdownloader/downloads/Clubland-2016-vol. 1/Tiesto & Don Diablo - Chemicals (Original Mix) (feat. Thomas Troelsen).mp3'
-strs = sh_escape(strs)
-print strs
-if os.path.isfile(strs):
-    print 'found'
-
-exit()
-
 urllib3.disable_warnings()
 connect.set_test()
 
@@ -103,58 +92,6 @@ def pprint_json(str):
     jsonstr = json.loads(str)
     pprint.pprint(jsonstr)
 
-do_login = True
-real_login = False
-
-if do_login:
-    if real_login:
-        if login()==True:
-            print 'login successfull'
-        else:
-            print 'login failed!'
-            exit()
-    else:
-        print 'loading data from disk'
-        content = read_login_content()
-        set_api_url(content)
-        authorization_url = sys.argv[3]
-
-
-#profile-switcher
-content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/profiles/switch?switchProfileGuid=HC2AFIZSMRHCDPZ76LZZRENGSI&authURL=%s' % authorization_url)
-
-############################################################################
-############################################################################
-
-sleep(1)
-
-#content = connect.load_netflix_site("http://www.netflix.com/browse", new_session=False)
-#pprint.pprint(content)
-#falkor_cache = generic_utility.parse_falkorcache(content)
-#pprint.pprint(falkor_cache['videos'])
-
-
-#list = '402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101754'
-
-post = '{"paths":['
-#post += '["lists","'+list+'",{"from":0,"to":19},["summary", "title"]]'
-post += '["videos",["70122827","70122838"],["bookmarkPosition", "runtime"]]'
-post += '],"authURL":"%s"}' % authorization_url
-
-
-#post = '{"paths":[["search","%s",{"from":0,"to":48},["summary","title"]],["search","%s",["id","length",' \
-#            '"name","trackIds","requestId"]]],"authURL":"%s"}' % ('Hobbit', 'Hobbit',
-#                                                                  authorization_url)
-
-
-content = connect.load_netflix_site('https://www.netflix.com/api/shakti/7ffaa772/pathEvaluator?materialize=true&model=harris', post)
-
-matches = json.loads(content)#['value']['videos']
-pprint.pprint(matches)
-#pprint.pprint(json.loads(content))
-#print content
-
-
 
 def extract_mylist_id(falkor_cache):
     mylist_id = None
@@ -177,4 +114,71 @@ def extract_mylist_id(falkor_cache):
         print('cannot find mylist_id')
         print repr(ex)
     return mylist_id
+
+
+do_login = True
+real_login = False
+
+if do_login:
+    if real_login:
+        if login()==True:
+            print 'login successfull'
+        else:
+            print 'login failed!'
+            exit()
+    else:
+        print 'loading data from disk'
+        content = read_login_content()
+        set_api_url(content)
+        authorization_url = sys.argv[3]
+
+
+#profile-switcher
+content = connect.load_netflix_site('https://www.netflix.com/api/shakti/c88e2062/profiles/switch?switchProfileGuid=HC2AFIZSMRHCDPZ76LZZRENGSI&authURL=%s' % authorization_url)
+
+############################################################################
+############################################################################
+
+sleep(1)
+
+
+#content = connect.load_netflix_site("http://www.netflix.com/browse", new_session=False)
+#falkor_cache = generic_utility.parse_falkorcache(content)
+#extract_mylist_id(falkor_cache)
+#pprint.pprint(falkor_cache['lists'])
+
+#pprint.pprint(falkor_cache['videos'])
+
+
+#list = '402ccb6f-4c0f-47b5-8d6e-906f40b16b16_8101754'
+
+
+#list = '19362395-0693-4501-b6c6-5af7c75aaf35_14096548'
+#post = '{"paths":['
+#post += '["lists","'+list+'","trackIds", {"from":0,"to":999},["summary","title"]]]'
+#post += '["videos",["70122827","70122838"],["bookmarkPosition", "runtime"]]'
+#post += '],"authURL":"%s"}' % authorization_url
+
+
+post = '{"callPath":["lolomos","0e50e9d5-9c44-4ad8-a106-691c0742ffff_ROOT","addToList"],'+\
+       '"params":["0e50e9d5-9c44-4ad8-a106-691c0742ffff_53724068",2,["videos",80042368],13630398,null,null],'+\
+       '"authURL":"1452206880591.tSgtf4/ICsBChqVNTmYCBVA871E="}'
+
+#post = '{"callPath":["lolomos","19362395-0693-4501-b6c6-5af7c75aaf35_ROOT","addToList"],'+\
+#       '"params":["19362395-0693-4501-b6c6-5af7c75aaf35_14096548",2,["videos",70080038],13462260,null,null],'+\
+#       '"authURL":"1452201279843.P+9yGC0A/W+XLMmWeegiACUgvdA="}'
+content = connect.load_netflix_site('https://www.netflix.com/api/shakti/c88e2062/pathEvaluator?materialize=true&model=harris&method=call', post)
+jsn = json.loads(content)
+pprint.pprint(jsn)
+
+
+
+
+
+#matches = json.loads(content)#['value']['videos']
+#pprint.pprint(matches)
+#pprint.pprint(json.loads(content))
+#print content
+
+
 

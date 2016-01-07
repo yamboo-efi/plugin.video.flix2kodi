@@ -5,40 +5,47 @@ import urllib
 import xbmc
 
 import connect
+import get
 from resources.utility import generic_utility
 
-my_list = '{"paths":[["lolomo",{"from":2,"to":2},{"from":0,"to":50},["summary","title"]],' \
-          '["lolomo",{"from":1,"to":2},["trackIds","displayName"]]],"authURL":"%s"}'
-
 def add(video_id):
-    post_data = my_list % generic_utility.get_setting('authorization_url')
-    content = connect.load_netflix_site(generic_utility.evaluator(), post=post_data)
-    match = json.loads(content)['value']['videos']
-    headers = {'Access-Control-Request-Headers': 'content-type, accept','Access-Control-Request-Method': 'POST',
-               'Origin': 'http://www.netflix.com'}
-    connect.load_netflix_site(generic_utility.evaluator() + '&method=call', options=True, headers=headers)
-    cookies = {'lhpuuidh-browse-' + generic_utility.get_setting('selected_profile'): urllib.quote_plus(
-        generic_utility.get_setting('language').split('-')[1] + ':' + generic_utility.get_setting('language').upper() + ':' + generic_utility.get_setting('root_list')), 'SecureNetflixId': 'v%3D2%26mac%3DAQEAEQABABRkPnYy2LvtMo02JH3beZhI4vKJAM2mLeM.%26dt%3D1449696369549'}
-    post_data = generic_utility.add_list % (generic_utility.get_setting('root_list'),
-                                            generic_utility.get_setting('my_list'),
-                                            video_id,
-                                            generic_utility.get_setting('track_id'),
-                                            unicode(len(match)),
-                                            generic_utility.get_setting('authorization_url'))
-    headers = {'Referer': 'http://www.netflix.com/browse',
-               'Origin': 'http://www.netflix.com'}
-    content = connect.load_netflix_site(generic_utility.evaluator() + '&method=call',
-                                        cookies=cookies,
-                                        headers=headers,
-                                        post=post_data)
-    #xbmc.executebuiltin('XBMC.Notification(NetfliXBMC:,' + str(translation(30144)) + ',3000,' + icon + ')')
+    add_or_remove(video_id, True)
 
+def remove(video_id):
+    add_or_remove(video_id, False)
 
-def remove(id):
-    if authMyList:
-        encodedAuth = urllib.urlencode({'authURL': authMyList})
-        load(urlMain + "/QueueDelete?" + encodedAuth + "&qtype=ED&movieid=" + id)
-        xbmc.executebuiltin('XBMC.Notification(NetfliXBMC:,' + str(translation(30145)) + ',3000,' + icon + ')')
-        xbmc.executebuiltin("Container.Refresh")
+def add_or_remove(video_id, is_add):
+
+    content = connect.load_netflix_site("https://www.netflix.com/")
+    falkor_cache = generic_utility.parse_falkorcache(content)
+
+    root_list, my_list = generic_utility.extract_mylist_id(falkor_cache)
+    auth = generic_utility.get_setting('authorization_url')
+
+    track_id = get_track_id(my_list)
+
+    if is_add:
+        add_or_remove_str = 'addToList'
+        add_or_remove_msg = 'added'
     else:
-        debug("Attempted to removeFromQueue without valid authMyList")
+        add_or_remove_str = 'removeFromList'
+        add_or_remove_msg = 'removed'
+
+    post = ('{"callPath":["lolomos","%s","%s"],"params":["%s",2,["videos",%s],%s,null,null],'+\
+           '"authURL":"%s"}') % (root_list, add_or_remove_str, my_list, video_id, track_id, auth)
+
+    content = connect.load_netflix_site(generic_utility.evaluator()+'&method=call', post, options=True)
+
+    if '"invalidated"' in content:
+        generic_utility.notification('Successfully '+add_or_remove_msg)
+    elif 'already exists' in content:
+        generic_utility.notification('already exists')
+
+    generic_utility.debug('add to mylist content: '+content)
+
+
+def get_track_id(my_list):
+    resp_trackid = get.track_id_list(my_list)
+    jsn = json.loads(resp_trackid)
+    track_id = jsn['value']['lists'][my_list]['trackIds']['trackId']
+    return unicode(track_id)
