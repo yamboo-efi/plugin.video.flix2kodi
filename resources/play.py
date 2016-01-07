@@ -125,6 +125,7 @@ class LogiPlayer(xbmcgui.Window):
     def after_chrome_launched(self):
         pass
     def onAction(self, action):
+        generic_utility.debug('caught action: '+str(action.getId()))
         ACTION_NAV_BACK = 92
         ACTION_PREVIOUS_MENU = 10
         ACTION_STOP = 13
@@ -158,7 +159,7 @@ class LogiPlayer(xbmcgui.Window):
         elif action.getId() == ACTION_MOVE_DOWN:
             self.control('down')
         else:
-            generic_utility.log('unknown action: ' + str(action.getId()))
+            generic_utility.error('unknown action: ' + str(action.getId()))
 
     def control(self, key):
         script = self.get_launch_script('keysender')
