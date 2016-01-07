@@ -8,9 +8,7 @@ import ssl
 from resources import chrome_cookie
 from resources import login
 
-from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.exceptions import InsecurePlatformWarning
-from requests.packages.urllib3.poolmanager import PoolManager
 
 import resources.lib.certifi as certifi
 from resources.utility import generic_utility
@@ -19,12 +17,6 @@ from resources.utility import file_utility
 requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
 
 
-class HTTPSAdapter(HTTPAdapter):
-    def init_poolmanager(self, connections, maxsize, block=False):
-        self.poolmanager = PoolManager(num_pools=connections,
-                                       maxsize=maxsize,
-                                       block=block,
-                                       ssl_version=ssl.PROTOCOL_TLSv1)
 test = False
 
 
@@ -35,7 +27,6 @@ def set_test():
 
 def create_session(netflix = False):
     session = requests.Session()
-    session.mount('https://', HTTPSAdapter())
     session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
 
                                           'like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586'})
@@ -166,11 +157,11 @@ def load_site_internal(url, session, post=None, options=False, headers=None, coo
 #    generic_utility.log(str(cookies))
     session.max_redirects = 10
     if post:
-        response = session.post(url, headers=headers, cookies=cookies, data=post, verify=certifi.where())
+        response = session.post(url, headers=headers, cookies=cookies, data=post, verify=False)
     elif options:
-        response = session.options(url, headers=headers, cookies=cookies, verify=certifi.where())
+        response = session.options(url, headers=headers, cookies=cookies, verify=False)
     else:
-        response = session.get(url, headers=headers, cookies=cookies, verify=certifi.where())
+        response = session.get(url, headers=headers, cookies=cookies, verify=False)
 
     content = response.content
     status = response.status_code
