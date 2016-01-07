@@ -39,7 +39,10 @@ def login():
             generic_utility.notification(generic_utility.get_string(30303))
             return False
         match = re.compile('"apiUrl":"(.+?)",', re.UNICODE).findall(content)
-        generic_utility.set_setting('api_url', match[0])
+        if len(match) > 0:
+            generic_utility.set_setting('api_url', match[0])
+        else:
+            generic_utility.error('Cannot find apiUrl! Source: '+content)
 
         connect.set_chrome_netflix_cookies()
 
