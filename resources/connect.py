@@ -8,14 +8,10 @@ import ssl
 from resources import chrome_cookie
 from resources import login
 
-from requests.packages.urllib3.exceptions import InsecurePlatformWarning
-
-import resources.lib.certifi as certifi
 from resources.utility import generic_utility
 from resources.utility import file_utility
 
-requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
-
+requests.packages.urllib3.disable_warnings()
 
 test = False
 
