@@ -53,7 +53,7 @@ def read_login_content():
 
 def login():
     global authorization_url, language, api_url
-    content = connect.load_netflix_site(main_url + 'Login', new_session=True)
+    content = connect.load_netflix_site(main_url + 'Login', new_session=True, login_process=True)
     if not 'Sorry, Netflix ' in content:
         set_auth_url(content)
         match = re.compile('locale: "(.+?)"', re.DOTALL).findall(content)
@@ -61,7 +61,7 @@ def login():
         post_data = {'authURL': authorization_url, 'email': email,
                      'password': password, 'RememberMe': 'on'}
         content = connect.load_netflix_site(main_url + 'Login?locale=' + language,
-                                            post=post_data)
+                                            post=post_data, login_process=True)
         if 'id="page-LOGIN"' in content:
             return False
         set_api_url(content)
@@ -117,7 +117,7 @@ def extract_mylist_id(falkor_cache):
 
 
 do_login = True
-real_login = False
+real_login = True
 
 if do_login:
     if real_login:

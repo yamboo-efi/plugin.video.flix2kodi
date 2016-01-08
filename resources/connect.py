@@ -88,7 +88,7 @@ def should_retry(url, status_code):
     return should
 
 
-def load_netflix_site(url, post=None, new_session=False, lock = None, login_process = False, options = True):
+def load_netflix_site(url, post=None, new_session=False, lock = None, login_process = False, options = False):
 
     generic_utility.debug('Loading netflix: ' + url + ' Post: ' + str(post))
     if lock != None:
@@ -97,19 +97,19 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
     session = get_netflix_session(new_session)
 
     try:
-        ret, status_code = load_site_internal(url, session, post, netflix=True, options=True)
+        ret, status_code = load_site_internal(url, session, post, netflix=True, options=False)
         ret = ret.decode('utf-8')
         not_logged_in = '"template":"torii/nonmemberHome.jsx"' in ret
     except requests.exceptions.TooManyRedirects:
         status_code = 'redirected'
 
-    if status_code != requests.codes.ok or not_logged_in:
+    if status_code != requests.codes.ok or (not_logged_in and not login_process):
         if not login_process and (should_retry(url, status_code) or not_logged_in):
             if lock:
                 lock.release()
             if do_login():
                 session = get_netflix_session(new_session)
-                ret, status_code = load_site_internal(url, session, post, netflix=True, options=True)
+                ret, status_code = load_site_internal(url, session, post, netflix=True, options=False)
                 ret = ret.decode('utf-8')
                 if status_code != requests.codes.ok:
                         raise ValueError('!HTTP-ERROR!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
@@ -125,14 +125,24 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
     if lock:
         lock.release()
 
-    match = re.compile('"authURL":"(.+?)"', re.DOTALL| re.UNICODE).findall(ret)
-
-    if len(match) >0:
-        generic_utility.debug('Setting authorization url: ' + match[0])
-        generic_utility.set_setting('authorization_url', match[0])
+    try_to_read_auth_url(ret)
 
 #    generic_utility.debug('Returning : '+ret)
     return ret
+
+
+def try_to_read_auth_url(ret):
+    match = re.compile('"authURL":"(.+?)"', re.DOTALL | re.UNICODE).findall(ret)
+    if len(match) > 0:
+        generic_utility.debug('Setting authorization url: ' + match[0])
+        if not test:
+            generic_utility.set_setting('authorization_url', match[0])
+    else:
+        match = re.compile('name="authURL" value="(.+?)"', re.DOTALL | re.UNICODE).findall(ret)
+        if len(match) > 0:
+            generic_utility.debug('Setting authorization url: ' + match[0])
+            if not test:
+                generic_utility.set_setting('authorization_url', match[0])
 
 
 def get_netflix_session(new_session):
@@ -151,7 +161,7 @@ def get_netflix_session(new_session):
 
 
 def load_other_site(url):
-    generic_utility.log('loading-other: ' + url)
+    generic_utility.debug('loading-other: ' + url)
     session = create_session()
     content = load_site_internal(url, session)[0]
     return content
@@ -159,6 +169,15 @@ def load_other_site(url):
 def load_site_internal(url, session, post=None, options=False, headers=None, cookies=None, netflix=False):
 #    generic_utility.log(str(cookies))
     session.max_redirects = 10
+#    generic_utility.debug('load site internal')
+#    generic_utility.debug(url)
+#    generic_utility.debug(str(session.headers))
+#    generic_utility.debug(str(session.cookies))
+
+#    generic_utility.debug(options)
+#    generic_utility.debug(str(headers))
+#    generic_utility.debug(str(cookies))
+#    generic_utility.debug(str(post))
 
     if options:
         response = session.options(url, headers=headers, cookies=cookies, verify=False)

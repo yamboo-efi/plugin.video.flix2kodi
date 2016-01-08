@@ -1,3 +1,6 @@
+version 0.4.9 (08.01.2016)
+  * fixed login issue
+
 version 0.4.8 (07.01.2016)
   * removed ssl verification
   * added some more debugging
