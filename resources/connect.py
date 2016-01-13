@@ -8,6 +8,7 @@ import ssl
 
 from resources import chrome_cookie
 from resources import login
+from resources.login import CannotRefreshDataException
 
 from resources.utility import generic_utility
 from resources.utility import file_utility
@@ -82,7 +83,7 @@ def read_headers():
 
 def should_retry(url, status_code):
     should = False
-    if 'redirected' == status_code or (status_code == 404 and 'pathEvaluator' in url):
+    if 'redirected' == status_code or (status_code in(401, 404) and '/shakti/' in url):
         should = True
 
     return should
@@ -104,20 +105,24 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
         status_code = 'redirected'
 
     if status_code != requests.codes.ok or (not_logged_in and not login_process):
-        if not login_process and (should_retry(url, status_code) or not_logged_in):
+        if not test and not login_process and (should_retry(url, status_code) or not_logged_in):
             if lock:
                 lock.release()
-            if do_login():
-                session = get_netflix_session(new_session)
-                ret, status_code = load_site_internal(url, session, post, netflix=True, options=False)
-                ret = ret.decode('utf-8')
-                if status_code != requests.codes.ok:
-                        raise ValueError('!HTTP-ERROR!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
-            else:
-                raise ValueError('re-login failed')
+
+            try:
+                refresh_data()
+            except CannotRefreshDataException:
+                if not do_login():
+                    raise ValueError('re-login failed')
+
+            session = get_netflix_session(new_session)
+            ret, status_code = load_site_internal(url, session, post, netflix=True, options=False)
+            ret = ret.decode('utf-8')
+            if status_code != requests.codes.ok:
+                    raise ValueError('!HTTP-ERROR1!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
 
         else:
-            raise ValueError('!HTTP-ERROR!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
+            raise ValueError('!HTTP-ERROR2!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
 
     save_cookies(session)
     save_headers(session)
@@ -137,12 +142,16 @@ def try_to_read_auth_url(ret):
         generic_utility.debug('Setting authorization url: ' + match[0])
         if not test:
             generic_utility.set_setting('authorization_url', match[0])
+        else:
+            return match[0]
     else:
         match = re.compile('name="authURL" value="(.+?)"', re.DOTALL | re.UNICODE).findall(ret)
         if len(match) > 0:
             generic_utility.debug('Setting authorization url: ' + match[0])
             if not test:
                 generic_utility.set_setting('authorization_url', match[0])
+            else:
+                return match[0]
 
 
 def get_netflix_session(new_session):
@@ -167,17 +176,7 @@ def load_other_site(url):
     return content
 
 def load_site_internal(url, session, post=None, options=False, headers=None, cookies=None, netflix=False):
-#    generic_utility.log(str(cookies))
     session.max_redirects = 10
-#    generic_utility.debug('load site internal')
-#    generic_utility.debug(url)
-#    generic_utility.debug(str(session.headers))
-#    generic_utility.debug(str(session.cookies))
-
-#    generic_utility.debug(options)
-#    generic_utility.debug(str(headers))
-#    generic_utility.debug(str(cookies))
-#    generic_utility.debug(str(post))
 
     if options:
         response = session.options(url, headers=headers, cookies=cookies, verify=False)
@@ -193,15 +192,23 @@ def load_site_internal(url, session, post=None, options=False, headers=None, coo
     status = response.status_code
     return content, status
 
+
 def set_chrome_netflix_cookies():
     if test == False:
         chrome_cookie.set_netflix_cookies(read_cookies())
 
+
 def logged_in(content):
     return 'netflix.falkorCache' in content
+
 
 def choose_profile():
     login.choose_profile()
 
+
 def do_login():
     return login.login()
+
+
+def refresh_data():
+    login.refresh_data()

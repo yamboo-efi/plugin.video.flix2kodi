@@ -146,17 +146,13 @@ def add_context_menu_movie(entries, removable, title, type, video_id, year):
                         'RunPlugin(plugin://%s/?mode=remove_movie_from_library&url=&name=%s)' % (
                             generic_utility.addon_id, title)))
 
-    #    generic_utility.log(type)
-
-
-    #    utility.log(str(entries))
-
 
 def add_context_menu_show(entries, removable, thumb_url, title, video_id):
     if generic_utility.get_setting('browse_tv_shows') == 'true':
         entries.append((generic_utility.get_string(30151),
-                        'Container.Update(plugin://%s/?mode=play_video_main&url=%s&thumb=%s)' % (
+                        'RunPlugin(plugin://%s/?mode=play_video_main&url=%s&thumb=%s)' % (
                             generic_utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
+
     else:
         entries.append((generic_utility.get_string(30152),
                         'Container.Update(plugin://%s/?mode=list_seasons&url=%s&thumb=%s)' % (
@@ -188,7 +184,7 @@ def add_next_item(name, page, url, video_type, mode, iconimage):
     u += '&page=' + str(page)
     u += '&name=' + urllib.quote_plus(generic_utility.encode(name))
     liz=xbmcgui.ListItem(unicode(name), iconImage="DefaultFolder.png",thumbnailImage=iconimage)
-    liz.setInfo( type="Video", infoLabels={ "Title": name })
+    liz.setInfo( type="Video", infoLabels={ "Title": name, "Year":9999 })
     ok=xbmcplugin.addDirectoryItem(handle=plugin_handle,url=u,listitem=liz,isFolder=True)
     return ok
 

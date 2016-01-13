@@ -1,3 +1,9 @@
+version 0.5.0 (14.01.2016)
+  * fixed resume-playback-loop
+  * fixed add/remove to/from my-list refresh
+  * refactored whole api-access (performance-improvements)
+  * added recommendations-list (dynamic lists)
+
 version 0.4.9 (08.01.2016)
   * fixed login issue
 

@@ -101,6 +101,7 @@ class LogiPlayer(xbmcgui.Window):
             generic_utility.notification('Cannot update playcount. See logfile')
         self.close()
 
+
     def update_playcount(self, video_id):
         library.update_playcounts()
 #        video_metadata = video_parser.video(video_id, False, ignore_cache = True)

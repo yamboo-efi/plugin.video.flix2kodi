@@ -7,9 +7,8 @@ import xbmcplugin
 
 import add
 import get
-from resources import multiprocessor
+from resources.path_evaluator.types import lolomos
 from resources.utility import generic_utility
-from resources.video_parser import video
 
 plugin_handle = int(sys.argv[1])
 
@@ -23,8 +22,26 @@ def videos(url, video_type, offset, run_as_widget=False):
     loading_progress = show_loading_progress(run_as_widget)
     xbmcplugin.setContent(plugin_handle, 'movies')
 
-    video_ids = get.videos_matches(video_type, page, url)
-    load_videos_to_directory(loading_progress, run_as_widget, video_ids, video_type, page, url)
+    list_id = None
+    genre_id = None
+    if 'genre' in url:
+        genre_id = url.split('?')[1]
+    elif 'list?' in url:
+        data = url.split('?')[1]
+        if 'mylist' in data:
+            root_list = lolomos.get_root_list()
+            list_id = lolomos.get_mylist(root_list)[0]
+        else:
+            list_id = data
+
+    video_metadata = None
+    if list_id:
+        video_metadata = get.videos_in_list(list_id, page)
+    elif genre_id:
+        video_metadata = get.videos_in_genre(genre_id, page)
+
+    if video_metadata:
+        add_videos_to_directory(loading_progress, run_as_widget, video_metadata, video_type, page, url)
 
     if generic_utility.get_setting('force_view') == 'true' and not run_as_widget:
         xbmc.executebuiltin('Container.SetViewMode(' + generic_utility.get_setting('view_id_videos') + ')')
@@ -37,7 +54,7 @@ def viewing_activity(video_type, run_as_widget=False):
 
     metadata = get.viewing_activity_matches(video_type)
     if len(metadata) > 0:
-        load_videos_to_directory(loading_progress, run_as_widget, metadata, video_type, viewing_activity=True)
+        add_videos_to_directory(loading_progress, run_as_widget, metadata, video_type, viewing_activity=True)
     else:
         generic_utility.notification(generic_utility.get_string(30306))
 
@@ -53,29 +70,46 @@ def add_sort_methods():
     xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_RUNTIME)
 
 
+def add_videos_to_directory(loading_progress, run_as_widget, video_metadatas, video_type, page = None, url=None, viewing_activity = False):
 
-
-def load_videos_to_directory(loading_progress, run_as_widget, metadatas, video_type, page = None, url=None, viewing_activity = False):
-    video_metadatas = multiprocessor.load_data(metadatas, video_type, run_as_widget, loading_progress, viewing_activity=viewing_activity)
-    removable = url != None and 'my-list' in url
+    removable = url != None and 'mylist' in url
 
     if not viewing_activity:
         sorted_video_metadata = sorted(video_metadatas, key=lambda t: t['title'], reverse = viewing_activity)
     else:
         sorted_video_metadata = video_metadatas
 
+    allowed_types = calc_allowed_types(video_type, viewing_activity)
     for video_metadata in sorted_video_metadata:
-        if (video_metadata != None):
+        if video_metadata['type'] in allowed_types:
             video_add(video_metadata, removable, viewing_activity)
-#    generic_utility.log(url)
 
     items_per_page = int(generic_utility.get_setting('items_per_page'))
-    if ((url == None or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page):
-        add.add_next_item('Next', page + 1, url, video_type, 'list_videos', '')
+    if (not url or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page:
+        add.add_next_item('zzz[Next]zzz', page + 1, url, video_type, 'list_videos', '')
+
     if len(video_metadatas) == 0:
         generic_utility.notification(generic_utility.get_string(30306))
     if not viewing_activity:
         add_sort_methods()
+
+
+def calc_allowed_types(video_type, viewing_activity):
+    allowed_types = []
+    if video_type == 'both':
+        allowed_types.append('movie')
+        allowed_types.append('episode')
+        allowed_types.append('show')
+    elif viewing_activity:
+        if video_type == 'movie':
+            allowed_types.append('movie')
+        else:
+            allowed_types.append('episode')
+            allowed_types.append('show')
+    else:
+        allowed_types.append(video_type)
+    return allowed_types
+
 
 def show_loading_progress(run_as_widget):
     loading_progress = None
@@ -85,11 +119,12 @@ def show_loading_progress(run_as_widget):
         generic_utility.progress_window(loading_progress, 0, '...')
     return loading_progress
 
+
 def video_add(video_metadata, removable = False, viewing_activity = False):
     add.video(video_metadata, removable, viewing_activity = viewing_activity)
 
+
 def search(search_string, video_type, run_as_widget=False):
-    i = 1
     loading_progress = None
     if not run_as_widget:
         loading_progress = xbmcgui.DialogProgress()
@@ -97,8 +132,10 @@ def search(search_string, video_type, run_as_widget=False):
         generic_utility.progress_window(loading_progress, 0, '...')
     xbmcplugin.setContent(plugin_handle, 'movies')
 
-    video_ids = get.search_matches(search_string, video_type)
-    load_videos_to_directory(loading_progress, run_as_widget, video_ids, video_type, 0, '')
+
+    metadatas = get.videos_in_search(search_string)
+#    video_ids = get.search_matches(search_string, video_type)
+    add_videos_to_directory(loading_progress, run_as_widget, metadatas, video_type, 0, '')
 
     if generic_utility.get_setting('force_view') and not run_as_widget:
         xbmc.executebuiltin('Container.SetViewMode(' + generic_utility.get_setting('view_id_videos') + ')')
@@ -131,7 +168,7 @@ def genres(video_type):
     match = get.genre_data(video_type)
 
     for genre_id, title in match:
-        if video_type == 'tv':
+        if video_type == 'show':
             add.directory(title, 'genre?' + genre_id, 'list_videos', '', video_type)
         elif not genre_id == '83' and video_type == 'movie':
             add.directory(title, 'genre?' + genre_id, 'list_videos', '', video_type)

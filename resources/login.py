@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+import json
 import re
 
 test = False
@@ -34,19 +35,13 @@ def login():
         content = connect.load_netflix_site(
             generic_utility.main_url + 'Login?locale=' + generic_utility.get_setting('language'),
             post=post_data, login_process=True)
-#        utility.log(content)
 
         if 'id="page-LOGIN"' in content:
             if not test:
                 generic_utility.notification(generic_utility.get_string(30303))
             return False
-        match = re.compile('"apiUrl":"(.+?)",', re.UNICODE).findall(content)
-        if len(match) > 0:
-            generic_utility.set_setting('api_url', match[0])
-        else:
-            generic_utility.error('Cannot find apiUrl! Source: '+content)
 
-        connect.set_chrome_netflix_cookies()
+        parse_data_set_cookies(content)
 
         if not test:
             generic_utility.progress_window(login_progress, 75, generic_utility.get_string(30203))
@@ -67,6 +62,22 @@ def login():
                 login_progress.close()
         return False
 
+
+def parse_data_set_cookies(content):
+    parse_api_url(content)
+    connect.set_chrome_netflix_cookies()
+
+
+
+
+def parse_api_url(content):
+    match = re.compile('"apiUrl":"(.+?)",', re.UNICODE).findall(content)
+    if len(match) > 0:
+        generic_utility.set_setting('api_url', match[0])
+    else:
+        generic_utility.error('Cannot find apiUrl! Source: ' + content)
+
+
 def choose_profile():
     profiles.choose()
     profiles.update_displayed()
@@ -83,3 +94,24 @@ def profile_selection():
         profiles.load()
     profiles.update_displayed()
 
+
+class CannotRefreshDataException(Exception):
+    pass
+
+
+def refresh_data():
+    profl = generic_utility.get_setting('selected_profile')
+    if not profl:
+        if login():
+            profl = generic_utility.get_setting('selected_profile')
+    if not profl:
+        raise CannotRefreshDataException
+
+    try:
+        profiles.switch_profile(profl)
+    except ValueError as vex:
+        raise CannotRefreshDataException(vex)
+
+    content = connect.load_netflix_site(generic_utility.main_url)
+
+    parse_data_set_cookies(content)

@@ -20,11 +20,14 @@ def load():
         generic_utility.log('Load profile: no stored profile found!', loglevel=xbmc.LOGERROR)
 
 
-def switch_profile(profile_id):
+def switch_profile(profile_id, login_process = True):
     auth_id = generic_utility.get_setting('authorization_url')
     profile_switch_url = generic_utility.profile_switch() + 'switchProfileGuid=' + profile_id + '&authURL=' + auth_id
-    ret = connect.load_netflix_site(profile_switch_url, login_process=True)
+    ret = connect.load_netflix_site(profile_switch_url, login_process=login_process)
 #    generic_utility.log('switch-profile: '+ret)
+
+    content = connect.load_netflix_site('https://www.netflix.com')
+
     connect.set_chrome_netflix_cookies()
 
 def choose():
@@ -63,3 +66,4 @@ def update_displayed():
     if menu_path and not generic_utility.get_setting('show_profiles') == 'true':
         generic_utility.set_setting('selected_profile', None)
     xbmc.executebuiltin('Container.Update(' + menu_path + ')')
+

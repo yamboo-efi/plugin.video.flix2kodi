@@ -2,11 +2,11 @@ from __future__ import unicode_literals
 
 import HTMLParser
 import os
-import urllib
-import json
-import re
 import sys
+import urllib
 
+
+test_settings = {}
 test = False
 try:
     import xbmc
@@ -34,20 +34,11 @@ tmdb_url = 'https://api.themoviedb.org/3/search/%s?api_key=%s&query=%s&language=
 activity_url = '%s/viewingactivity?_retry=0&authURL=%s'
 
 # post data information
-genre = '{"paths":[["genres",%s,"su",{"from":%s,"to":%s},["summary","title"]]],"authURL":"%s"}'
-list_paths = '{"paths":[["lists","%s",{"from":%s,"to":%s},["summary", "title"]]],"authURL":"%s"}'
 
 movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]]],"authURL":"%s"}'
 series_genre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"]],"authURL":"%s"}'
-video_info = '{"paths":[["videos",%s,["availability","bookmarkPosition","details","episodeCount","maturity",' \
-             '"queue","releaseYear","requestId","runtime","seasonCount","summary","title","userRating","watched"]],' \
-             '["videos",%s,"current",["summary","runtime","bookmarkPosition","creditsOffset","title"]],' \
-             '["videos",%s,"seasonList","current",["showMemberType","summary"]],["videos",%s,' \
-             '"boxarts",["_342x192","_665x375"],"jpg"]],"authURL":"%s"}'
-add_list = '{"callPath":["lolomos","%s","addToList"],"params":["%s",2,["videos",%s],%s,null,null],"paths":[],' \
-           '"pathSuffixes":[[["length","trackIds","context","displayName"]],[{"to":%s}],["watchedEvidence",' \
-           '{"to":2}]],"authURL":"%s"}'
 video_playback_info = '{"paths": [["videos",[%s],["bookmarkPosition","runtime","summary"]]],"authURL":"%s"}'
+
 
 def data_dir():
     return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/')
@@ -94,7 +85,10 @@ def addon_icon():
 
 
 def addon_fanart():
-    return addon_handle.getAddonInfo('fanart')
+    if not test:
+        return addon_handle.getAddonInfo('fanart')
+    else:
+        return None
 
 
 def cover_fanart(name):
@@ -110,10 +104,17 @@ def create_pathname(path, item):
 
 
 def evaluator():
-    return evaluator_url % get_setting('api_url')
+    return evaluator_url % api_url()
+
+
+def api_url():
+    return get_setting('api_url')
+
+def auth_url():
+    return get_setting('authorization_url')
 
 def profile_switch():
-    return profile_switch_url % get_setting('api_url')
+    return profile_switch_url % api_url()
 
 def error(message):
     if test == False:
@@ -144,11 +145,21 @@ def open_setting():
 
 
 def get_setting(name):
-    return addon_handle.getSetting(name)
+    if not test:
+        ret = addon_handle.getSetting(name)
+    else:
+        if name not in test_settings:
+            return None
+        else:
+            ret = test_settings[name]
+    return ret
 
 
 def set_setting(name, value):
-    addon_handle.setSetting(name, value)
+    if not test:
+        addon_handle.setSetting(name, value)
+    else:
+        test_settings[name] = value
 
 
 def get_string(string_id):
@@ -234,66 +245,4 @@ def darwin():
     return  sys.platform == 'darwin'
 
 
-def parse_falkorcache(response):
-    match = re.compile('netflix.falkorCache = ({.*});</script><script>window.netflix', re.DOTALL | re.UNICODE).findall(
-        response)
-    content = match[0]
-    jsondata = json.loads(content)
-    return jsondata
 
-
-def read_lists(falkor_cache):
-
-    mylist_id = extract_mylist_id(falkor_cache)[1]
-
-    lists = falkor_cache['lists']
-    lists = filter_size(lists)
-    rets = []
-    videos=[]
-
-    list_contains_mylist = False
-    for list_key in lists:
-        list = lists[list_key]
-        list = filter_size(list)
-        if 'displayName' in list:
-            if list_key == mylist_id:
-                list_contains_mylist = True
-            display_name = unicode(list['displayName']['value'])
-            ret = {'id': list_key, 'name': display_name}
-            rets.append(ret)
-
-    if not list_contains_mylist:
-        ret = {'id': mylist_id, 'name': get_string(30104)}
-        rets.append(ret)
-
-    return rets
-
-
-def filter_size(lolomos):
-    for key in lolomos.keys():
-        if key in ('$size', 'size'):
-            del lolomos[key]
-    return lolomos
-
-
-def extract_mylist_id(falkor_cache):
-    mylist_id = None
-    try:
-        assert 'lolomos' in falkor_cache
-        lolomos = falkor_cache['lolomos']
-        filter_size(lolomos)
-        assert len(lolomos)==1
-        root_list_id = lolomos.keys()[0]
-        lists = filter_size(lolomos[root_list_id])
-        assert 'mylist' in lists
-        mylist_ref = lists['mylist']
-        assert len(mylist_ref) == 3
-        mylist_idx = mylist_ref[2]
-        assert mylist_idx in lists
-        mylist = lists[mylist_idx]
-        assert len(mylist) == 2
-        mylist_id = mylist[1]
-    except Exception as ex:
-        print('cannot find mylist_id')
-        print repr(ex)
-    return root_list_id, mylist_id

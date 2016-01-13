@@ -1,10 +1,7 @@
 from __future__ import unicode_literals
 
 import json
-import xbmc
-import xbmcvfs
 
-import get
 from resources.utility import generic_utility
 
 
@@ -25,41 +22,39 @@ def video(video_id, lock = None, custom_title = None, series_title = None, ignor
 
 #    generic_utility.log('parsing videodata: '+str(match))
 
+    movie_metadata = parse_video(custom_title, match, series_title, video_id)
+#    utility.log(str(video_add_args))
+    return movie_metadata
+
+
+def parse_video(custom_title, jsn, series_title, video_id):
     if custom_title != None:
         title = custom_title
     else:
-        title = get_value(match, 'title')
-
-    year = get_value(match, 'releaseYear', '1900')
-
-    thumb_url = extract_thumb_url(match)
-
-    mpaa = get_mpaa(match)
-
-
-    episode, season = parse_episode_seasion(match)
-    type = parse_type(match)
-
+        title = get_value(jsn, 'title')
+    year = get_value(jsn, 'releaseYear', '1900')
+    thumb_url = extract_thumb_url(jsn)
+    mpaa = get_mpaa(jsn)
+    episode, season = parse_episode_seasion(jsn)
+    type = parse_type(jsn)
     # series has no playcount
     if type != 'show':
-        duration, playcount = parse_duration_playcount(match)
+        duration, playcount = parse_duration_playcount(jsn)
     else:
         playcount = 0
         duration = ''
-
     if generic_utility.get_setting('use_tmdb') == 'true':
-        type_tmdb = 'movie' if type =='movie' else 'tv'
+        type_tmdb = 'movie' if type == 'movie' else 'tv'
         title_tmdb = series_title if series_title != None else title
         load_tmdb_cover_fanart(title_tmdb, video_id, type_tmdb, year)
-
-    description = get_decription(match)
-    director = parse_director(match)
-    genre = parse_genre(match)
-
-    rating = parse_rating(match)
-    movie_metadata = {'title':title, 'video_id':video_id, 'thumb_url': thumb_url, 'type': type, 'description': description, 'duration':duration, 'year':year, 'mpaa':mpaa, \
-                      'director':director, 'genre':genre, 'rating':rating, 'playcount':playcount, 'episode' : episode, 'season': season}
-#    utility.log(str(video_add_args))
+    description = get_decription(jsn)
+    director = parse_director(jsn)
+    genre = parse_genre(jsn)
+    rating = parse_rating(jsn)
+    movie_metadata = {'title': title, 'video_id': video_id, 'thumb_url': thumb_url, 'type': type,
+                      'description': description, 'duration': duration, 'year': year, 'mpaa': mpaa, \
+                      'director': director, 'genre': genre, 'rating': rating, 'playcount': playcount,
+                      'episode': episode, 'season': season}
     return movie_metadata
 
 
@@ -153,6 +148,10 @@ def extract_thumb_url(match):
 
 
 def load_tmdb_cover_fanart(title, video_id, video_type_temp, year):
+    import get
+    import xbmc
+    import xbmcvfs
+
     year_temp = year
     title_temp = title
     if ' - ' in title_temp:

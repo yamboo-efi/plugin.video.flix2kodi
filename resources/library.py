@@ -85,6 +85,7 @@ def remove_series(series_title):
     xbmcvfs.rmdir(series_file+os.sep, force=True)
     xbmc.executebuiltin('CleanLibrary(video)')
 
+
 def update_playcounts():
     tv_dir = xbmc.translatePath(generic_utility.tv_dir())
     movie_dir = xbmc.translatePath(generic_utility.movie_dir())
