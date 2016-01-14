@@ -1,3 +1,9 @@
+version 0.5.1 (15.01.2016)
+  * fixed file-encoding problem (cannot update playcount)
+  * shutdown will now be disabled on playback
+  * disable library update will now work
+  * added custom-script example (by jwhite)
+
 version 0.5.0 (14.01.2016)
   * fixed resume-playback-loop
   * fixed add/remove to/from my-list refresh
