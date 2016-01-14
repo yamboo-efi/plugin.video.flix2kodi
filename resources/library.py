@@ -23,9 +23,10 @@ def add_movie(movie_id, title, single_update=True):
     file_handler.write(
         generic_utility.encode('plugin://%s/?mode=play_video&url=%s' % (generic_utility.addon_id, movie_id)))
     file_handler.close()
-    if generic_utility.get_setting('update_db') and single_update:
+    if generic_utility.get_setting('update_db') == 'true' and single_update:
         xbmc.executebuiltin('UpdateLibrary(video)')
-
+    else:
+        xbmc.executebuiltin("Container.Refresh")
 
 def get_movie_dir(title):
     pattern = re.compile('^\d\d.\d\d.\d\d \- .*')
@@ -39,7 +40,11 @@ def get_movie_dir(title):
 def remove_movie(title):
     movie_dir = get_movie_dir(title)[0]
     xbmcvfs.rmdir(movie_dir+os.sep, force=True)
-    xbmc.executebuiltin('CleanLibrary(video)')
+    if generic_utility.get_setting('update_db') == 'true':
+        xbmc.executebuiltin('CleanLibrary(video)')
+    else:
+        xbmc.executebuiltin("Container.Refresh")
+
 
 def add_series(series_id, series_title, season, single_update=True):
     series_file = get_series_dir(series_title)
@@ -70,8 +75,10 @@ def add_series(series_id, series_title, season, single_update=True):
                     generic_utility.encode('plugin://%s/?mode=play_video&url=%s' % (
                     generic_utility.addon_id, episode_id)))
                 file_handler.close()
-    if generic_utility.get_setting('update_db') and single_update:
+    if generic_utility.get_setting('update_db') == 'true' and single_update:
         xbmc.executebuiltin('UpdateLibrary(video)')
+    else:
+        xbmc.executebuiltin("Container.Refresh")
 
 
 def get_series_dir(series_title):
@@ -83,8 +90,10 @@ def get_series_dir(series_title):
 def remove_series(series_title):
     series_file = get_series_dir(series_title)
     xbmcvfs.rmdir(series_file+os.sep, force=True)
-    xbmc.executebuiltin('CleanLibrary(video)')
-
+    if generic_utility.get_setting('update_db') == 'true':
+        xbmc.executebuiltin('CleanLibrary(video)')
+    else:
+        xbmc.executebuiltin("Container.Refresh")
 
 def update_playcounts():
     tv_dir = xbmc.translatePath(generic_utility.tv_dir())
