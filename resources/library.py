@@ -119,9 +119,9 @@ def update_playcounts():
 def get_video_ids(directory):
     video_ids = []
     files= []
-    for dirpath, dirnames, filenames in os.walk(directory+os.sep):
-        for filename in [f for f in filenames if f.decode('utf-8').endswith("V.strm")]:
-            files.append(os.path.join(dirpath, filename).decode('utf-8'))
+    for dirpath, dirnames, filenames in os.walk(unicode(directory+os.sep)):
+        for filename in [f for f in filenames if f.endswith("V.strm")]:
+            files.append(os.path.join(dirpath, filename))
 
     for curfile in files:
         video_id = re.search('\.V(.*)V\.strm', curfile).group(1)
