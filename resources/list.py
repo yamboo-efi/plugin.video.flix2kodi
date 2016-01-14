@@ -81,8 +81,10 @@ def add_videos_to_directory(loading_progress, run_as_widget, video_metadatas, vi
 
     allowed_types = calc_allowed_types(video_type, viewing_activity)
     for video_metadata in sorted_video_metadata:
-        if video_metadata['type'] in allowed_types:
-            video_add(video_metadata, removable, viewing_activity)
+        if video_metadata['type'] not in allowed_types:
+            sorted_video_metadata.remove(video_metadata)
+
+    add.videos(sorted_video_metadata, removable, viewing_activity=viewing_activity)
 
     items_per_page = int(generic_utility.get_setting('items_per_page'))
     if (not url or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page:
@@ -120,10 +122,6 @@ def show_loading_progress(run_as_widget):
     return loading_progress
 
 
-def video_add(video_metadata, removable = False, viewing_activity = False):
-    add.video(video_metadata, removable, viewing_activity = viewing_activity)
-
-
 def search(search_string, video_type, run_as_widget=False):
     loading_progress = None
     if not run_as_widget:
@@ -131,7 +129,6 @@ def search(search_string, video_type, run_as_widget=False):
         loading_progress.create('Netflix', generic_utility.get_string(30205) + '...')
         generic_utility.progress_window(loading_progress, 0, '...')
     xbmcplugin.setContent(plugin_handle, 'movies')
-
 
     metadatas = get.videos_in_search(search_string)
 #    video_ids = get.search_matches(search_string, video_type)

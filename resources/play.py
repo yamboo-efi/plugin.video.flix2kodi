@@ -72,6 +72,7 @@ class LogiPlayer(xbmcgui.Window):
     browser = None
     screensaver = None
     display_off = None
+    shutdown_time = None
     screensaver_mode = None
     addon_path = None
 
@@ -117,14 +118,26 @@ class LogiPlayer(xbmcgui.Window):
         jsn = json.loads(ret)
         self.display_off = jsn['result']['value']
 
+        ret = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.getSettingValue", "params": {"setting":"powermanagement.shutdowntime" } }')
+        jsn = json.loads(ret)
+        self.shutdown_time = jsn['result']['value']
+
+
         xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting": "screensaver.mode", "value": "" } }')
         xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting": "powermanagement.displaysoff", "value": 0 } }')
+        xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting": "powermanagement.shutdowntime", "value": 0 } }')
+
 
     def enable_screensaver(self):
         xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting":"screensaver.mode", "value": "'+self.screensaver_mode+'" } }')
         xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting":"powermanagement.displaysoff", "value": '+str(self.display_off)+' } }')
+        xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.SetSettingValue", "params": {"setting": "powermanagement.shutdowntime", "value": %s } }' % str(self.shutdown_time))
+
+
     def after_chrome_launched(self):
         pass
+
+
     def onAction(self, action):
         generic_utility.debug('caught action: '+str(action.getId()))
         ACTION_NAV_BACK = 92

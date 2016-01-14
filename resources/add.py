@@ -60,9 +60,16 @@ def item(name, mode, login_context = False, context_enable = True):
     directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=False)
     return directory_item
 
-def video(video_metadata, removable = False, viewing_activity = False):
-#    utility.log(str(video_metadata))
 
+def videos(video_metadatas, removable = False, viewing_activity = False):
+    items = []
+    for video_metadata in video_metadatas:
+        items.append(create_video_listitem(removable, video_metadata, viewing_activity))
+    return xbmcplugin.addDirectoryItems(handle=plugin_handle, items=items, totalItems=len(items))
+
+
+def create_video_listitem(removable, video_metadata, viewing_activity):
+    #    utility.log(str(video_metadata))
     title = video_metadata['title']
     video_id = video_metadata['video_id']
     thumb_url = video_metadata['thumb_url']
@@ -75,20 +82,18 @@ def video(video_metadata, removable = False, viewing_activity = False):
     genre = video_metadata['genre']
     rating = video_metadata['rating']
     playcount = video_metadata['playcount']
-
     next_mode = 'play_video_main'
     if viewing_activity == False and generic_utility.get_setting('browse_tv_shows') == 'true' and (type == 'show'):
         next_mode = 'list_seasons'
-
     entries = []
     cover_file, fanart_file = generic_utility.cover_fanart(video_id)
     if xbmcvfs.exists(cover_file):
         thumb_url = cover_file
-    u = sys.argv[0]
-    u += '?url=' + urllib.quote_plus(video_id)
-    u += '&mode=' + next_mode
-    u += '&name=' + urllib.quote_plus(generic_utility.encode(title))
-    u += '&thumb=' + urllib.quote_plus(thumb_url)
+    url = sys.argv[0]
+    url += '?url=' + urllib.quote_plus(video_id)
+    url += '&mode=' + next_mode
+    url += '&name=' + urllib.quote_plus(generic_utility.encode(title))
+    url += '&thumb=' + urllib.quote_plus(thumb_url)
     list_item = xbmcgui.ListItem(title)
     list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb_url})
     list_item.setInfo(type='video',
@@ -107,13 +112,11 @@ def video(video_metadata, removable = False, viewing_activity = False):
     else:
         add_context_menu_movie(entries, removable, title, type, video_id, year)
     list_item.addContextMenuItems(entries)
-
     folder = True
     if next_mode == 'play_video_main':
         folder = False
-#    utility.log(u)
-    directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=folder)
-    return directory_item
+    #    utility.log(u)
+    return url, list_item, folder
 
 
 def add_context_menu_movie(entries, removable, title, type, video_id, year):
