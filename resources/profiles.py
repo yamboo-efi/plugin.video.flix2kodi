@@ -26,7 +26,7 @@ def switch_profile(profile_id, login_process = True):
     ret = connect.load_netflix_site(profile_switch_url, login_process=login_process)
 #    generic_utility.log('switch-profile: '+ret)
 
-    content = connect.load_netflix_site('https://www.netflix.com')
+    content = connect.load_netflix_site('http://www.netflix.com/browse')
 
     connect.set_chrome_netflix_cookies()
 

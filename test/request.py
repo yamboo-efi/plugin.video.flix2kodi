@@ -1,5 +1,5 @@
 # from __future__ import unicode_literals
-
+import Cookie
 import os
 import pprint
 import re
@@ -7,10 +7,11 @@ import sys
 from requests.packages import urllib3
 from time import sleep
 
+import datetime
+
 from resources import connect, video_parser
 from resources.path_evaluator import *
 from resources.path_evaluator.types import lolomos
-
 
 def get_video_ids(directory):
     video_ids = []
@@ -132,7 +133,7 @@ root_list = '' #'384181da-ca38-4e67-8411-05d15c51927c_ROOT'
 
 root_list_id = lolomos.get_root_list()
 
-
+pprint.pprint(root_list_id)
 #filter_empty(jsn)
 #jsn = req_path(path('"lolomos"', '"-1"', from_to(0, 10), '"displayName"'))
 
@@ -143,19 +144,30 @@ root_list_id = lolomos.get_root_list()
 #70248297,70189472
 search_str = 'Gretel'
 
-video_infos1 = '["availability","bookmarkPosition","details","episodeCount","maturity",' \
+off_from = 0
+off_to = 100
+genre_to_browse = '7442'
+video_infos1 = '["requestId","availability","bookmarkPosition","details","episodeCount","maturity",' \
                '"queue","releaseYear","requestId","runtime","seasonCount","summary","title","userRating","watched"]'
 video_infos2 = '"current",["summary","runtime","bookmarkPosition","creditsOffset","title"]'
 video_infos3 = '"seasonList","current",["showMemberType","summary"]'
 video_infos4 = '"boxarts",["_665x375","_342x192"],"jpg"'
-path1 = path('"search"', '"' + search_str + '"', from_to(0,99), video_infos1)
-path2 = path('"search"', '"' + search_str + '"', from_to(0,99), video_infos2)
-path3 = path('"search"', '"' + search_str + '"', from_to(0,99), video_infos3)
-path4 = path('"search"', '"' + search_str + '"', from_to(0,99), video_infos4)
-ret = req_path(path1, path2, path3, path4)
+
+
+#path1 = path('"genres"', genre_to_browse, '["length"]')
+#path2 = path('"genres"', genre_to_browse, '"su"', from_to(off_from, off_to), video_infos1)
+#path3 = path('"genres"', genre_to_browse, '"su"', from_to(off_from, off_to), video_infos2)
+#path4 = path('"genres"', genre_to_browse, '"su"', from_to(off_from, off_to), video_infos3)
+#path5 = path('"genres"', genre_to_browse, '"su"', from_to(off_from, off_to), video_infos4)
+
+pathvid = path('"videos"', '70306296', '["requestId"]')
+ret = req_path(pathvid)#, path2, path3, path4, path5)
 filter_empty(ret)
 
-pprint.pprint(ret)
+
+
+#connect.load_netflix_site("http://www.netflix.com/browse")
+print(json.dumps(ret))
 
 
 

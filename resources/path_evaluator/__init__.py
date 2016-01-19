@@ -51,12 +51,6 @@ def path(type, *parms):
     retpath += ']'
     return retpath
 
-def filter_size(lolomos):
-    for key in lolomos.keys():
-        if key in ('$size', 'size'):
-            del lolomos[key]
-    return lolomos
-
 def filter_empty(jsn):
     for key in jsn.keys():
         if type(jsn[key]) == dict and '$type' in jsn[key] and jsn[key]['$type'] == 'sentinel':

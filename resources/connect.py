@@ -37,7 +37,7 @@ def create_session(netflix = False):
     return session
 
 def save_cookies(session):
-    cookies =  pickle.dumps(requests.utils.dict_from_cookiejar(session.cookies))
+    cookies =  pickle.dumps(session.cookies)
 
     if test == False:
         file_name = generic_utility.cookies_file()
@@ -46,14 +46,19 @@ def save_cookies(session):
 
     file_utility.write(file_name, cookies)
 
+
 def read_cookies():
-    if test == False:
+    if not test:
         file_name = generic_utility.cookies_file()
     else:
         file_name = 'cookies'
     content = file_utility.read(file_name)
     if len(content) > 0:
-        return requests.utils.cookiejar_from_dict(pickle.loads(content))
+        loaded = pickle.loads(content)
+        if type(loaded) == requests.cookies.RequestsCookieJar:
+            return loaded
+        else:
+            return None
     else:
         generic_utility.log('warning, read empty cookies-file')
         return None
@@ -166,6 +171,7 @@ def get_netflix_session(new_session):
         cached_cookies = read_cookies()
         if cached_cookies:
             session.cookies = cached_cookies
+            session.cookies.clear_expired_cookies()
     return session
 
 

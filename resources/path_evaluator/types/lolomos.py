@@ -1,5 +1,5 @@
 from resources import path_evaluator
-from resources.path_evaluator import from_to, filter_size, child, deref,filter_empty, req_path
+from resources.path_evaluator import from_to, child, deref,filter_empty, req_path
 
 
 def my_list(root_list):

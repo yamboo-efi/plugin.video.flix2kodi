@@ -85,6 +85,12 @@ def insert_netflix_id(conn, name, expires_utc, last_access_utc, cookie_data, onl
     cur.execute(sql, parms)
     conn.commit()
 
+def clear_netflix_cookies(conn):
+    sql = 'DELETE cookies where host_key = ?'
+    cur = conn.cursor()
+    cur.execute(sql, '.netflix.com')
+    conn.commit()
+
 def set_cookie(conn, name, value, expires, only_secure = False):
     last_access_utc = to_chrome_date_str(datetime.datetime.now())
     expires_utc = to_chrome_date_str(expires)
@@ -112,13 +118,18 @@ def connect():
     conn.text_factory = str
     return conn
 
+
+
+
+
 def set_netflix_cookies(cookies):
     try:
         conn = connect()
-
+        generic_utility.log('cookies: '+str(cookies))
+        clear_netflix_cookies(conn)
         for cookie in cookies:
             expires = cookie.expires
-            if(expires == None):
+            if not expires:
                 expires_date = datetime.datetime.now() + datetime.timedelta(days=5)
             else:
                 expires_date = datetime.datetime.utcfromtimestamp(expires)

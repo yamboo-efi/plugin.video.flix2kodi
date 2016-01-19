@@ -100,6 +100,9 @@ class CannotRefreshDataException(Exception):
 
 
 def refresh_data():
+    content = connect.load_netflix_site('https://www.netflix.com/browse')
+    parse_api_url(content)
+
     profl = generic_utility.get_setting('selected_profile')
     if not profl:
         if login():

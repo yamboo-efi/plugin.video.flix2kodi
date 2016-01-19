@@ -16,9 +16,10 @@ from thread import start_new_thread
 
 import get
 from resources import video_parser
+from resources import path_evaluator
 from resources.utility import database
 from resources.utility import generic_utility
-from resources import library
+from resources import library, connect
 
 plugin_handle = int(sys.argv[1])
 
@@ -87,8 +88,14 @@ class LogiPlayer(xbmcgui.Window):
         xbmc.audioSuspend()
         self.disable_screensaver()
 
+#        pathvid = path_evaluator.path('"videos"', '70306296', '["requestId"]')
+#        ret = path_evaluator.req_path(pathvid)
+#        videos = path_evaluator.child('videos', ret)
+#        video = path_evaluator.child(video_id, videos)
+#        reqId = path_evaluator.child('requestId', video)
+
         try:
-            self.launch_browser('https://www.netflix.com/watch/%s' % video_id)
+            self.launch_browser('http://www.netflix.com/watch/%s' % video_id)
         except:
             generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
             generic_utility.notification('Error launching browser. See logfile')
@@ -194,6 +201,9 @@ class LogiPlayer(xbmcgui.Window):
         self.after_launch()
 
     def before_launch(self):
+#        if self.browser == BROWSER_CHROME:
+#            connect.refresh_data()
+
         self.call_custom_script('before_playback')
 
     def after_launch(self):
