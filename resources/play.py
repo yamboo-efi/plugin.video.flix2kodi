@@ -87,6 +87,7 @@ class LogiPlayer(xbmcgui.Window):
     def playInternal (self, video_id, series_id):
         xbmc.audioSuspend()
         self.disable_screensaver()
+        xbmc.executebuiltin('LIRC.Stop')
 
 #        pathvid = path_evaluator.path('"videos"', '70306296', '["requestId"]')
 #        ret = path_evaluator.req_path(pathvid)
@@ -102,6 +103,7 @@ class LogiPlayer(xbmcgui.Window):
 
         self.enable_screensaver()
         xbmc.audioResume()
+        xbmc.executebuiltin('LIRC.Start')
         try:
             self.update_playcount(video_id)
         except:
