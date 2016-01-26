@@ -1,3 +1,9 @@
+version 0.5.3 (26.01.2016)
+  * kodi lirc will now be disabled on playback
+  * fixed video-type-filter (wrong items in my-list)
+  * changed ssl behaviour (hope to fix https issues)
+  * new icon!! (thx 2 peppe_sr)
+
 version 0.5.2 (20.01.2016)
   * bugfix api change
 
