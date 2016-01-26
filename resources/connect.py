@@ -1,10 +1,8 @@
 from __future__ import unicode_literals
 
-import os
 import pickle
 import re
 import requests
-import ssl
 
 from resources import chrome_cookie
 from resources import login
@@ -13,18 +11,33 @@ from resources.login import CannotRefreshDataException
 from resources.utility import generic_utility
 from resources.utility import file_utility
 
+
 requests.packages.urllib3.disable_warnings()
 
 test = False
-
 
 def set_test():
     global test
     test = True
 
 
-def create_session(netflix = False):
+# thx to https://lukasa.co.uk/2013/01/Choosing_SSL_Version_In_Requests/
+if not test:
+    from requests.adapters import HTTPAdapter
+    from requests.packages.urllib3.poolmanager import PoolManager
+    import ssl
+
+    class MyAdapter(HTTPAdapter):
+        def init_poolmanager(self, connections, maxsize, block=False):
+            self.poolmanager = PoolManager(num_pools=connections,
+                                           maxsize=maxsize,
+                                           block=block,
+                                           ssl_version=ssl.PROTOCOL_TLSv1)
+def create_session(netflix=False):
+
     session = requests.Session()
+    if not test:
+        session.mount('https://', MyAdapter())
     session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
 
                                           'like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586'})
