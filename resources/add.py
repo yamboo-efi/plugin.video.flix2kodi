@@ -69,7 +69,6 @@ def videos(video_metadatas, removable = False, viewing_activity = False):
 
 
 def create_video_listitem(removable, video_metadata, viewing_activity):
-    #    utility.log(str(video_metadata))
     title = video_metadata['title']
     video_id = video_metadata['video_id']
     thumb_url = video_metadata['thumb_url']

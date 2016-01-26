@@ -80,11 +80,13 @@ def add_videos_to_directory(loading_progress, run_as_widget, video_metadatas, vi
         sorted_video_metadata = video_metadatas
 
     allowed_types = calc_allowed_types(video_type, viewing_activity)
-    for video_metadata in sorted_video_metadata:
-        if video_metadata['type'] not in allowed_types:
-            sorted_video_metadata.remove(video_metadata)
 
-    add.videos(sorted_video_metadata, removable, viewing_activity=viewing_activity)
+    filtered_video_metadata = []
+    for video_metadata in sorted_video_metadata:
+        if video_metadata['type'] in allowed_types:
+            filtered_video_metadata.append(video_metadata)
+
+    add.videos(filtered_video_metadata, removable, viewing_activity=viewing_activity)
 
     items_per_page = int(generic_utility.get_setting('items_per_page'))
     if (not url or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page:
