@@ -174,6 +174,8 @@ class LogiPlayer(xbmcgui.Window):
 
         ACTION_KEY_1 = 59
         ACTION_KEY_2 = 142
+        ACTION_CONTEXT_MENU = 117
+        ACTION_SHOW_INFO = 11
 
         if action.getId() in(ACTION_NAV_BACK, ACTION_PREVIOUS_MENU, ACTION_STOP):
             self.control('close')
@@ -187,14 +189,14 @@ class LogiPlayer(xbmcgui.Window):
             self.control('up')
         elif action.getId() == ACTION_MOVE_DOWN:
             self.control('down')
-        elif action.getId() == ACTION_KEY_1:
+        elif action.getId() in (ACTION_KEY_1, ACTION_CONTEXT_MENU):
             self.control('toggle_lang'+str(self.lang_count))
             if self.lang_count == MAX_LANG:
                 self.lang_count = 0
             else:
                 self.lang_count += 1
 
-        elif action.getId() == ACTION_KEY_2:
+        elif action.getId() in(ACTION_KEY_2, ACTION_SHOW_INFO):
             self.control('toggle_sub'+str(self.subtitle_count))
             if self.subtitle_count == MAX_SUB:
                 self.subtitle_count = 0
