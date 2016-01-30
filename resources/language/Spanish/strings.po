@@ -9,7 +9,7 @@ msgstr ""
 "POT-Creation-Date: 2015-11-04 18:30+0100\n"
 "PO-Revision-Date: 2015-11-04 18:30+0100\n"
 "Last-Translator: logi85\n"
-"Language-Team: English\n"
+"Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,11 +21,11 @@ msgid "General"
 msgstr ""
 
 msgctxt "#11001"
-msgid "Username"
+msgid "Usuario"
 msgstr ""
 
 msgctxt "#11002"
-msgid "Password"
+msgid "Contraseña"
 msgstr ""
 
 msgctxt "#11100"
@@ -33,7 +33,7 @@ msgid "General"
 msgstr ""
 
 msgctxt "#11101"
-msgid "Browser"
+msgid "Buscar"
 msgstr ""
 
 msgctxt "#111011"
@@ -57,59 +57,67 @@ msgid "Safari"
 msgstr ""
 
 msgctxt "#11102"
-msgid "Update library after adding"
+msgid "Actualizar librería después de añadir"
 msgstr ""
 
 msgctxt "#11200"
-msgid "Profile settings"
+msgid "Opciones de perfil"
 msgstr ""
 
 msgctxt "#11201"
-msgid "Single-user account"
+msgid "Cuenta individual"
 msgstr ""
 
 msgctxt "#11202"
-msgid "Show profile selection on each start"
+msgid "Mostrar pantalla de perfil al inciar"
 msgstr ""
 
 msgctxt "#12000"
-msgid "Advanced"
+msgid "Avanzado"
 msgstr ""
 
 msgctxt "#12001"
-msgid "Debug logging"
+msgid "Habilitar debug"
 msgstr ""
 
 msgctxt "#12002"
-msgid "Library path"
+msgid "Ruta de la librería"
+msgstr ""
+
+msgctxt "#12100"
+msgid "Opciones de SSL"
 msgstr ""
 
 msgctxt "#12101"
-msgid "Disable lirc on playback"
+msgid "Usar SSL avanzado"
+msgstr ""
+
+msgctxt "#12102"
+msgid "Versión SSL"
 msgstr ""
 
 msgctxt "#13000"
-msgid "Views"
+msgid "Vistas"
 msgstr ""
 
 msgctxt "#13001"
-msgid "Get covers & fanart images from TMDb"
+msgid "Obtener carátulas y fanarts de TMDb"
 msgstr ""
 
 msgctxt "#13002"
-msgid "Browse TV-Shows instead of autoplaying"
+msgid "Buscar en Series en lugar de reproducirlas automáticamente"
 msgstr ""
 
 msgctxt "#13003"
-msgid "Items per page"
+msgid "Items por página"
 msgstr ""
 
 msgctxt "#13100"
-msgid "Appearance"
+msgid "Apariencia"
 msgstr ""
 
 msgctxt "#13101"
-msgid "Force view"
+msgid "Forzar vista"
 msgstr ""
 
 msgctxt "#13102"
@@ -117,179 +125,179 @@ msgid "View ID - videos"
 msgstr ""
 
 msgctxt "#13103"
-msgid "View ID - episodes"
+msgid "View ID - episodios"
 msgstr ""
 
 msgctxt "#13104"
-msgid "View ID - viewing activity"
+msgid "View ID - Tu actividad"
 msgstr ""
 
 msgctxt "#14000"
-msgid "User data"
+msgid "Opciones de usuario"
 msgstr ""
 
 msgctxt "#14001"
-msgid "Delete cache"
+msgid "Borrar cache"
 msgstr ""
 
 msgctxt "#14002"
-msgid "Delete cookies / session"
+msgid "Borrar cookies / sesión"
 msgstr ""
 
 msgctxt "#14003"
-msgid "Reset Addon"
+msgid "Reinciar Addon"
 msgstr ""
 
 msgctxt "#30100"
-msgid "Movies"
+msgid "Películas"
 msgstr ""
 
 msgctxt "#30101"
-msgid "TV shows"
+msgid "Series"
 msgstr ""
 
 msgctxt "#30102"
-msgid "Suggestions"
+msgid "Recomendaciones"
 msgstr ""
 
 msgctxt "#30103"
-msgid "Who's watching?"
+msgid "¿Quién está conectado?"
 msgstr ""
 
 msgctxt "#30104"
-msgid "My list"
+msgid "Mi Lista"
 msgstr ""
 
 msgctxt "#30105"
-msgid "Viewing activity"
+msgid "Mi Actividad"
 msgstr ""
 
 msgctxt "#30106"
-msgid "Latest"
+msgid "Últimos"
 msgstr ""
 
 msgctxt "#30107"
-msgid "All shows"
+msgid "Todas las series"
 msgstr ""
 
 msgctxt "#30108"
-msgid "Genres"
+msgid "Género"
 msgstr ""
 
 msgctxt "#30109"
-msgid "Search"
+msgid "Buscar"
 msgstr ""
 
 msgctxt "#30110"
-msgid "Next page"
+msgid "Página siguiente"
 msgstr ""
 
 msgctxt "#30111"
-msgid "Search"
+msgid "Buscar"
 msgstr ""
 
 msgctxt "#30150"
-msgid "Add to library"
+msgid "Añadir a la librería"
 msgstr ""
 
 msgctxt "#301501"
-msgid "Remove from library"
+msgid "Eliminar de la librería"
 msgstr ""
 
 msgctxt "#30151"
-msgid "Continue watching"
+msgid "Seguir viendo"
 msgstr ""
 
 msgctxt "#30152"
-msgid "Show seasons"
+msgid "Ver Temporadas"
 msgstr ""
 
 msgctxt "#30153"
-msgid "Play trailer"
+msgid "Reproducir Trailer"
 msgstr ""
 
 msgctxt "#30154"
-msgid "Remove from my list"
+msgid "Eliminar de mi lista"
 msgstr ""
 
 msgctxt "#30155"
-msgid "Add to my list"
+msgid "Añadir a mi lista"
 msgstr ""
 
 msgctxt "#30156"
-msgid "Similar Movies"
+msgid "Películas similares"
 msgstr ""
 
 msgctxt "#30157"
-msgid "Similar TV Shows"
+msgid "Series similares"
 msgstr ""
 
 msgctxt "#30200"
-msgid "Connecting Netflix"
+msgid "Conectando a Netflix"
 msgstr ""
 
 msgctxt "#30201"
-msgid "Preparing login"
+msgid "Iniciando sesión"
 msgstr ""
 
 msgctxt "#30202"
-msgid "Sending login details"
+msgid "Enviando detalles de la sesión"
 msgstr ""
 
 msgctxt "#30203"
-msgid "Loading profile"
+msgid "Cargando perfil"
 msgstr ""
 
 msgctxt "#30204"
-msgid "Complete"
+msgid "Finalizado"
 msgstr ""
 
 msgctxt "#30205"
-msgid "Loading metadata"
+msgid "Cargando metadatos"
 msgstr ""
 
 msgctxt "#30300"
-msgid "Sorry! Netflix is not available in your country yet."
+msgid "¡Lo sentimos! Netflix tovadía no está disponible en su país."
 msgstr ""
 
 msgctxt "#30301"
-msgid "Cookies have been deleted."
+msgid "Cookies borradas."
 msgstr ""
 
 msgctxt "#30302"
-msgid "Session has been deleted."
+msgid "Sesión eliminada."
 msgstr ""
 
 msgctxt "#30303"
-msgid "You are not logged in. Check your credentials and/or restart the addon!"
+msgid "No has iniciado sesión. ¡Comprueba tus credenciales o reinicia el addon!"
 msgstr ""
 
 msgctxt "#30304"
-msgid "Multiple profiles found. Choose your profile!"
+msgid "Detectados múltiples perfiles. ¡Elija uno!"
 msgstr ""
 
 msgctxt "#30305"
-msgid "No trailer available!"
+msgid "¡Trailer no disponible!"
 msgstr ""
 
 msgctxt "#30306"
-msgid "No results found!"
+msgid "No se encontraron resultados"
 msgstr ""
 
 msgctxt "#30307"
-msgid "Really reset the addon?"
+msgid "¿De verdad quiere restaurar el addon a opciones de fábrica?"
 msgstr ""
 
 msgctxt "#30308"
-msgid "Addon has been reset!"
+msgid "¡Addon restaurado!"
 msgstr ""
 
 msgctxt "#30309"
-msgid "Cache has been deleted!"
+msgid "¡Caché eliminada!"
 msgstr ""
 
 msgctxt "#50001"
-msgid "No browser selected in settings!"
+msgid "No ha elegido ningún lanzador, vaya a las opciones del addon"
 msgstr ""
 
 msgctxt "#99999"

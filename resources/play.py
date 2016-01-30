@@ -29,6 +29,10 @@ BROWSER_INTERNET_EXPLORER = '3'
 BROWSER_EDGE = '4'
 BROWSER_SAFARI = '5'
 
+MAX_LANG = 1
+MAX_SUB = 1
+
+
 def trailer(title, video_type):
     trailers = []
     content = get.trailer(video_type, title)
@@ -76,6 +80,8 @@ class LogiPlayer(xbmcgui.Window):
     shutdown_time = None
     screensaver_mode = None
     addon_path = None
+    lang_count = 0
+    subtitle_count = 0
 
     def has_valid_browser(self):
         return self.valid_browser
@@ -87,13 +93,9 @@ class LogiPlayer(xbmcgui.Window):
     def playInternal (self, video_id, series_id):
         xbmc.audioSuspend()
         self.disable_screensaver()
-        xbmc.executebuiltin('LIRC.Stop')
 
-#        pathvid = path_evaluator.path('"videos"', '70306296', '["requestId"]')
-#        ret = path_evaluator.req_path(pathvid)
-#        videos = path_evaluator.child('videos', ret)
-#        video = path_evaluator.child(video_id, videos)
-#        reqId = path_evaluator.child('requestId', video)
+        if generic_utility.get_setting('disable_lirc') == 'true':
+            xbmc.executebuiltin('LIRC.Stop')
 
         try:
             self.launch_browser('http://www.netflix.com/watch/%s' % video_id)
@@ -103,7 +105,8 @@ class LogiPlayer(xbmcgui.Window):
 
         self.enable_screensaver()
         xbmc.audioResume()
-        xbmc.executebuiltin('LIRC.Start')
+        if generic_utility.get_setting('disable_lirc') == 'true':
+            xbmc.executebuiltin('LIRC.Start')
         try:
             self.update_playcount(video_id)
         except:
@@ -169,6 +172,9 @@ class LogiPlayer(xbmcgui.Window):
         ACTION_MOVE_UP = 3
         ACTION_MOVE_DOWN = 4
 
+        ACTION_KEY_1 = 59
+        ACTION_KEY_2 = 142
+
         if action.getId() in(ACTION_NAV_BACK, ACTION_PREVIOUS_MENU, ACTION_STOP):
             self.control('close')
         elif action.getId() in(ACTION_SELECT_ITEM, ACTION_PLAYER_PLAY, ACTION_PLAYER_PLAYPAUSE, ACTION_PAUSE):
@@ -181,6 +187,20 @@ class LogiPlayer(xbmcgui.Window):
             self.control('up')
         elif action.getId() == ACTION_MOVE_DOWN:
             self.control('down')
+        elif action.getId() == ACTION_KEY_1:
+            self.control('toggle_lang'+str(self.lang_count))
+            if self.lang_count == MAX_LANG:
+                self.lang_count = 0
+            else:
+                self.lang_count += 1
+
+        elif action.getId() == ACTION_KEY_2:
+            self.control('toggle_sub'+str(self.subtitle_count))
+            if self.subtitle_count == MAX_SUB:
+                self.subtitle_count = 0
+            else:
+                self.subtitle_count += 1
+
         else:
             generic_utility.error('unknown action: ' + str(action.getId()))
 

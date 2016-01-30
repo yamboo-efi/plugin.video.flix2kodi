@@ -13,10 +13,8 @@
         <setting id="debug" type="bool" label="12001" default="false"/>
         <setting id="library_path" type="folder" label="12002"
                  default="special://profile/addon_data/plugin.video.flix2kodi/library"/>
-        <setting label="12100" type="lsep"/>
-        <setting id="ssl_enabled" type="bool" label="12101" default="true"/>
-        <setting id="ssl_version" type="labelenum" label="12102" values="Auto|SSLv2|SSLv3|SSLv23|TLSv1"
-                 default="SSLv23"/>
+        <setting id="disable_lirc" type="bool" label="12101" default="false"/>
+
     </category>
     <category label="13000">
         <setting id="use_tmdb" type="bool" label="13001" default="false"/>
