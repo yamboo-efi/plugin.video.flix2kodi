@@ -1,3 +1,8 @@
+version 0.5.4 (31.01.2016)
+  * spanish translation
+  * switching language/subtitle support
+  * remote support for internet explorer
+
 version 0.5.3 (26.01.2016)
   * kodi lirc will now be disabled on playback
   * fixed video-type-filter (wrong items in my-list)
