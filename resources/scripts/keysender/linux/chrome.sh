@@ -3,11 +3,15 @@
 HANDLE=`/usr/bin/xdotool search "Google Chrome"`
 HANDLED=0
 
+
 if [ "$1" = "close" ];
 then
     CMD="alt+F4"
 elif [ "$1" = "pause" ];
 then
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 450
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE click 1
     CMD="space"
 elif [ "$1" = "backward" ];
 then

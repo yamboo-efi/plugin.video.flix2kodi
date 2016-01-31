@@ -25,6 +25,9 @@ shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
 if key="close" then
 	cmd = "%{F4}"
 elseif key="pause" then
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 960 450", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
 	cmd = " "
 elseif key="backward" then
 	cmd = "{LEFT} "
