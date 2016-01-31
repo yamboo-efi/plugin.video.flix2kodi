@@ -42,7 +42,7 @@ elseif key="maximize" then
 elseif key="toggle_lang0" then
     shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
     WScript.Sleep(200)
-    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1430 835", 0, false
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1430 875", 0, false
     WScript.Sleep(200)
     shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
 
@@ -50,15 +50,48 @@ elseif key="toggle_lang0" then
 elseif key="toggle_lang1" then
     shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
     WScript.Sleep(200)
-    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1430 875", 0, false
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1430 835", 0, false
     WScript.Sleep(200)
     shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
 
     handled = 1
+elseif key="toggle_lang2" then
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1430 795", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
+
+    handled = 1
+elseif key="toggle_lang3" then
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1430 755", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
+
+    handled = 1
+elseif key="toggle_lang4" then
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1430 725", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
+
+    handled = 1
+elseif key="toggle_lang5" then
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1430 685", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
+
+    handled = 1
+
 elseif key="toggle_sub0" then
     shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
     WScript.Sleep(200)
-    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 835", 0, false
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 875", 0, false
     WScript.Sleep(200)
     shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
 
@@ -66,7 +99,39 @@ elseif key="toggle_sub0" then
 elseif key="toggle_sub1" then
     shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
     WScript.Sleep(200)
-    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 875", 0, false
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 835", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
+
+    handled = 1
+elseif key="toggle_sub2" then
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 795", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
+
+    handled = 1
+elseif key="toggle_sub3" then
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 755", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
+
+    handled = 1
+elseif key="toggle_sub4" then
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 725", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
+
+    handled = 1
+elseif key="toggle_sub5" then
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 980", 0, false
+    WScript.Sleep(200)
+    shell.Run strFolder+"\winxdotool.exe ""+windowName+"" mousemove 1630 685", 0, false
     WScript.Sleep(200)
     shell.Run strFolder+"\winxdotool.exe ""+windowName+"" click", 0, false
 

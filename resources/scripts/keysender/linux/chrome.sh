@@ -32,9 +32,10 @@ then
     sleep 0.2
     /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
     sleep 0.2
-    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1430 835
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1430 875
     sleep 0.2
     /usr/bin/xdotool windowactivate --sync $HANDLE click 1
+    HANDLED=1
     HANDLED=1
 elif [ "$1" = "toggle_lang1" ];
 then
@@ -42,17 +43,55 @@ then
     sleep 0.2
     /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
     sleep 0.2
-    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1430 875
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1430 835
     sleep 0.2
     /usr/bin/xdotool windowactivate --sync $HANDLE click 1
-    HANDLED=1
+elif [ "$1" = "toggle_lang2" ];
+then
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 540
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1430 795
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE click 1
+elif [ "$1" = "toggle_lang3" ];
+then
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 540
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1430 755
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE click 1
+elif [ "$1" = "toggle_lang4" ];
+then
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 540
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1430 725
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE click 1
+elif [ "$1" = "toggle_lang5" ];
+then
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 540
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1430 685
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE click 1
+
+
+
 elif [ "$1" = "toggle_sub0" ];
 then
     /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 540
     sleep 0.2
     /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
     sleep 0.2
-    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 835
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 875
     sleep 0.2
     /usr/bin/xdotool windowactivate --sync $HANDLE click 1
     HANDLED=1
@@ -62,7 +101,47 @@ then
     sleep 0.2
     /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
     sleep 0.2
-    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 875
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 835
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE click 1
+    HANDLED=1
+elif [ "$1" = "toggle_sub2" ];
+then
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 540
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 795
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE click 1
+    HANDLED=1
+elif [ "$1" = "toggle_sub3" ];
+then
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 540
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 755
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE click 1
+    HANDLED=1
+elif [ "$1" = "toggle_sub4" ];
+then
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 540
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 725
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE click 1
+    HANDLED=1
+elif [ "$1" = "toggle_sub5" ];
+then
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 960 540
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 980
+    sleep 0.2
+    /usr/bin/xdotool windowactivate --sync $HANDLE mousemove 1630 685
     sleep 0.2
     /usr/bin/xdotool windowactivate --sync $HANDLE click 1
     HANDLED=1
