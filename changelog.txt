@@ -1,3 +1,9 @@
+version 0.5.5 (03.02.2016)
+  * playcount now updated via json (no need for direct db-access and file-access, should also work with mysql db backend)
+  * added translations (spanish, italian, dutch, thx to all translators!)
+  * added support for 6 subtitles/languages
+  * pause/play will click "resume playback" if present
+
 version 0.5.4 (31.01.2016)
   * spanish translation
   * switching language/subtitle support
