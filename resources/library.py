@@ -95,35 +95,78 @@ def remove_series(series_title):
     else:
         xbmc.executebuiltin("Container.Refresh")
 
+
 def update_playcounts():
-    tv_dir = xbmc.translatePath(generic_utility.tv_dir())
-    movie_dir = xbmc.translatePath(generic_utility.movie_dir())
 
-    video_ids = []
-    video_ids.extend(get_video_ids(tv_dir))
-    video_ids.extend(get_video_ids(movie_dir))
+    videos_data = {}
+    videos_data.update(get_movies_data())
+    videos_data.update(get_episodes_data())
 
-    if len(video_ids) > 0:
-        playback_infos = get.video_playback_info(video_ids)
+    if len(videos_data) > 0:
+        playback_infos = get.video_playback_info(videos_data)
         videos = json.loads(playback_infos)['value']['videos']
         update_metadatas = []
+        playcount_changed = False
         for video_id in videos:
             type = video_parser.parse_type(videos[video_id])
             if type is not 'show':
                 playcount = video_parser.parse_duration_playcount(videos[video_id])[1]
-                update_metadatas.append({'video_id': video_id, 'playcount': playcount})
-        if len(update_metadatas) > 0:
-            database.update_playcounts(update_metadatas)
+                video_data = videos_data[video_id]
+                if 'episode_id' in video_data:
+                    if video_data['playcount'] != playcount:
+                        update_episode_playcount(video_data['episode_id'], playcount)
+                        playcount_changed = True
+                else:
+                    if video_data['playcount'] != playcount:
+                        update_movie_playcount(video_data['movie_id'], playcount)
+                        playcount_changed = True
+
+        if playcount_changed:
             xbmc.executebuiltin("Container.Refresh")
 
-def get_video_ids(directory):
-    video_ids = []
-    files= []
-    for dirpath, dirnames, filenames in os.walk(unicode(directory+os.sep)):
-        for filename in [f for f in filenames if f.endswith("V.strm")]:
-            files.append(os.path.join(dirpath, filename))
 
-    for curfile in files:
-        video_id = re.search('\.V(.*)V\.strm', curfile).group(1)
-        video_ids.append(video_id)
-    return video_ids
+def update_movie_playcount(movie_id, playcount):
+    xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "VideoLibrary.SetMovieDetails", "params": '
+                        '{"movieid":%s, "playcount":%s } }' % (movie_id, playcount))
+
+
+def update_episode_playcount(episode_id, playcount):
+    xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "VideoLibrary.SetEpisodeDetails", "params": '
+                        '{"episodeid":%s, "playcount":%s } }' % (episode_id, playcount))
+
+
+def get_movies_data():
+    video_data = {}
+    ret = generic_utility.decode(xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": '
+                                                     '"VideoLibrary.GetMovies", '
+                                                     '"params": {"properties":["file", "playcount"] } }'))
+    jsn = json.loads(ret)
+    if 'result' in jsn:
+        result = jsn['result']
+        if 'movies' in result:
+            movies = result['movies']
+            for movie in movies:
+                regexp_res = re.search('\.V(.*)V\.strm', movie['file'])
+                if regexp_res:
+                    video_id = regexp_res.group(1)
+                    video_data[video_id] = {'movie_id': movie['movieid'], 'playcount': movie['playcount']}
+    return video_data
+
+
+def get_episodes_data():
+    video_data = {}
+    ret = generic_utility.decode(xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": '
+                                                     '"VideoLibrary.GetEpisodes", '
+                                                     '"params": {"properties":["file", "playcount"] } }'))
+    jsn = json.loads(ret)
+    if 'result' in jsn:
+        result = jsn['result']
+        if 'episodes' in result:
+            episodes = result['episodes']
+            for episode in episodes:
+                regexp_res = re.search('\.V(.*)V\.strm', episode['file'])
+                if regexp_res:
+                    video_id = regexp_res.group(1)
+                    video_data[video_id] = {'episode_id': episode['episodeid'], 'playcount': episode['playcount']}
+
+    return video_data

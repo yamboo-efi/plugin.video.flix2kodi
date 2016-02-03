@@ -11,15 +11,11 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 import xbmcplugin
-import xbmcvfs
 from thread import start_new_thread
 
 import get
-from resources import video_parser
-from resources import path_evaluator
-from resources.utility import database
 from resources.utility import generic_utility
-from resources import library, connect
+from resources import library
 
 plugin_handle = int(sys.argv[1])
 
