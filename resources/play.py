@@ -113,9 +113,6 @@ class LogiPlayer(xbmcgui.Window):
 
     def update_playcount(self, video_id):
         library.update_playcounts()
-#        video_metadata = video_parser.video(video_id, False, ignore_cache = True)
-#        playcount = video_metadata['playcount']
-#        database.update_playcount(video_id, playcount)
 
     def disable_screensaver(self):
         ret = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "id": 0, "method": "Settings.getSettingValue", "params": {"setting":"screensaver.mode" } }')

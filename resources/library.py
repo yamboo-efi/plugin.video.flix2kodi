@@ -9,7 +9,6 @@ import xbmcvfs
 import get
 from resources import video_parser
 from resources.utility import generic_utility
-from resources.utility import database
 
 
 def add_movie(movie_id, title, single_update=True):
