@@ -292,6 +292,22 @@ msgctxt "#50001"
 msgid "No browser selected in settings!"
 msgstr ""
 
+msgctxt "#50002"
+msgid "Sorry!"
+msgstr ""
+
+msgctxt "#50003"
+msgid "Flix2Kodi crashed."
+msgstr ""
+
+msgctxt "#50004"
+msgid "Try to refresh your login?"
+msgstr ""
+
+msgctxt "#50005"
+msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
+msgstr ""
+
 msgctxt "#99999"
 msgid ""
 msgstr ""

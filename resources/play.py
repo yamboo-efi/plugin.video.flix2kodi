@@ -336,6 +336,6 @@ class LogiPlayer(xbmcgui.Window):
 
         self.strActionInfo = xbmcgui.ControlLabel(180, 60, 1200, 400, '', 'font14', '0xFFBBBBFF')
         self.addControl(self.strActionInfo)
-        self.strActionInfo.setLabel('Push BACK to go back. If your browser does not launch, something went wrong.')
+        self.strActionInfo.setLabel(generic_utility.get_string(50005))
 
         addon_path = xbmcaddon.Addon().getAddonInfo("path")

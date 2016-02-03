@@ -86,7 +86,7 @@ except:
     generic_utility.log('parameters: ' + sys.argv[2])
     generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
     dialog = xbmcgui.Dialog()
-    do_fresh_login = dialog.yesno('Sorry', 'Flix2Kodi crashed.', 'Try to refresh your login?')
+    do_fresh_login = dialog.yesno(generic_utility.get_string(50002), generic_utility.get_string(50003), generic_utility.get_string(50004))
     if do_fresh_login:
         if connect.do_login()==True:
             generic_utility.notification('Login refreshed. please try again.')

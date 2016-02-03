@@ -1,4 +1,4 @@
-﻿# Kodi Media Center language file
+# Kodi Media Center language file
 # Addon Name: Flix2Kodi
 # Addon id: plugin.video.flix2kodi
 # Addon Provider: zero
@@ -18,19 +18,19 @@ msgstr ""
 
 msgctxt "#11000"
 msgid "General"
-msgstr "Allgemein"
+msgstr "Globaal"
 
 msgctxt "#11001"
 msgid "Username"
-msgstr "Benutzername"
+msgstr "Gebruikersnaam"
 
 msgctxt "#11002"
 msgid "Password"
-msgstr "Passwort"
+msgstr "Wachtwoord"
 
 msgctxt "#11100"
 msgid "General"
-msgstr "Allgemein"
+msgstr "Globaal"
 
 msgctxt "#11101"
 msgid "Browser"
@@ -58,119 +58,119 @@ msgstr ""
 
 msgctxt "#11102"
 msgid "Update library after adding"
-msgstr "Bibliothek aktualisieren nach Hinzufügen"
+msgstr "Werk bibliotheken bij na toevoegen"
 
 msgctxt "#11200"
 msgid "Profil settings"
-msgstr "Profil Einstellungen"
+msgstr "Profiel instellingen"
 
 msgctxt "#11201"
 msgid "Single-user account"
-msgstr "Einzel-Profil Konto"
+msgstr ""
 
 msgctxt "#11202"
 msgid "Show profile selection on each start"
-msgstr "Profilauswahl bei jedem Start anzeigen"
+msgstr "Laat profiel selectie zien bij elke start"
 
 msgctxt "#12000"
 msgid "Advanced"
-msgstr "Erweitert"
+msgstr "Geavanceerd"
 
 msgctxt "#12001"
 msgid "Debug logging"
-msgstr "Debug Protokollierung"
+msgstr ""
 
 msgctxt "#12002"
 msgid "Library path"
-msgstr "Datenbank Verzeichnis"
+msgstr "Bibliotheek pad"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
-msgstr "lirc deaktivieren während der Wiedergabe"
+msgstr "Schakel lirc uit bij afspelen"
 
 msgctxt "#13000"
 msgid "Views"
-msgstr "Ansichten"
+msgstr ""
 
 msgctxt "#13001"
 msgid "Get covers & fanart images from TMDb"
-msgstr "Cover & Fanart über TMDb beziehen"
+msgstr "Haal hoes & fanart afbeeldingen van TMDb"
 
 msgctxt "#13002"
 msgid "Browse TV-Shows instead of autoplaying"
-msgstr "Serien durchsuchen anstatt automatischer Wiedergabe"
+msgstr "Blader door afleveringen in plaats van automatisch afspelen"
 
 msgctxt "#13003"
 msgid "Items per page"
-msgstr "Einträge pro Seite"
+msgstr "Items per pagina"
 
 msgctxt "#13100"
 msgid "Appearance"
-msgstr "Aussehen"
+msgstr "Uiterlijk"
 
 msgctxt "#13101"
 msgid "Force view"
-msgstr "View erzwingen"
+msgstr "Forceer view"
 
 msgctxt "#13102"
 msgid "View ID - videos"
-msgstr "View ID - Videos"
+msgstr "View ID - videos"
 
 msgctxt "#13103"
 msgid "View ID - episodes"
-msgstr "View ID - Episoden"
+msgstr "View ID - afleveringen"
 
 msgctxt "#13104"
 msgid "View ID - viewing activity"
-msgstr "View ID - Kürzlich angesehen"
+msgstr "View ID - kijk activiteit"
 
 msgctxt "#14000"
 msgid "User data"
-msgstr "Benutzerdaten"
+msgstr "Gebruikers gegevens"
 
 msgctxt "#14001"
 msgid "Delete cache"
-msgstr "Cache löschen"
+msgstr "Cache verwijderen"
 
 msgctxt "#14002"
 msgid "Delete cookies / session"
-msgstr "Cookies / Sitzung löschen"
+msgstr "Cookies / session verwijderen"
 
 msgctxt "#14003"
 msgid "Reset Addon"
-msgstr "Addon zurücksetzen"
+msgstr "Addon opnieuw instellen"
 
 msgctxt "#30100"
 msgid "Movies"
-msgstr "Filme"
+msgstr "Films"
 
 msgctxt "#30101"
 msgid "TV shows"
-msgstr "Serien"
+msgstr "TV afleveringen"
 
 msgctxt "#30102"
 msgid "Suggestions"
-msgstr "Empfehlungen"
+msgstr "Suggesties"
 
 msgctxt "#30103"
 msgid "Who's watching?"
-msgstr "Wer schaut gerade?"
+msgstr "Wie kijkt?"
 
 msgctxt "#30104"
 msgid "My list"
-msgstr "Meine Liste"
+msgstr "Mijn lijst"
 
 msgctxt "#30105"
 msgid "Viewing activity"
-msgstr "Kürzlich angesehen"
+msgstr "Kijk activiteit"
 
 msgctxt "#30106"
 msgid "Latest"
-msgstr "Neuerscheinungen"
+msgstr "Recente"
 
 msgctxt "#30107"
 msgid "All shows"
-msgstr "Alle Serien"
+msgstr "Alle afleveringen"
 
 msgctxt "#30108"
 msgid "Genres"
@@ -178,132 +178,116 @@ msgstr "Genres"
 
 msgctxt "#30109"
 msgid "Search"
-msgstr "Suche"
+msgstr "Zoeken"
 
 msgctxt "#30110"
 msgid "Next page"
-msgstr "Nächste Seite"
+msgstr "Volgende pagina"
 
 msgctxt "#30111"
 msgid "Search"
-msgstr ""
+msgstr "Zoeken"
 
 msgctxt "#30150"
 msgid "Add to library"
-msgstr "Zur Bibliothek hinzufügen"
+msgstr "Voeg toe aan bibliotheek"
 
 msgctxt "#301501"
 msgid "Remove from library"
-msgstr "Aus Bibliothek löschen"
+msgstr "Verwijder van bibliotheek"
 
 msgctxt "#30151"
 msgid "Continue watching"
-msgstr "Wiedergabe fortsetzen"
+msgstr "Kijken voortzetten"
 
 msgctxt "#30152"
 msgid "Show seasons"
-msgstr "Staffeln anzeigen"
+msgstr "Laat seizoenen zien"
 
 msgctxt "#30153"
 msgid "Play trailer"
-msgstr "Trailer abspielen"
+msgstr "Trailer afspelen"
 
 msgctxt "#30154"
 msgid "Remove from my list"
-msgstr "Von meiner Liste entfernen"
+msgstr "Verwijder van Mijn Lijst"
 
 msgctxt "#30155"
 msgid "Add to my list"
-msgstr "Zu meiner Liste hinzufügen"
+msgstr "Voeg toe aan Mijn Lijst"
 
 msgctxt "#30156"
 msgid "Similar Movies"
-msgstr "Ähnliche Filme"
+msgstr "Gelijkwaardige films"
 
 msgctxt "#30157"
 msgid "Similar TV Shows"
-msgstr "Ähnliche Serien"
+msgstr "Gelijkwaardige TV Series"
 
 msgctxt "#30200"
 msgid "Connecting Netflix"
-msgstr "Mit Netflix verbinden"
+msgstr "Verbinding maken met Netflix"
 
 msgctxt "#30201"
 msgid "Preparing login"
-msgstr "Login vorbereiten"
+msgstr "Login voorbereiden"
 
 msgctxt "#30202"
 msgid "Sending login details"
-msgstr "Sende Login Daten"
+msgstr "Login details versturen"
 
 msgctxt "#30203"
 msgid "Loading profile"
-msgstr "Lade Profile"
+msgstr "Profiel laden"
 
 msgctxt "#30204"
 msgid "Complete"
-msgstr "Fertig"
+msgstr "Afgerond"
 
 msgctxt "#30205"
 msgid "Loading metadata"
-msgstr "Lade Metadaten"
+msgstr "Metadata laden"
 
 msgctxt "#30300"
 msgid "Sorry! Netflix is not available in your country yet."
-msgstr "Entschuldigung! Netflix ist aktuell nicht verfügbar in Ihrem Land."
+msgstr "Sorry! Netflix is nog niet beschikbaar in jouw land."
 
 msgctxt "#30301"
 msgid "Cookies have been deleted."
-msgstr "Die Cookies wurden gelöscht"
+msgstr "Cookies zijn verwijderd."
 
 msgctxt "#30302"
 msgid "Session has been deleted."
-msgstr "Die Session wurden gelöscht"
+msgstr "Sessies zijn verwijderd."
 
 msgctxt "#30303"
 msgid "You are not logged in. Check your credentials and/or restart the addon!"
-msgstr "Sie sind nicht eingeloggt. Prüfen Sie Ihren Zugang und/oder starten Sie das Addon neu!"
+msgstr "Je bent niet ingelogd. Controleer je gegevens en/of herstart de plugin!"
 
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
-msgstr "Verschiedene Profile gefunden. Wählen Sie Ihr Profil!"
+msgstr "Meerdere profielen gevonden, kies je profiel!"
 
 msgctxt "#30305"
 msgid "No trailer available!"
-msgstr "Kein Trailer verfügbar!"
+msgstr "Geen trailers beschikbaar!"
 
 msgctxt "#30306"
 msgid "No results found!"
-msgstr "Keine Ergebnisse gefunden!"
+msgstr "Geen resultaten gevonden!"
 
 msgctxt "#30307"
 msgid "Really reset the addon?"
-msgstr "Addon wirklich zurücksetzen?"
+msgstr "Weet je zeker dat je de plugin wilt herstellen?"
 
 msgctxt "#30308"
 msgid "Addon has been reset!"
-msgstr "Addon wurde zurückgesetzt!"
+msgstr "Plugin is hersteld!"
 
 msgctxt "#30309"
 msgid "Cache has been deleted!"
-msgstr "Cache wurde geleert!"
+msgstr "Cache is verwijderd!"
 
 msgctxt "#50001"
 msgid "No browser selected in settings!"
-msgstr "Kein Browser in den Einstellungen ausgewählt!"
-
-msgctxt "#50002"
-msgid "Sorry!"
-msgstr "Entschuldigung!"
-
-msgctxt "#50003"
-msgid "Flix2Kodi crashed."
-msgstr "Flix2Kodi ist abgestürzt."
-
-msgctxt "#50004"
-msgid "Try to refresh your login?"
-msgstr "Login-aktualisierung versuchen?"
-
-msgctxt "#50005"
-msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
-msgstr "Wenn der Browser nicht gestartet ist, ist etwas schiefgegangen. Drücke zurück um diesen Dialog zu verlassen."
+msgstr "Er is geen browser geselecteerd in de instellingen!"

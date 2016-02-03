@@ -1,4 +1,4 @@
-﻿# Kodi Media Center language file
+# Kodi Media Center language file
 # Addon Name: Flix2Kodi
 # Addon id: plugin.video.flix2kodi
 # Addon Provider: zero
@@ -18,19 +18,19 @@ msgstr ""
 
 msgctxt "#11000"
 msgid "General"
-msgstr "Allgemein"
+msgstr "Generale"
 
 msgctxt "#11001"
 msgid "Username"
-msgstr "Benutzername"
+msgstr "Nome Utente"
 
 msgctxt "#11002"
 msgid "Password"
-msgstr "Passwort"
+msgstr "Password"
 
 msgctxt "#11100"
 msgid "General"
-msgstr "Allgemein"
+msgstr "Generale"
 
 msgctxt "#11101"
 msgid "Browser"
@@ -58,252 +58,237 @@ msgstr ""
 
 msgctxt "#11102"
 msgid "Update library after adding"
-msgstr "Bibliothek aktualisieren nach Hinzufügen"
+msgstr "Aggiorna la libreria dopo l'aggiunta"
 
 msgctxt "#11200"
 msgid "Profil settings"
-msgstr "Profil Einstellungen"
+msgstr "Impostazione profilo"
 
 msgctxt "#11201"
 msgid "Single-user account"
-msgstr "Einzel-Profil Konto"
+msgstr "Account utente singolo"
 
 msgctxt "#11202"
 msgid "Show profile selection on each start"
-msgstr "Profilauswahl bei jedem Start anzeigen"
+msgstr "Mosta la selezione del profilo ad ogni avvio"
 
 msgctxt "#12000"
 msgid "Advanced"
-msgstr "Erweitert"
+msgstr "Avanzate"
 
 msgctxt "#12001"
 msgid "Debug logging"
-msgstr "Debug Protokollierung"
+msgstr "Debug logging"
 
 msgctxt "#12002"
 msgid "Library path"
-msgstr "Datenbank Verzeichnis"
+msgstr "Percorso libretia"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
-msgstr "lirc deaktivieren während der Wiedergabe"
+msgstr "disabilita lirg durante la riproduzione"
 
 msgctxt "#13000"
 msgid "Views"
-msgstr "Ansichten"
+msgstr "Viste"
 
 msgctxt "#13001"
 msgid "Get covers & fanart images from TMDb"
-msgstr "Cover & Fanart über TMDb beziehen"
+msgstr "Ottieni le immagini di cover & fanart da TMDb"
 
 msgctxt "#13002"
 msgid "Browse TV-Shows instead of autoplaying"
-msgstr "Serien durchsuchen anstatt automatischer Wiedergabe"
+msgstr "Sfoglia le serie tv invece di iniziare la riproduzione"
 
 msgctxt "#13003"
 msgid "Items per page"
-msgstr "Einträge pro Seite"
+msgstr "Elementi per pagina"
 
 msgctxt "#13100"
 msgid "Appearance"
-msgstr "Aussehen"
+msgstr "Aspetto"
 
 msgctxt "#13101"
 msgid "Force view"
-msgstr "View erzwingen"
+msgstr "Forza visualizzazione"
 
 msgctxt "#13102"
 msgid "View ID - videos"
-msgstr "View ID - Videos"
+msgstr "View ID - video"
 
 msgctxt "#13103"
 msgid "View ID - episodes"
-msgstr "View ID - Episoden"
+msgstr "View ID - episodi"
 
 msgctxt "#13104"
 msgid "View ID - viewing activity"
-msgstr "View ID - Kürzlich angesehen"
+msgstr "View ID - Cosa guardi"
 
 msgctxt "#14000"
 msgid "User data"
-msgstr "Benutzerdaten"
+msgstr "User data"
 
 msgctxt "#14001"
 msgid "Delete cache"
-msgstr "Cache löschen"
+msgstr "Cancella cache"
 
 msgctxt "#14002"
 msgid "Delete cookies / session"
-msgstr "Cookies / Sitzung löschen"
+msgstr "Cancella cookies / sessione"
 
 msgctxt "#14003"
 msgid "Reset Addon"
-msgstr "Addon zurücksetzen"
+msgstr "Resetta Addon"
 
 msgctxt "#30100"
 msgid "Movies"
-msgstr "Filme"
+msgstr "Film"
 
 msgctxt "#30101"
 msgid "TV shows"
-msgstr "Serien"
+msgstr "Serir Tv"
 
 msgctxt "#30102"
 msgid "Suggestions"
-msgstr "Empfehlungen"
+msgstr "Suggeriemnti"
 
 msgctxt "#30103"
 msgid "Who's watching?"
-msgstr "Wer schaut gerade?"
+msgstr "Chi sta guardando?"
 
 msgctxt "#30104"
 msgid "My list"
-msgstr "Meine Liste"
+msgstr "La mia lista"
 
 msgctxt "#30105"
 msgid "Viewing activity"
-msgstr "Kürzlich angesehen"
+msgstr "Cosa guardi"
 
 msgctxt "#30106"
 msgid "Latest"
-msgstr "Neuerscheinungen"
+msgstr "Ultimi aggiunti"
 
 msgctxt "#30107"
 msgid "All shows"
-msgstr "Alle Serien"
+msgstr "Tutti gli spettacoli"
 
 msgctxt "#30108"
 msgid "Genres"
-msgstr "Genres"
+msgstr "Generi"
 
 msgctxt "#30109"
 msgid "Search"
-msgstr "Suche"
+msgstr "Cerca"
 
 msgctxt "#30110"
 msgid "Next page"
-msgstr "Nächste Seite"
+msgstr "Prossima pagina"
 
 msgctxt "#30111"
 msgid "Search"
-msgstr ""
+msgstr "Cerca"
 
 msgctxt "#30150"
 msgid "Add to library"
-msgstr "Zur Bibliothek hinzufügen"
+msgstr "Aggiungi alla libreira"
 
 msgctxt "#301501"
 msgid "Remove from library"
-msgstr "Aus Bibliothek löschen"
+msgstr "Rimuovi dalla libreria"
 
 msgctxt "#30151"
 msgid "Continue watching"
-msgstr "Wiedergabe fortsetzen"
+msgstr "Continua a guardare"
 
 msgctxt "#30152"
 msgid "Show seasons"
-msgstr "Staffeln anzeigen"
+msgstr "Mostra le stagioni"
 
 msgctxt "#30153"
 msgid "Play trailer"
-msgstr "Trailer abspielen"
+msgstr "Esegui il trailer"
 
 msgctxt "#30154"
 msgid "Remove from my list"
-msgstr "Von meiner Liste entfernen"
+msgstr "Rimuovi dalla mia lista"
 
 msgctxt "#30155"
 msgid "Add to my list"
-msgstr "Zu meiner Liste hinzufügen"
+msgstr "Aggiungi alla mia lista"
 
 msgctxt "#30156"
 msgid "Similar Movies"
-msgstr "Ähnliche Filme"
+msgstr "Film simili"
 
 msgctxt "#30157"
 msgid "Similar TV Shows"
-msgstr "Ähnliche Serien"
+msgstr "Serie Tv simili"
 
 msgctxt "#30200"
 msgid "Connecting Netflix"
-msgstr "Mit Netflix verbinden"
+msgstr "Connesisone a Netflix"
 
 msgctxt "#30201"
 msgid "Preparing login"
-msgstr "Login vorbereiten"
+msgstr "Preparazione al login"
 
 msgctxt "#30202"
 msgid "Sending login details"
-msgstr "Sende Login Daten"
+msgstr "Invio dettagli login"
 
 msgctxt "#30203"
 msgid "Loading profile"
-msgstr "Lade Profile"
+msgstr "Caricamento profilo"
 
 msgctxt "#30204"
 msgid "Complete"
-msgstr "Fertig"
+msgstr "Completo"
 
 msgctxt "#30205"
 msgid "Loading metadata"
-msgstr "Lade Metadaten"
+msgstr "Caricamento metadata"
 
 msgctxt "#30300"
 msgid "Sorry! Netflix is not available in your country yet."
-msgstr "Entschuldigung! Netflix ist aktuell nicht verfügbar in Ihrem Land."
+msgstr "Mi dispiace! Netflix non � ancora disponibile nella tua nazioneis."
 
 msgctxt "#30301"
 msgid "Cookies have been deleted."
-msgstr "Die Cookies wurden gelöscht"
+msgstr "I cookie sono stati cancellati."
 
 msgctxt "#30302"
 msgid "Session has been deleted."
-msgstr "Die Session wurden gelöscht"
+msgstr "La sessione � stata cancellata."
 
 msgctxt "#30303"
 msgid "You are not logged in. Check your credentials and/or restart the addon!"
-msgstr "Sie sind nicht eingeloggt. Prüfen Sie Ihren Zugang und/oder starten Sie das Addon neu!"
+msgstr "Non sei loggato. Verifica le tue credenziali e/o riavvia l'addon!"
 
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
-msgstr "Verschiedene Profile gefunden. Wählen Sie Ihr Profil!"
+msgstr "Trovati profili multipli. Scegli il tuo!"
 
 msgctxt "#30305"
 msgid "No trailer available!"
-msgstr "Kein Trailer verfügbar!"
+msgstr "Nessun trailer disponibile!"
 
 msgctxt "#30306"
 msgid "No results found!"
-msgstr "Keine Ergebnisse gefunden!"
+msgstr "Nessun risultato trovato!"
 
 msgctxt "#30307"
 msgid "Really reset the addon?"
-msgstr "Addon wirklich zurücksetzen?"
+msgstr "Vuoi realmente ressettare l'addon?"
 
 msgctxt "#30308"
 msgid "Addon has been reset!"
-msgstr "Addon wurde zurückgesetzt!"
+msgstr "L'addon � stato resettato!"
 
 msgctxt "#30309"
 msgid "Cache has been deleted!"
-msgstr "Cache wurde geleert!"
+msgstr "La cache � stata cancellata!"
 
 msgctxt "#50001"
 msgid "No browser selected in settings!"
-msgstr "Kein Browser in den Einstellungen ausgewählt!"
+msgstr "Nessun browser selezionato nelle impostazioni!"
 
-msgctxt "#50002"
-msgid "Sorry!"
-msgstr "Entschuldigung!"
-
-msgctxt "#50003"
-msgid "Flix2Kodi crashed."
-msgstr "Flix2Kodi ist abgestürzt."
-
-msgctxt "#50004"
-msgid "Try to refresh your login?"
-msgstr "Login-aktualisierung versuchen?"
-
-msgctxt "#50005"
-msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
-msgstr "Wenn der Browser nicht gestartet ist, ist etwas schiefgegangen. Drücke zurück um diesen Dialog zu verlassen."
