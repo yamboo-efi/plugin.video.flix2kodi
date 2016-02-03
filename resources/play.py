@@ -29,8 +29,8 @@ BROWSER_INTERNET_EXPLORER = '3'
 BROWSER_EDGE = '4'
 BROWSER_SAFARI = '5'
 
-MAX_LANG = 1
-MAX_SUB = 1
+MAX_LANG = 5
+MAX_SUB = 5
 
 
 def trailer(title, video_type):
