@@ -90,4 +90,4 @@ except:
     do_fresh_login = dialog.yesno(generic_utility.get_string(50002), generic_utility.get_string(50003), generic_utility.get_string(50004))
     if do_fresh_login:
         if connect.do_login()==True:
-            generic_utility.notification('Login refreshed. please try again.')
+            generic_utility.notification(generic_utility.get_string(50006))

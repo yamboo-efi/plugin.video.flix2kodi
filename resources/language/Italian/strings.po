@@ -86,7 +86,7 @@ msgstr "Percorso libretia"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
-msgstr "disabilita lirg durante la riproduzione"
+msgstr "disabilita lirc durante la riproduzione"
 
 msgctxt "#13000"
 msgid "Views"
@@ -250,7 +250,7 @@ msgstr "Caricamento metadata"
 
 msgctxt "#30300"
 msgid "Sorry! Netflix is not available in your country yet."
-msgstr "Mi dispiace! Netflix non � ancora disponibile nella tua nazioneis."
+msgstr "Mi dispiace! Netflix non e' ancora disponibile nella tua nazioneis."
 
 msgctxt "#30301"
 msgid "Cookies have been deleted."
@@ -258,7 +258,7 @@ msgstr "I cookie sono stati cancellati."
 
 msgctxt "#30302"
 msgid "Session has been deleted."
-msgstr "La sessione � stata cancellata."
+msgstr "La sessione e' stata cancellata."
 
 msgctxt "#30303"
 msgid "You are not logged in. Check your credentials and/or restart the addon!"
@@ -282,13 +282,32 @@ msgstr "Vuoi realmente ressettare l'addon?"
 
 msgctxt "#30308"
 msgid "Addon has been reset!"
-msgstr "L'addon � stato resettato!"
+msgstr "L'addon e' stato resettato!"
 
 msgctxt "#30309"
 msgid "Cache has been deleted!"
-msgstr "La cache � stata cancellata!"
+msgstr "La cache e' stata cancellata!"
 
 msgctxt "#50001"
 msgid "No browser selected in settings!"
 msgstr "Nessun browser selezionato nelle impostazioni!"
 
+msgctxt "#50002"
+msgid "Sorry!"
+msgstr "Scusa!"
+
+msgctxt "#50003"
+msgid "Flix2Kodi crashed."
+msgstr "Flix2Kodi e' andato in crash"
+
+msgctxt "#50004"
+msgid "Try to refresh your login?"
+msgstr "Prova ad aggiornare il tuo login"
+
+msgctxt "#50005"
+msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
+msgstr "Se il tuo browser non e' partito, qualcosa e' andata storta. Premi INDIETRO per chiudere questo messaggio."
+
+msgctxt "#99999"
+msgid ""
+msgstr ""

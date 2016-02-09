@@ -308,6 +308,10 @@ msgctxt "#50005"
 msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
 msgstr ""
 
+msgctxt "#50006"
+msgid "Login refreshed. please try again."
+msgstr ""
+
 msgctxt "#99999"
 msgid ""
 msgstr ""

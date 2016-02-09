@@ -9,16 +9,17 @@ msgstr ""
 "POT-Creation-Date: 2015-11-04 18:30+0100\n"
 "PO-Revision-Date: 2015-11-04 18:30+0100\n"
 "Last-Translator: logi85\n"
-"Language-Team: German\n"
+"Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
+"Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
 
 msgctxt "#11000"
 msgid "General"
-msgstr "Globaal"
+msgstr "Algemeen"
 
 msgctxt "#11001"
 msgid "Username"
@@ -30,7 +31,7 @@ msgstr "Wachtwoord"
 
 msgctxt "#11100"
 msgid "General"
-msgstr "Globaal"
+msgstr "Algemeen"
 
 msgctxt "#11101"
 msgid "Browser"
@@ -58,7 +59,7 @@ msgstr ""
 
 msgctxt "#11102"
 msgid "Update library after adding"
-msgstr "Werk bibliotheken bij na toevoegen"
+msgstr "Bibliotheken bijwerken na toevoegen"
 
 msgctxt "#11200"
 msgid "Profil settings"
@@ -66,11 +67,11 @@ msgstr "Profiel instellingen"
 
 msgctxt "#11201"
 msgid "Single-user account"
-msgstr ""
+msgstr "Account met een enkele gebruiker"
 
 msgctxt "#11202"
 msgid "Show profile selection on each start"
-msgstr "Laat profiel selectie zien bij elke start"
+msgstr "Laat de profiel selectie zien bij elke start"
 
 msgctxt "#12000"
 msgid "Advanced"
@@ -82,11 +83,11 @@ msgstr ""
 
 msgctxt "#12002"
 msgid "Library path"
-msgstr "Bibliotheek pad"
+msgstr "Bibliotheek bestandspad"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
-msgstr "Schakel lirc uit bij afspelen"
+msgstr "Lirc uitschakelen bij start afspelen"
 
 msgctxt "#13000"
 msgid "Views"
@@ -94,11 +95,11 @@ msgstr ""
 
 msgctxt "#13001"
 msgid "Get covers & fanart images from TMDb"
-msgstr "Haal hoes & fanart afbeeldingen van TMDb"
+msgstr "Haal de hoezen en fanart van TMDb"
 
 msgctxt "#13002"
 msgid "Browse TV-Shows instead of autoplaying"
-msgstr "Blader door afleveringen in plaats van automatisch afspelen"
+msgstr "Bladeren door series in plaats van automatisch afspelen"
 
 msgctxt "#13003"
 msgid "Items per page"
@@ -130,15 +131,15 @@ msgstr "Gebruikers gegevens"
 
 msgctxt "#14001"
 msgid "Delete cache"
-msgstr "Cache verwijderen"
+msgstr "Verwijder cache"
 
 msgctxt "#14002"
 msgid "Delete cookies / session"
-msgstr "Cookies / session verwijderen"
+msgstr "Verwijder cookies / session"
 
 msgctxt "#14003"
 msgid "Reset Addon"
-msgstr "Addon opnieuw instellen"
+msgstr "Herstel Addon"
 
 msgctxt "#30100"
 msgid "Movies"
@@ -146,7 +147,7 @@ msgstr "Films"
 
 msgctxt "#30101"
 msgid "TV shows"
-msgstr "TV afleveringen"
+msgstr "Series"
 
 msgctxt "#30102"
 msgid "Suggestions"
@@ -154,7 +155,7 @@ msgstr "Suggesties"
 
 msgctxt "#30103"
 msgid "Who's watching?"
-msgstr "Wie kijkt?"
+msgstr "wie kijkt?"
 
 msgctxt "#30104"
 msgid "My list"
@@ -166,7 +167,7 @@ msgstr "Kijk activiteit"
 
 msgctxt "#30106"
 msgid "Latest"
-msgstr "Recente"
+msgstr "Recentste"
 
 msgctxt "#30107"
 msgid "All shows"
@@ -174,7 +175,7 @@ msgstr "Alle afleveringen"
 
 msgctxt "#30108"
 msgid "Genres"
-msgstr "Genres"
+msgstr ""
 
 msgctxt "#30109"
 msgid "Search"
@@ -198,7 +199,7 @@ msgstr "Verwijder van bibliotheek"
 
 msgctxt "#30151"
 msgid "Continue watching"
-msgstr "Kijken voortzetten"
+msgstr "Verder gaan met kijken"
 
 msgctxt "#30152"
 msgid "Show seasons"
@@ -210,11 +211,11 @@ msgstr "Trailer afspelen"
 
 msgctxt "#30154"
 msgid "Remove from my list"
-msgstr "Verwijder van Mijn Lijst"
+msgstr "Verwijder van Mijn lijst"
 
 msgctxt "#30155"
 msgid "Add to my list"
-msgstr "Voeg toe aan Mijn Lijst"
+msgstr "Voeg toe aan Mijn lijst"
 
 msgctxt "#30156"
 msgid "Similar Movies"
@@ -222,11 +223,11 @@ msgstr "Gelijkwaardige films"
 
 msgctxt "#30157"
 msgid "Similar TV Shows"
-msgstr "Gelijkwaardige TV Series"
+msgstr "Gelijkwaardige series"
 
 msgctxt "#30200"
 msgid "Connecting Netflix"
-msgstr "Verbinding maken met Netflix"
+msgstr "Verbinden met Netflix"
 
 msgctxt "#30201"
 msgid "Preparing login"
@@ -250,7 +251,7 @@ msgstr "Metadata laden"
 
 msgctxt "#30300"
 msgid "Sorry! Netflix is not available in your country yet."
-msgstr "Sorry! Netflix is nog niet beschikbaar in jouw land."
+msgstr "Helaas, Netflix is nog niet beschikbaar in jouw land."
 
 msgctxt "#30301"
 msgid "Cookies have been deleted."
@@ -258,11 +259,11 @@ msgstr "Cookies zijn verwijderd."
 
 msgctxt "#30302"
 msgid "Session has been deleted."
-msgstr "Sessies zijn verwijderd."
+msgstr "Sessie is verwijderd."
 
 msgctxt "#30303"
 msgid "You are not logged in. Check your credentials and/or restart the addon!"
-msgstr "Je bent niet ingelogd. Controleer je gegevens en/of herstart de plugin!"
+msgstr "Je bent niet ingelogd. Controleer je gegevens en/of herstart de addon"
 
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
@@ -278,11 +279,11 @@ msgstr "Geen resultaten gevonden!"
 
 msgctxt "#30307"
 msgid "Really reset the addon?"
-msgstr "Weet je zeker dat je de plugin wilt herstellen?"
+msgstr "De addon werkelijk herstellen?"
 
 msgctxt "#30308"
 msgid "Addon has been reset!"
-msgstr "Plugin is hersteld!"
+msgstr "Addon is hersteld!"
 
 msgctxt "#30309"
 msgid "Cache has been deleted!"

@@ -307,3 +307,7 @@ msgstr "Login-aktualisierung versuchen?"
 msgctxt "#50005"
 msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
 msgstr "Wenn der Browser nicht gestartet ist, ist etwas schiefgegangen. Drücke zurück um diesen Dialog zu verlassen."
+
+msgctxt "#50006"
+msgid "Login refreshed. please try again."
+msgstr "Login aktualisiert, bitte noch einmal versuchen."
