@@ -56,6 +56,10 @@ msgctxt "#111015"
 msgid "Safari"
 msgstr ""
 
+msgctxt "#111016"
+msgid "Chromium"
+msgstr ""
+
 msgctxt "#11102"
 msgid "Update library after adding"
 msgstr ""

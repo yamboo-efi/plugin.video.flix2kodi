@@ -24,6 +24,7 @@ BROWSER_CHROME_LAUNCHER = '2'
 BROWSER_INTERNET_EXPLORER = '3'
 BROWSER_EDGE = '4'
 BROWSER_SAFARI = '5'
+BROWSER_CHROMIUM = '6'
 
 MAX_LANG = 5
 MAX_SUB = 5
@@ -312,11 +313,13 @@ class LogiPlayer(xbmcgui.Window):
             browser_name = 'edge'
         elif self.browser == BROWSER_SAFARI:
             browser_name = 'safari'
+        elif self.browser == BROWSER_CHROMIUM:
+            browser_name = 'chromium'
         return browser_name
 
     def read_browser(self):
         self.browser = generic_utility.get_setting('browser')
-        if self.browser not in(BROWSER_CHROME, BROWSER_CHROME_LAUNCHER, BROWSER_EDGE, BROWSER_INTERNET_EXPLORER, BROWSER_SAFARI):
+        if self.browser not in(BROWSER_CHROME, BROWSER_CHROME_LAUNCHER, BROWSER_EDGE, BROWSER_INTERNET_EXPLORER, BROWSER_SAFARI, BROWSER_CHROMIUM):
             generic_utility.notification(generic_utility.get_string(50001))
             xbmc.sleep(2000)
             self.valid_browser = False

@@ -27,13 +27,26 @@ def login():
     if not 'Sorry, Netflix ' in content:
 
         match = re.compile('locale: "(.+?)"', re.DOTALL|re.UNICODE).findall(content)
-        generic_utility.set_setting('language', match[0])
+        locale = None
+        login_url = 'Login?locale=' + locale
+        if(len(match)) == 0:
+            match = re.compile('"pageName":"login","locale":"(.+?)"', re.DOTALL|re.UNICODE).findall(content)
+            if(len(match)) == 0:
+                generic_utility.error('Cannot find locale on page. content: '+content)
+                login_url = 'Login'
+            else:
+                locale = match[0]
+        else:
+            locale = match[0]
+        generic_utility.set_setting('language', locale)
+
         post_data = {'authURL': generic_utility.get_setting('authorization_url'), 'email': generic_utility.get_setting('username'),
                      'password': generic_utility.get_setting('password'), 'RememberMe': 'on'}
         if not test:
             generic_utility.progress_window(login_progress, 50, generic_utility.get_string(30202))
+
         content = connect.load_netflix_site(
-            generic_utility.main_url + 'Login?locale=' + generic_utility.get_setting('language'),
+            generic_utility.main_url + login_url,
             post=post_data, login_process=True)
 
         if 'id="page-LOGIN"' in content:
