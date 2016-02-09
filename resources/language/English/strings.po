@@ -60,6 +60,10 @@ msgctxt "#111016"
 msgid "Chromium"
 msgstr ""
 
+msgctxt "#111017"
+msgid "Android"
+msgstr ""
+
 msgctxt "#11102"
 msgid "Update library after adding"
 msgstr ""

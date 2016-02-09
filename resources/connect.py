@@ -4,12 +4,15 @@ import pickle
 import re
 import requests
 
-from resources import chrome_cookie
+from resources.utility import generic_utility
+
 from resources import login
 from resources.login import CannotRefreshDataException
 
-from resources.utility import generic_utility
 from resources.utility import file_utility
+
+if not generic_utility.android():
+    from resources import chrome_cookie
 
 
 requests.packages.urllib3.disable_warnings()
@@ -213,8 +216,9 @@ def load_site_internal(url, session, post=None, options=False, headers=None, coo
 
 
 def set_chrome_netflix_cookies():
-    if test == False:
-        chrome_cookie.set_netflix_cookies(read_cookies())
+    if not generic_utility.android():
+        if test == False:
+            chrome_cookie.set_netflix_cookies(read_cookies())
 
 
 def logged_in(content):

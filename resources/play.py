@@ -25,6 +25,7 @@ BROWSER_INTERNET_EXPLORER = '3'
 BROWSER_EDGE = '4'
 BROWSER_SAFARI = '5'
 BROWSER_CHROMIUM = '6'
+BROWSER_ANDROID = '7'
 
 MAX_LANG = 5
 MAX_SUB = 5
@@ -67,6 +68,8 @@ def video(video_id, series_id):
     if player.has_valid_browser():
         player.doModal()
     return None
+
+
 
 
 class LogiPlayer(xbmcgui.Window):
@@ -206,17 +209,25 @@ class LogiPlayer(xbmcgui.Window):
             callcmd = script + ' ' + key
             self.call_script(callcmd)
 
+    def launch_browser_android(self, url):
+        xbmc.executebuiltin("StartAndroidActivity(com.android.browser,android.intent.action.VIEW,,"+url+")")
+
+
     def launch_browser(self, url):
-        self.before_launch()
 
-        if not self.call_custom_script('playback', url):
-            script = self.get_launch_script('launcher')
+        if self.browser == BROWSER_ANDROID:
+            self.launch_browser_android(url)
+        else:
+            self.before_launch()
 
-            if script:
-                callstr = script + ' ' + url
-                self.call_script(callstr)
-                generic_utility.debug('browser terminated')
-        self.after_launch()
+            if not self.call_custom_script('playback', url):
+                script = self.get_launch_script('launcher')
+
+                if script:
+                    callstr = script + ' ' + url
+                    self.call_script(callstr)
+                    generic_utility.debug('browser terminated')
+            self.after_launch()
 
     def before_launch(self):
 #        if self.browser == BROWSER_CHROME:
@@ -315,11 +326,13 @@ class LogiPlayer(xbmcgui.Window):
             browser_name = 'safari'
         elif self.browser == BROWSER_CHROMIUM:
             browser_name = 'chromium'
+        elif self.browser == BROWSER_ANDROID:
+            browser_name = 'android'
         return browser_name
 
     def read_browser(self):
         self.browser = generic_utility.get_setting('browser')
-        if self.browser not in(BROWSER_CHROME, BROWSER_CHROME_LAUNCHER, BROWSER_EDGE, BROWSER_INTERNET_EXPLORER, BROWSER_SAFARI, BROWSER_CHROMIUM):
+        if self.browser not in(BROWSER_CHROME, BROWSER_CHROME_LAUNCHER, BROWSER_EDGE, BROWSER_INTERNET_EXPLORER, BROWSER_SAFARI, BROWSER_CHROMIUM, BROWSER_ANDROID):
             generic_utility.notification(generic_utility.get_string(50001))
             xbmc.sleep(2000)
             self.valid_browser = False

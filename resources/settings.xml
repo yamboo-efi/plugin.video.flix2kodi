@@ -3,7 +3,7 @@
         <setting id="username" type="text" label="11001" default=""/>
         <setting id="password" type="text" option="hidden" label="11002" default=""/>
         <setting label="11100" type="lsep"/>
-        <setting id="browser" type="select" label="11101" lvalues="99999|111011|111012|111013|111014|111015|111016" />
+        <setting id="browser" type="select" label="11101" lvalues="99999|111011|111012|111013|111014|111015|111016|111017" />
         <setting id="update_db" type="bool" label="11102" default="true"/>
         <setting label="11200" type="lsep"/>
         <setting id="single_profile" type="bool" label="11201" default="false"/>

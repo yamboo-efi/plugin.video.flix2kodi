@@ -16,6 +16,8 @@ except Exception:
 
 from resources import connect, video_parser
 from resources.utility import generic_utility
+if generic_utility.android():
+    from resources.android import ordered_dict_backport
 
 video_infos1 = '["availability","bookmarkPosition","details","episodeCount","maturity",' \
                '"queue","releaseYear","requestId","runtime","seasonCount","summary","title","userRating","watched"]'
@@ -28,7 +30,10 @@ def viewing_activity_matches(video_type):
     content = viewing_activity_info()
     matches = json.loads(content)['viewedItems']
 
-    metadatas = collections.OrderedDict()
+    if generic_utility.android():
+        metadatas = ordered_dict_backport.OrderedDict()
+    else:
+        metadatas = collections.OrderedDict()
     videos_str = ''
     for match in matches:
         if 'seriesTitle' in match:

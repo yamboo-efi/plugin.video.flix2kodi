@@ -28,7 +28,6 @@ def login():
 
         match = re.compile('locale: "(.+?)"', re.DOTALL|re.UNICODE).findall(content)
         locale = None
-        login_url = 'Login?locale=' + locale
         if(len(match)) == 0:
             match = re.compile('"pageName":"login","locale":"(.+?)"', re.DOTALL|re.UNICODE).findall(content)
             if(len(match)) == 0:
@@ -36,8 +35,10 @@ def login():
                 login_url = 'Login'
             else:
                 locale = match[0]
+                login_url = 'Login?locale=' + locale
         else:
             locale = match[0]
+            login_url = 'Login?locale=' + locale
         generic_utility.set_setting('language', locale)
 
         post_data = {'authURL': generic_utility.get_setting('authorization_url'), 'email': generic_utility.get_setting('username'),
