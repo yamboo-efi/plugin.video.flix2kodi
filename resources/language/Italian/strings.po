@@ -62,7 +62,7 @@ msgstr "Aggiorna la libreria dopo l'aggiunta"
 
 msgctxt "#11200"
 msgid "Profil settings"
-msgstr "Impostazione profilo"
+msgstr "Impostazioni profilo"
 
 msgctxt "#11201"
 msgid "Single-user account"
@@ -86,7 +86,7 @@ msgstr "Percorso libretia"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
-msgstr "disabilita lirc durante la riproduzione"
+msgstr "Disabilita lirc durante la riproduzione"
 
 msgctxt "#13000"
 msgid "Views"
@@ -114,11 +114,11 @@ msgstr "Forza visualizzazione"
 
 msgctxt "#13102"
 msgid "View ID - videos"
-msgstr "View ID - video"
+msgstr "View ID - Video"
 
 msgctxt "#13103"
 msgid "View ID - episodes"
-msgstr "View ID - episodi"
+msgstr "View ID - Episodi"
 
 msgctxt "#13104"
 msgid "View ID - viewing activity"
@@ -126,7 +126,7 @@ msgstr "View ID - Cosa guardi"
 
 msgctxt "#14000"
 msgid "User data"
-msgstr "User data"
+msgstr "Dati utente"
 
 msgctxt "#14001"
 msgid "Delete cache"
@@ -146,11 +146,11 @@ msgstr "Film"
 
 msgctxt "#30101"
 msgid "TV shows"
-msgstr "Serir Tv"
+msgstr "Serie Tv"
 
 msgctxt "#30102"
 msgid "Suggestions"
-msgstr "Suggeriemnti"
+msgstr "Suggerimenti"
 
 msgctxt "#30103"
 msgid "Who's watching?"
@@ -170,7 +170,7 @@ msgstr "Ultimi aggiunti"
 
 msgctxt "#30107"
 msgid "All shows"
-msgstr "Tutti gli spettacoli"
+msgstr "Tutti gli show"
 
 msgctxt "#30108"
 msgid "Genres"
@@ -250,7 +250,7 @@ msgstr "Caricamento metadata"
 
 msgctxt "#30300"
 msgid "Sorry! Netflix is not available in your country yet."
-msgstr "Mi dispiace! Netflix non e' ancora disponibile nella tua nazioneis."
+msgstr "Mi dispiace! Netflix non e' ancora disponibile nella tua nazione."
 
 msgctxt "#30301"
 msgid "Cookies have been deleted."
@@ -303,6 +303,11 @@ msgstr "Flix2Kodi e' andato in crash"
 msgctxt "#50004"
 msgid "Try to refresh your login?"
 msgstr "Prova ad aggiornare il tuo login"
+
+msgctxt "#50006"
+msgid "Login refreshed. please try again."
+msgstr "Login aggiornato. Riprova"
+
 
 msgctxt "#50005"
 msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
