@@ -210,7 +210,8 @@ class LogiPlayer(xbmcgui.Window):
             self.call_script(callcmd)
 
     def launch_browser_android(self, url):
-        xbmc.executebuiltin("StartAndroidActivity(com.android.browser,android.intent.action.VIEW,,"+url+")")
+        xbmc.executebuiltin("StartAndroidActivity(com.netflix.mediaclient,com.netflix.mediaclient.ui.launch.UIWebViewActivity,,"
+                            +url+")")
 
 
     def launch_browser(self, url):
