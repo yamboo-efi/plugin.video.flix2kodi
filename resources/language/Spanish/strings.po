@@ -19,7 +19,7 @@ msgstr ""
 
 msgctxt "#11000"
 msgid "General"
-msgstr "Allgemein"
+msgstr "General"
 
 msgctxt "#11001"
 msgid "Username"
@@ -31,7 +31,7 @@ msgstr "Contraseña"
 
 msgctxt "#11100"
 msgid "General"
-msgstr "Allgemein"
+msgstr "General"
 
 msgctxt "#11101"
 msgid "Browser"
@@ -67,7 +67,7 @@ msgstr "Opciones de perfil"
 
 msgctxt "#11201"
 msgid "Single-user account"
-msgstr "Cuenta individualo"
+msgstr "Cuenta individual"
 
 msgctxt "#11202"
 msgid "Show profile selection on each start"
@@ -87,7 +87,7 @@ msgstr "Ruta de la librería"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
-msgstr ""
+msgstr "Desactivar lirc durante la reproducción"
 
 msgctxt "#13000"
 msgid "Views"
@@ -131,7 +131,7 @@ msgstr "Opciones de usuario"
 
 msgctxt "#14001"
 msgid "Delete cache"
-msgstr "Borrar cache"
+msgstr "Borrar caché"
 
 msgctxt "#14002"
 msgid "Delete cookies / session"
