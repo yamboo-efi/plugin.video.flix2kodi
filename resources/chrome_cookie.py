@@ -86,9 +86,9 @@ def insert_netflix_id(conn, name, expires_utc, last_access_utc, cookie_data, onl
     conn.commit()
 
 def clear_netflix_cookies(conn):
-    sql = 'DELETE cookies where host_key = ?'
+    sql = 'DELETE FROM cookies where host_key = ?'
     cur = conn.cursor()
-    cur.execute(sql, '.netflix.com')
+    cur.execute(sql, ('.netflix.com',))
     conn.commit()
 
 def set_cookie(conn, name, value, expires, only_secure = False):
