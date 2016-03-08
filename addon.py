@@ -62,7 +62,7 @@ def handle_request():
     elif mode == 'choose_profile':
         connect.choose_profile()
     elif mode == 'search':
-        search.netflix(video_type)
+        search.netflix(video_type, url)
     elif mode == 'delete_cookies':
         delete.cookies()
     elif mode == 'delete_cache':
