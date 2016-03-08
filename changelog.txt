@@ -1,3 +1,7 @@
+version 0.5.8 (08.03.2016)
+  * changed root-list-logic
+  * fixed spanish translation
+
 version 0.5.7 (11.02.2016)
   * updated italian translation
   * improved android support
