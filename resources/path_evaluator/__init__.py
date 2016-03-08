@@ -40,6 +40,37 @@ def req_path(*paths):
 
     return jsn['value']
 
+def get_root_list_id_from_cookie():
+    from resources import connect
+    profile = generic_utility.get_setting('selected_profile')
+
+    session = connect.get_netflix_session(False)
+
+    root_list_id = None
+    if not profile:
+        generic_utility.log('kein profil!')
+        for cur_cookie in session.cookies:
+            if 'lhpuuidh-browse-' in cur_cookie.name:
+#                generic_utility.log('found cookie: '+cur_cookie.value)
+                root_list_id = cur_cookie.value
+                break
+    else:
+        for cur_cookie in session.cookies:
+            if 'lhpuuidh-browse-'+profile in cur_cookie.name:
+                root_list_id = cur_cookie.value
+                break
+
+    if not root_list_id:
+        raise ValueError('root_list_id not found in cookies!')
+
+    splt = root_list_id.split('%3A')
+    if(len(splt) != 3):
+        raise ValueError('Invalid split: '+root_list_id)
+
+#    generic_utility.log('root: '+str(splt[2]))
+    return splt[2]
+
+
 def from_to(fromnr, tonr):
     return '{"from":%d,"to":%d}' % (fromnr, tonr)
 

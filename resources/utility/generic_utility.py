@@ -245,5 +245,8 @@ def darwin():
     return  sys.platform == 'darwin'
 
 def android():
-    return xbmc.getCondVisibility('System.Platform.Android')
+    if not test:
+        return xbmc.getCondVisibility('System.Platform.Android')
+    else:
+        return False
 

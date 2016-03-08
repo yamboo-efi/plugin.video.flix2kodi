@@ -23,7 +23,9 @@ def load():
 def switch_profile(profile_id, login_process = True):
     auth_id = generic_utility.get_setting('authorization_url')
     profile_switch_url = generic_utility.profile_switch() + 'switchProfileGuid=' + profile_id + '&authURL=' + auth_id
+#    generic_utility.log('switch to: '+profile_id)
     ret = connect.load_netflix_site(profile_switch_url, login_process=login_process)
+
 #    generic_utility.log('switch-profile: '+ret)
 
     content = connect.load_netflix_site('http://www.netflix.com/browse')
