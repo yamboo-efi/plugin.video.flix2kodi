@@ -41,8 +41,18 @@ def login():
             login_url = 'Login?locale=' + locale
         generic_utility.set_setting('language', locale)
 
-        post_data = {'authURL': generic_utility.get_setting('authorization_url'), 'email': generic_utility.get_setting('username'),
-                     'password': generic_utility.get_setting('password'), 'RememberMe': 'on'}
+        post_data = {
+                     'authURL': generic_utility.get_setting('authorization_url'),
+                     'email': generic_utility.get_setting('username'),
+                     'password':  generic_utility.get_setting('password'), 
+                     'RememberMeCheckbox': 'true',
+                     'RememberMe': 'on',
+                     'flow': 'websiteSignup',
+                     'mode': 'login',
+                     'action': 'loginAction',
+                     'withFields': 'email,password,rememberMe,nextPage',
+                     'nextPage': ''}
+
         if not test:
             generic_utility.progress_window(login_progress, 50, generic_utility.get_string(30202))
 
