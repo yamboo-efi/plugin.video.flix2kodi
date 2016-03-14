@@ -72,7 +72,7 @@ class LogiPlayer(xbmcgui.Window):
             xbmc.executebuiltin('LIRC.Stop')
 
         try:
-            self.launch_browser('http://www.netflix.com/watch/%s' % video_id)
+            self.launch_browser('http://netflix.com/watch/%s' % video_id)
         except:
             generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
             generic_utility.notification('Error launching browser. See logfile')
@@ -184,8 +184,7 @@ class LogiPlayer(xbmcgui.Window):
             self.call_script(callcmd)
 
     def launch_browser_android(self, url):
-        xbmc.executebuiltin("StartAndroidActivity(com.netflix.mediaclient,com.netflix.mediaclient.ui.launch.UIWebViewActivity,,"
-                            +url+")")
+        xbmc.executebuiltin("StartAndroidActivity(com.android.chrome,android.intent.action.VIEW,,"+url+")")
 
 
     def launch_browser(self, url):
