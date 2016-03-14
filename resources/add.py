@@ -126,12 +126,15 @@ def add_context_menu_movie(entries, removable, title, type, video_id, year):
     entries.append(
             (generic_utility.get_string(30157), 'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=tv)' % (
                 generic_utility.addon_id, urllib.quote_plus(generic_utility.main_url + 'WiMovie/' + video_id))))
-    if removable:
-        entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
-            generic_utility.addon_id, urllib.quote_plus(video_id))))
-    else:
-        entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
-            generic_utility.addon_id, urllib.quote_plus(video_id))))
+
+    if generic_utility.get_setting('is_kid') == 'false':
+        if removable:
+            entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
+                generic_utility.addon_id, urllib.quote_plus(video_id))))
+        else:
+            entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
+                generic_utility.addon_id, urllib.quote_plus(video_id))))
+
     title_utf8 = title.strip() + ' (' + str(year) + ')'
     title = urllib.quote_plus(title_utf8.encode('utf-8'))
     movie_dir = library.get_movie_dir(title_utf8)[0]
@@ -156,12 +159,15 @@ def add_context_menu_show(entries, removable, thumb_url, title, video_id):
         entries.append((generic_utility.get_string(30152),
                         'Container.Update(plugin://%s/?mode=list_seasons&url=%s&thumb=%s)' % (
                             generic_utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
-    if removable:
-        entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
-            generic_utility.addon_id, urllib.quote_plus(video_id))))
-    else:
-        entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
-            generic_utility.addon_id, urllib.quote_plus(video_id))))
+
+    if generic_utility.get_setting('is_kid') == 'false':
+        if removable:
+            entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
+                generic_utility.addon_id, urllib.quote_plus(video_id))))
+        else:
+            entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
+                generic_utility.addon_id, urllib.quote_plus(video_id))))
+
     series_dir = library.get_series_dir(title.strip())
     #        generic_utility.log('series-dir: '+series_dir)
     if xbmcvfs.exists(series_dir + os.sep) == False:

@@ -42,7 +42,7 @@ def main(video_type):
     elif video_type == 'dynamic':
         add_dynamic_lists()
 
-    if video_type != 'dynamic':
+    if video_type != 'dynamic' and generic_utility.get_setting('is_kid') == 'false':
         root_list = lolomos.get_root_list()
         mylist = lolomos.get_mylist(root_list)
         add.directory(child('displayName', mylist[1]), 'list?&mylist', 'list_videos', '', video_type)

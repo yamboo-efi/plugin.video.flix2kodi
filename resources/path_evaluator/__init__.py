@@ -54,11 +54,15 @@ def get_root_list_id_from_cookie():
 #                generic_utility.log('found cookie: '+cur_cookie.value)
                 root_list_id = cur_cookie.value
                 break
+            elif 'lhpuuid-kid-' in cur_cookie.name:
+                root_list_id = cur_cookie.value
     else:
         for cur_cookie in session.cookies:
             if 'lhpuuidh-browse-'+profile in cur_cookie.name:
                 root_list_id = cur_cookie.value
                 break
+            elif 'lhpuuid-kid-'+profile in cur_cookie.name:
+                root_list_id = cur_cookie.value
 
     if not root_list_id:
         raise ValueError('root_list_id not found in cookies!')

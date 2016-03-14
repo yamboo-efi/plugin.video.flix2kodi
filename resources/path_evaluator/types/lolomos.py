@@ -1,5 +1,6 @@
 from resources import path_evaluator
 from resources.path_evaluator import from_to, child, deref,filter_empty, req_path, get_root_list_id_from_cookie
+from resources.utility import generic_utility
 
 
 def my_list(root_list):
@@ -14,8 +15,13 @@ def read_lists(jsn, root_list):
 
     llms = child('lolomos', jsn)
     rlst = child(root_list, llms)
-    mylist = child('mylist', rlst)
-    mylist_idx = deref(mylist, jsn)[0]
+
+    if generic_utility.get_setting('is_kid') == 'false':
+        mylist = child('mylist', rlst)
+        mylist_idx = deref(mylist, jsn)[0]
+    else:
+        mylist_idx = -1
+        mylist_id = None
 
     for list_ref_idx in rlst:
         list_ref = rlst[list_ref_idx]
