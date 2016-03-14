@@ -10,8 +10,9 @@ tmdbsimple.API_KEY = base64.b64decode('NDc2N2I0YjJiYjk0YjEwNGZhNTUxNWM1ZmY0ZTFmZ
 language = generic_utility.get_setting('language').split('-')[0]
 
 
-def netflix(video_type):
-    search_string = generic_utility.keyboard()
+def netflix(video_type, search_string=None):
+    if not search_string:
+        search_string = generic_utility.keyboard()
     if search_string:
         list.search(search_string, video_type)
 
