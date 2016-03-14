@@ -119,9 +119,6 @@ def create_video_listitem(removable, video_metadata, viewing_activity):
 
 
 def add_context_menu_movie(entries, removable, title, type, video_id, year):
-    entries.append((
-        generic_utility.get_string(30153), 'RunPlugin(plugin://%s/?mode=play_trailer&url=%s&type=%s)' % (
-            generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title)), type)))
     entries.append((generic_utility.get_string(30156),
                     'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=movie)' % (
                         generic_utility.addon_id, urllib.quote_plus(

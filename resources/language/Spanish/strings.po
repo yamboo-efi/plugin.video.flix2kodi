@@ -205,10 +205,6 @@ msgctxt "#30152"
 msgid "Show seasons"
 msgstr "Ver Temporadas"
 
-msgctxt "#30153"
-msgid "Play trailer"
-msgstr "Reproducir Trailer"
-
 msgctxt "#30154"
 msgid "Remove from my list"
 msgstr "Eliminar de mi lista"
@@ -268,10 +264,6 @@ msgstr "No has iniciado sesión. ¡Comprueba tus credenciales o reinicia el addo
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
 msgstr "Detectados múltiples perfiles. ¡Elija uno!"
-
-msgctxt "#30305"
-msgid "No trailer available!"
-msgstr "¡Trailer no disponible!"
 
 msgctxt "#30306"
 msgid "No results found!"

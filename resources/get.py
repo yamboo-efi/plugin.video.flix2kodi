@@ -269,19 +269,6 @@ def cover(video_id, cover_url):
         pass
 
 
-def trailer(video_type, title):
-    import search
-    content = search.tmdb(video_type, title)
-    if content['total_results'] > 0:
-        content = content['results'][0]
-        tmdb_id = content['id']
-        content = search.trailer(video_type, tmdb_id)
-    else:
-        generic_utility.notification(generic_utility.get_string(30305))
-        content = None
-    return content
-
-
 def genre_info(video_type):
     post_data = ''
     if video_type == 'show':

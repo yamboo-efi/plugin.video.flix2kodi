@@ -31,32 +31,6 @@ MAX_LANG = 5
 MAX_SUB = 5
 
 
-def trailer(title, video_type):
-    trailers = []
-    content = get.trailer(video_type, title)
-    if content:
-        for match in content['results']:
-            if match['site'] == 'YouTube':
-                if match['iso_639_1']:
-                    name = match['name'] + ' (' + match['iso_639_1'] + ')'
-                else:
-                    name = match['name']
-                match = {'name': name, 'key': match['key']}
-                trailers.append(match)
-        if len(trailers) > 0:
-            dialog = xbmcgui.Dialog()
-            nr = dialog.select('Trailer', [match['name'] for match in trailers])
-            if nr >= 0:
-                selected_trailer = trailers[nr]
-                match = 'PlayMedia(plugin://plugin.video.youtube/play/?video_id=%s)' % selected_trailer['key']
-                xbmc.executebuiltin(match)
-        else:
-            generic_utility.notification(generic_utility.get_string(30305))
-    else:
-        generic_utility.notification(generic_utility.get_string(30305))
-        pass
-
-
 def video(video_id, series_id):
     xbmc.Player().stop()
     player = LogiPlayer()

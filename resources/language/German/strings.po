@@ -204,10 +204,6 @@ msgctxt "#30152"
 msgid "Show seasons"
 msgstr "Staffeln anzeigen"
 
-msgctxt "#30153"
-msgid "Play trailer"
-msgstr "Trailer abspielen"
-
 msgctxt "#30154"
 msgid "Remove from my list"
 msgstr "Von meiner Liste entfernen"
@@ -267,10 +263,6 @@ msgstr "Sie sind nicht eingeloggt. Prüfen Sie Ihren Zugang und/oder starten Sie
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
 msgstr "Verschiedene Profile gefunden. Wählen Sie Ihr Profil!"
-
-msgctxt "#30305"
-msgid "No trailer available!"
-msgstr "Kein Trailer verfügbar!"
 
 msgctxt "#30306"
 msgid "No results found!"

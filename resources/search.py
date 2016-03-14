@@ -49,18 +49,3 @@ def tmdb(video_type, title, year=None):
     if content['total_results'] == 0:
         content = search.movie(query=generic_utility.encode(title), year=year, language=language, include_adult='true')
     return content
-
-
-def trailer(video_type, tmdb_id):
-    content = None
-    if video_type.startswith('tv'):
-        try:
-            content = tmdbsimple.TV(tmdb_id).videos()
-        except Exception:
-            pass
-    else:
-        try:
-            content = tmdbsimple.Movies(tmdb_id).videos()
-        except Exception:
-            pass
-    return content

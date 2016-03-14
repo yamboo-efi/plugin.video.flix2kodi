@@ -205,10 +205,6 @@ msgctxt "#30152"
 msgid "Show seasons"
 msgstr "Laat seizoenen zien"
 
-msgctxt "#30153"
-msgid "Play trailer"
-msgstr "Trailer afspelen"
-
 msgctxt "#30154"
 msgid "Remove from my list"
 msgstr "Verwijder van Mijn lijst"
@@ -268,10 +264,6 @@ msgstr "Je bent niet ingelogd. Controleer je gegevens en/of herstart de addon"
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
 msgstr "Meerdere profielen gevonden, kies je profiel!"
-
-msgctxt "#30305"
-msgid "No trailer available!"
-msgstr "Geen trailers beschikbaar!"
 
 msgctxt "#30306"
 msgid "No results found!"

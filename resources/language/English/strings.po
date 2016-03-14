@@ -212,10 +212,6 @@ msgctxt "#30152"
 msgid "Show seasons"
 msgstr ""
 
-msgctxt "#30153"
-msgid "Play trailer"
-msgstr ""
-
 msgctxt "#30154"
 msgid "Remove from my list"
 msgstr ""
@@ -274,10 +270,6 @@ msgstr ""
 
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
-msgstr ""
-
-msgctxt "#30305"
-msgid "No trailer available!"
 msgstr ""
 
 msgctxt "#30306"

@@ -57,8 +57,6 @@ def handle_request():
         library.add_series(series_id, name, url)
     elif mode == 'remove_series_from_library':
         library.remove_series(name)
-    elif mode == 'play_trailer':
-        play.trailer(url, video_type)
     elif mode == 'choose_profile':
         connect.choose_profile()
     elif mode == 'search':
