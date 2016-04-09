@@ -177,8 +177,7 @@ def genres(video_type):
 def superbrowse():
     xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
 
-    #need to fix this with the proper path
-    with open("/home/xbmc/.kodi/addons/plugin.video.flix2kodi/resources/data/superbrowse_categories.json") as categories_file:
+    with open(".kodi/addons/plugin.video.flix2kodi/resources/data/superbrowse_categories.json") as categories_file:
         categories = json.load(categories_file)
 
     for category_name,category_id in categories.iteritems():
