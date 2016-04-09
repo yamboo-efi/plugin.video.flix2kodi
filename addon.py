@@ -77,6 +77,8 @@ def handle_request():
         play.video(url, series_id);
     elif mode == 'relogin':
         connect.do_login()
+    elif mode == 'superbrowse':
+        list.superbrowse()
     else:
         general.index()
 

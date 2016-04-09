@@ -196,6 +196,10 @@ msgctxt "#30111"
 msgid "Search"
 msgstr ""
 
+msgctxt "#30112"
+msgid "Super browse"
+msgstr ""
+
 msgctxt "#30150"
 msgid "Add to library"
 msgstr ""
