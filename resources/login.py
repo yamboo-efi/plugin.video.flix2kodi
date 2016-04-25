@@ -24,7 +24,7 @@ def login():
         login_progress.create('Netflix', generic_utility.get_string(30200) + '...')
         generic_utility.progress_window(login_progress, 25, generic_utility.get_string(30201))
     content = connect.load_netflix_site(generic_utility.main_url + 'Login', new_session=True, login_process=True)
-    if not 'Sorry, Netflix ' in content:
+    if 'Sorry, Netflix ' not in content:
 
         match = re.compile('locale: "(.+?)"', re.DOTALL|re.UNICODE).findall(content)
         locale = None
@@ -47,7 +47,7 @@ def login():
                      'password':  generic_utility.get_setting('password'), 
                      'RememberMeCheckbox': 'true',
                      'RememberMe': 'on',
-                     'flow': 'websiteSignup',
+                     'flow': 'websiteSignUp',
                      'mode': 'login',
                      'action': 'loginAction',
                      'withFields': 'email,password,rememberMe,nextPage',

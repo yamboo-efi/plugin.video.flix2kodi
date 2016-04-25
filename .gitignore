@@ -104,3 +104,6 @@ test/headers
 test/login_content
 test/test.html
 test/test.txt
+buildzip.sh
+test/cookies.bak
+changelog.txt~

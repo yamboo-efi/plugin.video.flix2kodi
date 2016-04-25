@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import json
+import pprint
 
 try:
     import xbmc
@@ -36,6 +37,7 @@ def choose():
     profiles = []
     content = connect.load_netflix_site(generic_utility.profile_url, login_process=True)
 #    generic_utility.log('choose: '+content)
+    generic_utility.log(content)
     match = json.loads(content)['profiles']
     for item in match:
         profile = {'name': item['firstName'], 'token': item['guid'], 'is_kid': item['experience'] == 'jfk'}

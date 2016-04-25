@@ -1,3 +1,6 @@
+version 0.6.1 (25.04.2016)
+  * fixed login-issue
+
 version 0.6.0 (14.03.2016)
   * changed dutch translation
   * added french translation

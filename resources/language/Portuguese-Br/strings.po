@@ -1,0 +1,286 @@
+# Kodi Media Center language file
+# Addon Name: Flix2Kodi
+# Addon id: plugin.video.flix2kodi
+# Addon Provider: zero
+msgid ""
+msgstr ""
+"Project-Id-Version: Kodi-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2015-11-04 18:30+0100\n"
+"PO-Revision-Date: 2015-11-04 18:30+0100\n"
+"Last-Translator: logi85\n"
+"Language-Team: Portuguese-BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+
+msgctxt "#11000"
+msgid "General"
+msgstr "Geral"
+
+msgctxt "#11001"
+msgid "Username"
+msgstr "Usu�rio"
+
+msgctxt "#11002"
+msgid "Password"
+msgstr "Senha"
+
+msgctxt "#11100"
+msgid "General"
+msgstr "Geral"
+
+msgctxt "#11101"
+msgid "Browser"
+msgstr "Buscar"
+
+msgctxt "#111011"
+msgid "Chrome"
+msgstr ""
+
+msgctxt "#111012"
+msgid "Chromelauncher"
+msgstr ""
+
+msgctxt "#111013"
+msgid "Internet Explorer"
+msgstr ""
+
+msgctxt "#111014"
+msgid "Edge"
+msgstr ""
+
+msgctxt "#111015"
+msgid "Safari"
+msgstr ""
+
+msgctxt "#11102"
+msgid "Update library after adding"
+msgstr "Atualizar biblioteca ap�s adicionar"
+
+msgctxt "#11200"
+msgid "Profil settings"
+msgstr "Op��es de perfil"
+
+msgctxt "#11201"
+msgid "Single-user account"
+msgstr "Somente um perfil na conta"
+
+msgctxt "#11202"
+msgid "Show profile selection on each start"
+msgstr "Mostrar sele��o de perfil ao inciar"
+
+msgctxt "#12000"
+msgid "Advanced"
+msgstr "Avan�ado"
+
+msgctxt "#12001"
+msgid "Debug logging"
+msgstr "Habilitar debug log"
+
+msgctxt "#12002"
+msgid "Library path"
+msgstr "Caminho para biblioteca"
+
+msgctxt "#12101"
+msgid "Disable lirc on playback"
+msgstr "Desabilitar lirc ao executar video"
+
+msgctxt "#13000"
+msgid "Views"
+msgstr "Vistas"
+
+msgctxt "#13001"
+msgid "Get covers & fanart images from TMDb"
+msgstr "Obter Posters e fanarts de TMDb"
+
+msgctxt "#13002"
+msgid "Browse TV-Shows instead of autoplaying"
+msgstr "Buscar Series em vez de reproduzi-las automaticamente"
+
+msgctxt "#13003"
+msgid "Items per page"
+msgstr "Items por p�gina"
+
+msgctxt "#13100"
+msgid "Appearance"
+msgstr "Apar�ncia"
+
+msgctxt "#13101"
+msgid "Force view"
+msgstr "For�ar vista"
+
+msgctxt "#13102"
+msgid "View ID - videos"
+msgstr "View ID - v�deos"
+
+msgctxt "#13103"
+msgid "View ID - episodes"
+msgstr "View ID - epis�dios"
+
+msgctxt "#13104"
+msgid "View ID - viewing activity"
+msgstr "View ID - Assistidos Anteriormente"
+
+msgctxt "#14000"
+msgid "User data"
+msgstr "Op��es de usu�rio"
+
+msgctxt "#14001"
+msgid "Delete cache"
+msgstr "Deletar cache"
+
+msgctxt "#14002"
+msgid "Delete cookies / session"
+msgstr "Deletar cookies / sess�o"
+
+msgctxt "#14003"
+msgid "Reset Addon"
+msgstr "Reinciar Addon"
+
+msgctxt "#30100"
+msgid "Movies"
+msgstr "Filmes"
+
+msgctxt "#30101"
+msgid "TV shows"
+msgstr "Series"
+
+msgctxt "#30102"
+msgid "Suggestions"
+msgstr "Sugest�es"
+
+msgctxt "#30103"
+msgid "Who's watching?"
+msgstr "Quem est� assistindo?"
+
+msgctxt "#30104"
+msgid "My list"
+msgstr "Minha Lista"
+
+msgctxt "#30105"
+msgid "Viewing activity"
+msgstr "Assistidos Anteriormente"
+
+msgctxt "#30106"
+msgid "Latest"
+msgstr "�ltimos"
+
+msgctxt "#30107"
+msgid "All shows"
+msgstr "Todas as series"
+
+msgctxt "#30108"
+msgid "Genres"
+msgstr "G�neros"
+
+msgctxt "#30109"
+msgid "Search"
+msgstr "Buscar"
+
+msgctxt "#30110"
+msgid "Next page"
+msgstr "Pr�xima P�gina"
+
+msgctxt "#30111"
+msgid "Search"
+msgstr "Buscar"
+
+msgctxt "#30150"
+msgid "Add to library"
+msgstr "Adicionar a biblioteca"
+
+msgctxt "#301501"
+msgid "Remove from library"
+msgstr "Remover da biblioteca"
+
+msgctxt "#30151"
+msgid "Continue watching"
+msgstr "Continuar assistindo"
+
+msgctxt "#30152"
+msgid "Show seasons"
+msgstr "Mostrar Temporadas"
+
+msgctxt "#30154"
+msgid "Remove from my list"
+msgstr "Remover de minha lista"
+
+msgctxt "#30155"
+msgid "Add to my list"
+msgstr "Adicionar a minha lista"
+
+msgctxt "#30156"
+msgid "Similar Movies"
+msgstr "Filmes similares"
+
+msgctxt "#30157"
+msgid "Similar TV Shows"
+msgstr "S�ries similares"
+
+msgctxt "#30200"
+msgid "Connecting Netflix"
+msgstr "Conectando ao Netflix"
+
+msgctxt "#30201"
+msgid "Preparing login"
+msgstr "Iniciando sess�o"
+
+msgctxt "#30202"
+msgid "Sending login details"
+msgstr "Enviando detalhes da sess�o"
+
+msgctxt "#30203"
+msgid "Loading profile"
+msgstr "Carregando perfil"
+
+msgctxt "#30204"
+msgid "Complete"
+msgstr "Finalizado"
+
+msgctxt "#30205"
+msgid "Loading metadata"
+msgstr "Carregando metadados"
+
+msgctxt "#30300"
+msgid "Sorry! Netflix is not available in your country yet."
+msgstr "Desculpe! Netflix n�o est� disponivel em seu pa�s."
+
+msgctxt "#30301"
+msgid "Cookies have been deleted."
+msgstr "Cookies deletados."
+
+msgctxt "#30302"
+msgid "Session has been deleted."
+msgstr "Sesi�n deletados."
+
+msgctxt "#30303"
+msgid "You are not logged in. Check your credentials and/or restart the addon!"
+msgstr "Vo�� n�o est� conectado. Confirme suas credenciais e/ou reinicie o addon!"
+
+msgctxt "#30304"
+msgid "Multiple profiles found. Choose your profile!"
+msgstr "multiplos perfis encontrados. Escolha o seu perfil!"
+
+msgctxt "#30306"
+msgid "No results found!"
+msgstr "Resultados n�o encontrados"
+
+msgctxt "#30307"
+msgid "Really reset the addon?"
+msgstr "Deseja reinicar o addon?"
+
+msgctxt "#30308"
+msgid "Addon has been reset!"
+msgstr "Addon reiniciado!"
+
+msgctxt "#30309"
+msgid "Cache has been deleted!"
+msgstr "Cach� deletado"
+
+msgctxt "#50001"
+msgid "No browser selected in settings!"
+msgstr "Browser n�o selecionado nas configura��es"
