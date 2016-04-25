@@ -42,7 +42,7 @@ msgstr ""
 
 msgctxt "#111012"
 msgid "Chromelauncher"
-msgstr ""
+msgstr "Lanceur Chrome"
 
 msgctxt "#111013"
 msgid "Internet Explorer"
@@ -66,11 +66,11 @@ msgstr ""
 
 msgctxt "#11102"
 msgid "Update library after adding"
-msgstr "Mise à jour de Bibliothèque après l'ajout"
+msgstr "Mise à jour de Bibliothèque après un ajout"
 
 msgctxt "#11200"
 msgid "Profile settings"
-msgstr "Cofiguration profil"
+msgstr "Cofiguration du profil"
 
 msgctxt "#11201"
 msgid "Single-user account"
@@ -90,11 +90,11 @@ msgstr "Activer le debug"
 
 msgctxt "#12002"
 msgid "Library path"
-msgstr "Chemin de librairie (source)"
+msgstr "Chemin de la librairie (source)"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
-msgstr "Désactiver lirc sur la lecture"
+msgstr "Désactiver lirc pendant la lecture"
 
 msgctxt "#13000"
 msgid "Views"
@@ -106,7 +106,7 @@ msgstr "Récupérer les couvertures & les images fanart depuis TMDb"
 
 msgctxt "#13002"
 msgid "Browse TV-Shows instead of autoplaying"
-msgstr "Parcourir les séries TV au lieu d'une lecture automatiquement"
+msgstr "Parcourir les séries TV au lieu d'une lecture automatique"
 
 msgctxt "#13003"
 msgid "Items per page"
@@ -238,11 +238,11 @@ msgstr "Connection à Netflix"
 
 msgctxt "#30201"
 msgid "Preparing login"
-msgstr "Préparation de connexion"
+msgstr "Préparation de l'identification"
 
 msgctxt "#30202"
 msgid "Sending login details"
-msgstr "Envoi des données de connexion"
+msgstr "Envoi des données d'identification"
 
 msgctxt "#30203"
 msgid "Loading profile"
@@ -250,7 +250,7 @@ msgstr "Chargement du Profil"
 
 msgctxt "#30204"
 msgid "Complete"
-msgstr "Complet"
+msgstr "Terminé"
 
 msgctxt "#30205"
 msgid "Loading metadata"
@@ -286,7 +286,7 @@ msgstr "Aucun résultat trouvé!"
 
 msgctxt "#30307"
 msgid "Really reset the addon?"
-msgstr "Êtes-vous sûr de réinitialiser le plugin?"
+msgstr "Êtes-vous sûr de vouloir réinitialiser le plugin?"
 
 msgctxt "#30308"
 msgid "Addon has been reset!"
@@ -294,7 +294,7 @@ msgstr "Plugin réinitialisé!"
 
 msgctxt "#30309"
 msgid "Cache has been deleted!"
-msgstr "Le cache a été supprimé!"
+msgstr "Le cache a bien été supprimé!"
 
 msgctxt "#50001"
 msgid "No browser selected in settings!"
@@ -306,11 +306,11 @@ msgstr "Désolé"
 
 msgctxt "#50003"
 msgid "Flix2Kodi crashed."
-msgstr "Flix2Kodi est planté"
+msgstr "Flix2Kodi a planté"
 
 msgctxt "#50004"
 msgid "Try to refresh your login?"
-msgstr "Essayez de rafraîchir votre connexion?"
+msgstr "Essayez de rafraîchir vos identifiants?"
 
 msgctxt "#50005"
 msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
