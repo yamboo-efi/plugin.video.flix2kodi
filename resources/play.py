@@ -81,11 +81,13 @@ class LogiPlayer(xbmcgui.Window):
         xbmc.audioResume()
         if generic_utility.get_setting('disable_lirc') == 'true':
             xbmc.executebuiltin('LIRC.Start')
-        try:
-            self.update_playcount(video_id)
-        except:
-            generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
-            generic_utility.notification('Cannot update playcount. See logfile')
+
+        if generic_utility.get_setting('sync_viewstate') == 'true':
+            try:
+                self.update_playcount(video_id)
+            except:
+                generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
+                generic_utility.notification('Cannot update playcount. See logfile')
         self.close()
 
 
