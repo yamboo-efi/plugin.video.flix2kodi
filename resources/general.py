@@ -20,7 +20,8 @@ def index():
     add.directory(generic_utility.get_string(30100), '', 'main', '', 'movie', login_context=True)
     add.directory(generic_utility.get_string(30101), '', 'main', '', 'show', login_context=True)
     
-    add.directory(generic_utility.get_string(30112), '', 'superbrowse', '', 'superbrowse', login_context=True)
+    if generic_utility.get_setting('superbrowse') == 'true':
+        add.directory(generic_utility.get_string(30112), '', 'superbrowse', '', 'superbrowse', login_context=True)
 
     add.directory(generic_utility.get_string(30102), '', 'main', '', 'dynamic', login_context=True)
 
