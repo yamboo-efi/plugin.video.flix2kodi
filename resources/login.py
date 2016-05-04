@@ -47,7 +47,7 @@ def login():
                      'password':  generic_utility.get_setting('password'), 
                      'RememberMeCheckbox': 'true',
                      'RememberMe': 'on',
-                     'flow': 'websiteSignup',
+                     'flow': 'websiteSignUp',
                      'mode': 'login',
                      'action': 'loginAction',
                      'withFields': 'email,password,rememberMe,nextPage',

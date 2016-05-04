@@ -30,7 +30,6 @@ BROWSER_ANDROID = '7'
 MAX_LANG = 5
 MAX_SUB = 5
 
-
 def video(video_id, series_id):
     xbmc.Player().stop()
     player = LogiPlayer()
@@ -42,8 +41,6 @@ def video(video_id, series_id):
     if player.has_valid_browser():
         player.doModal()
     return None
-
-
 
 
 class LogiPlayer(xbmcgui.Window):
@@ -211,6 +208,8 @@ class LogiPlayer(xbmcgui.Window):
 
     def after_launch(self):
         self.call_custom_script('after_playback')
+        #refresh listing to update any watched indicators
+        xbmc.executebuiltin("Container.Refresh")
 
     def call_custom_script(self, name, params = ''):
         data_dir = generic_utility.data_dir()

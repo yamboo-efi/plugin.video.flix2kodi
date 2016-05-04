@@ -8,6 +8,7 @@ import xbmcplugin
 import xbmcvfs
 
 from resources import library
+from resources import get
 from resources.utility import generic_utility
 
 plugin_handle = int(sys.argv[1])
@@ -82,39 +83,99 @@ def create_video_listitem(removable, video_metadata, viewing_activity):
     rating = video_metadata['rating']
     playcount = video_metadata['playcount']
     next_mode = 'play_video_main'
+    fanart = generic_utility.addon_handle.getAddonInfo('fanart')
+
     if viewing_activity == False and generic_utility.get_setting('browse_tv_shows') == 'true' and (type == 'show'):
         next_mode = 'list_seasons'
     entries = []
-    cover_file, fanart_file = generic_utility.cover_fanart(video_id)
-    if xbmcvfs.exists(cover_file):
-        thumb_url = cover_file
     url = sys.argv[0]
     url += '?url=' + urllib.quote_plus(video_id)
     url += '&mode=' + next_mode
     url += '&name=' + urllib.quote_plus(generic_utility.encode(title))
     url += '&thumb=' + urllib.quote_plus(thumb_url)
-    list_item = xbmcgui.ListItem(title)
-    list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb_url})
-    list_item.setInfo(type='video',
-                      infoLabels={'title': title, 'plot': description, 'duration': unicode(duration), 'year': int(year),
-                                  'mpaa': mpaa, 'director': director, 'genre': genre, 'rating': rating,
-                                  'playcount': playcount})
-    list_item.setProperty('IsPlayable', 'true');
-    if xbmcvfs.exists(fanart_file):
-        list_item.setProperty('fanart_image', fanart_file)
-    elif xbmcvfs.exists(cover_file):
-        list_item.setProperty('fanart_image', cover_file)
+    
+    #get extended artwork if tmdb lookups are enabled
+    if generic_utility.get_setting('use_tmdb') == 'true' and type in ["movie","show"]:
+        extended_info = get.extended_artwork(title,year,type,video_metadata['video_id'])
+    elif generic_utility.get_setting('use_tmdb') == 'true' and type == "episode":
+        extended_info = get.extended_artwork(video_metadata['series_title'],year,type,video_metadata['series_id'])
+    else: extended_info = {}
+    
+    defaulticon = "DefaultMovies.png"
+    if type in ['season','show','episode']:
+        defaulticon = "DefaultTVShows.png"
+    
+    #prepend watchdate to label for viewing_activity listings
+    if viewing_activity:
+        list_item = xbmcgui.ListItem("%s - %s" %(video_metadata.get("date_watched",""),title))
     else:
-        list_item.setProperty('fanart_image', thumb_url)
+        list_item = xbmcgui.ListItem(title)
+    
+    artwork = {
+        'icon': defaulticon, 
+        'thumb': extended_info.get("poster",thumb_url), 
+        'landscape': extended_info.get("landscape",thumb_url), 
+        'poster': extended_info.get("poster",""), 
+        'clearlogo': extended_info.get("clearlogo",""), 
+        'clearart': extended_info.get("clearart",""), 
+        'fanart': extended_info.get("fanart",fanart), 
+        'characterart': extended_info.get("characterart",""), 
+        'discart': extended_info.get("discart",""), 
+        'banner': extended_info.get("banner","")
+    }
+    list_item.setArt(artwork)
+    
     if type == 'show':
         add_context_menu_show(entries, removable, thumb_url, title, video_id)
+        #get playcount from episodes
+        playcount, total_episodes, watched_episodes, unwatched_episodes = get.series_playcounts(video_id)
+        list_item.setProperty("totalepisodes", str(total_episodes))
+        list_item.setProperty("watchedepisodes", str(watched_episodes))
+        list_item.setProperty("unwatchedepisodes", str(unwatched_episodes))
     else:
         add_context_menu_movie(entries, removable, title, type, video_id, year)
+    
+    list_item.setInfo(type='video', infoLabels= {
+        'title': title,
+        'duration': unicode(duration),
+        'year': int(year),
+        'mpaa': mpaa,
+        'playcount': playcount,
+        'cast': video_metadata.get("actors",[]),
+        'castandrole': eval(extended_info.get("castandrole","[]")), 
+        'code': extended_info.get("imdb_id",""), 
+        'tagline': extended_info.get("tagline",""), 
+        'trailer': extended_info.get("trailer",""),
+        'genre': extended_info.get("genre",genre), 
+        'studio': extended_info.get("studio",""), 
+        'plot': extended_info.get("plot",description),
+        'plotoutline': description,
+        'director': extended_info.get("director",director),
+        'writer': extended_info.get("writer",""),
+        'rating': float(extended_info.get("rating",rating)),
+        'datewatched': video_metadata.get("date_watched","")
+    })
+    if type == "episode":
+        list_item.setInfo(type='video', infoLabels= {
+            'tvshowtitle': video_metadata.get("series_title",""),
+            'episode': video_metadata.get("episode",None),
+            'season': video_metadata.get("season",None)
+        })
+
+    list_item.setProperty('IsPlayable', 'true');
+    
     list_item.addContextMenuItems(entries)
     folder = True
     if next_mode == 'play_video_main':
         folder = False
-    #    utility.log(u)
+    
+    #always set streaminfo to prevent kodi from probing the listitems
+    if video_metadata.get("hd"):
+        list_item.addStreamInfo("video", {"codec":"h264", "aspect":1.78, "width":1920, "height":1080, "duration":duration} )
+        list_item.addStreamInfo("audio", {"codec":"pcm_s16le","channels":"2" })
+    else:
+        list_item.addStreamInfo("video", {"duration":duration} )
+    
     return url, list_item, folder
 
 
@@ -126,15 +187,12 @@ def add_context_menu_movie(entries, removable, title, type, video_id, year):
     entries.append(
             (generic_utility.get_string(30157), 'Container.Update(plugin://%s/?mode=list_videos&url=%s&type=tv)' % (
                 generic_utility.addon_id, urllib.quote_plus(generic_utility.main_url + 'WiMovie/' + video_id))))
-
-    if generic_utility.get_setting('is_kid') == 'false':
-        if removable:
-            entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
-                generic_utility.addon_id, urllib.quote_plus(video_id))))
-        else:
-            entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
-                generic_utility.addon_id, urllib.quote_plus(video_id))))
-
+    if removable:
+        entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
+            generic_utility.addon_id, urllib.quote_plus(video_id))))
+    else:
+        entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
+            generic_utility.addon_id, urllib.quote_plus(video_id))))
     title_utf8 = title.strip() + ' (' + str(year) + ')'
     title = urllib.quote_plus(title_utf8.encode('utf-8'))
     movie_dir = library.get_movie_dir(title_utf8)[0]
@@ -159,15 +217,12 @@ def add_context_menu_show(entries, removable, thumb_url, title, video_id):
         entries.append((generic_utility.get_string(30152),
                         'Container.Update(plugin://%s/?mode=list_seasons&url=%s&thumb=%s)' % (
                             generic_utility.addon_id, urllib.quote_plus(video_id), urllib.quote_plus(thumb_url))))
-
-    if generic_utility.get_setting('is_kid') == 'false':
-        if removable:
-            entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
-                generic_utility.addon_id, urllib.quote_plus(video_id))))
-        else:
-            entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
-                generic_utility.addon_id, urllib.quote_plus(video_id))))
-
+    if removable:
+        entries.append((generic_utility.get_string(30154), 'RunPlugin(plugin://%s/?mode=remove_from_queue&url=%s)' % (
+            generic_utility.addon_id, urllib.quote_plus(video_id))))
+    else:
+        entries.append((generic_utility.get_string(30155), 'RunPlugin(plugin://%s/?mode=add_to_queue&url=%s)' % (
+            generic_utility.addon_id, urllib.quote_plus(video_id))))
     series_dir = library.get_series_dir(title.strip())
     #        generic_utility.log('series-dir: '+series_dir)
     if xbmcvfs.exists(series_dir + os.sep) == False:
@@ -181,62 +236,115 @@ def add_context_menu_show(entries, removable, thumb_url, title, video_id):
                             generic_utility.addon_id, urllib.quote_plus(generic_utility.encode(title.strip())))))
 
 
-def add_next_item(name, page, url, video_type, mode, iconimage):
+def add_next_item(page, url, video_type, mode):
+    name = generic_utility.get_string(30110)
     u = sys.argv[0]
     u += '?url=' + urllib.quote_plus(url)
     u += '&mode=' + mode
     u += '&type=' + video_type
     u += '&page=' + str(page)
     u += '&name=' + urllib.quote_plus(generic_utility.encode(name))
-    liz=xbmcgui.ListItem(unicode(name), iconImage="DefaultFolder.png",thumbnailImage=iconimage)
-    liz.setInfo( type="Video", infoLabels={ "Title": name, "Year":9999 })
+    liz=xbmcgui.ListItem(unicode(name), iconImage="DefaultFolder.png")
+    liz.setInfo( type="Video", infoLabels={ "Title": name, "sorttitle": "zzzzzzz"})
+    liz.setArt( { "thumb": generic_utility.addon_handle.getAddonInfo('icon'), "fanart":generic_utility.addon_handle.getAddonInfo('fanart') })
+    liz.setProperty('IsPlayable', 'false');
     ok=xbmcplugin.addDirectoryItem(handle=plugin_handle,url=u,listitem=liz,isFolder=True)
     return ok
 
-def season(name, url, thumb, series_name, series_id):
+def season(item):
     entries = []
-    cover_file, fanart_file = generic_utility.cover_fanart(series_id)
     u = sys.argv[0]
-    u += '?url=' + urllib.quote_plus(unicode(url))
+    u += '?url=' + urllib.quote_plus(unicode(item.get("season")))
     u += '&mode=list_episodes'
-    u += '&series_id=' + urllib.quote_plus(series_id)
-    list_item = xbmcgui.ListItem(name)
-    list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb})
-    list_item.setInfo(type='video', infoLabels={'title': name})
-    if xbmcvfs.exists(fanart_file):
-        list_item.setProperty('fanart_image', fanart_file)
-    elif xbmcvfs.exists(cover_file):
-        list_item.setProperty('fanart_image', cover_file)
+    u += '&series_id=' + urllib.quote_plus(item.get("series_id"))
+    
+    if generic_utility.get_setting('use_tmdb') == 'true':
+        extended_info = get.extended_artwork(item.get("tvshowtitle"),item.get("tvshowyear"),"show",item.get("series_id"))
     else:
-        list_item.setProperty('fanart_image', generic_utility.addon_fanart())
+        extended_info = {}
+    
+    list_item = xbmcgui.ListItem(item.get("name"))
+    artwork = {
+        'icon': 'DefaultTVShows.png', 
+        'thumb': extended_info.get("poster", item.get("seriesthumb","")), 
+        'landscape': extended_info.get("landscape",item.get("seriesthumb","")), 
+        'poster': extended_info.get("poster",""), 
+        'clearlogo': extended_info.get("clearlogo",""), 
+        'clearart': extended_info.get("clearart",""), 
+        'fanart': extended_info.get("fanart",""), 
+        'characterart': extended_info.get("characterart",""), 
+        'discart': extended_info.get("discart",""), 
+        'banner': extended_info.get("banner","")
+    }
+    list_item.setArt(artwork)
+    
+    list_item.setInfo(type='video',infoLabels={
+        'title': item.get("name",""),
+        'year': item.get("year"), 
+        'playcount': item.get("playcount"), 
+        'tvshowtitle':item.get("tvshowtitle"),
+        'castandrole': eval(extended_info.get("castandrole","[]")), 
+        'trailer': extended_info.get("trailer",""),
+        'genre': extended_info.get("genre",""), 
+        'studio': extended_info.get("studio",""), 
+        'plot': extended_info.get("plot",item.get("description","")),
+        'plotoutline': item.get("description",""),
+        'director': extended_info.get("director",""),
+        'writer': extended_info.get("writer",""),
+        'rating': float(extended_info.get("rating","0")),
+        })
+    list_item.setProperty("totalepisodes", str(item.get("total_episodes","")))
+    list_item.setProperty("watchedepisodes", str(item.get("watched_episodes","")))
+    list_item.setProperty("unwatchedepisodes", str(item.get("unwatched_episodes","")))
     entries.append((generic_utility.get_string(30150),
                     'RunPlugin(plugin://%s/?mode=add_series_to_library&url=%s&name=%s&series_id=%s)' % (
-                        generic_utility.addon_id, urllib.quote_plus(unicode(url)),
-                        urllib.quote_plus(generic_utility.encode(series_name.strip())),
-                        series_id)))
+                        generic_utility.addon_id, urllib.quote_plus(unicode(item.get("season"))),
+                        urllib.quote_plus(generic_utility.encode(item.get("tvshowtitle").strip())),
+                        item.get("series_id"))))
     list_item.addContextMenuItems(entries)
     directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=True)
     return directory_item
 
 
 def episode(episode):
-    series_id, episode_id, name, description, episode_nr, season_nr, duration, thumb, playcount = episode
-
-    cover_file, fanart_file = generic_utility.cover_fanart(series_id)
+    name = episode.get("episode_title")
     u = sys.argv[0]
-    u += '?url=' + urllib.quote_plus(unicode(episode_id))
+    u += '?url=' + urllib.quote_plus(unicode(episode.get("episode_id")))
     u += '&mode=play_video_main'
-    u += '&series_id=' + urllib.quote_plus(series_id)
-    list_item = xbmcgui.ListItem(name)
-    list_item.setArt({'icon': 'DefaultTVShows.png', 'thumb': thumb})
-    list_item.setInfo(type='video',
-                      infoLabels={'title': name, 'plot': description, 'duration': duration, 'season': season_nr,
-                                  'episode': episode_nr, 'playcount': playcount})
-    if xbmcvfs.exists(fanart_file):
-        list_item.setProperty('fanart_image', fanart_file)
-    elif xbmcvfs.exists(cover_file):
-        list_item.setProperty('fanart_image', cover_file)
+    u += '&series_id=' + urllib.quote_plus(episode.get("series_id"))
+    
+    if generic_utility.get_setting('use_tmdb') == 'true':
+        extended_info = get.extended_artwork(episode.get("tvshowtitle"),episode.get("tvshowyear"),"show",episode.get("series_id"))
     else:
-        list_item.setProperty('fanart_image', generic_utility.addon_fanart())
+        extended_info = {}
+    
+    list_item = xbmcgui.ListItem(name)
+    artwork = {
+        'icon': 'DefaultTVShows.png', 
+        'thumb': episode.get("thumb"), 
+        'landscape': extended_info.get("landscape",episode.get("seriesthumb")), 
+        'poster': extended_info.get("poster",""),
+        'clearlogo': extended_info.get("clearlogo",""), 
+        'clearart': extended_info.get("clearart",""), 
+        'fanart': extended_info.get("fanart",""), 
+        'characterart': extended_info.get("characterart",""), 
+        'discart': extended_info.get("discart",""), 
+        'banner': extended_info.get("banner","")
+    }
+    list_item.setArt(artwork)
+    
+    list_item.setInfo(type='video',infoLabels={
+        'title': name, 
+        'plot': episode.get("description"),
+        'rating': episode.get("rating"), 
+        'duration': episode.get("duration"), 
+        'season': episode.get("season"),
+        'episode': episode.get("episode_nr"), 
+        'playcount': episode.get("playcount"), 
+        'tvshowtitle':episode.get("tvshowtitle")})
+        
+    if episode.get("hd"):
+        list_item.addStreamInfo("video", {"codec":"h264", "aspect":1.78, "width":1920, "height":1080, "duration":episode.get("duration")} )
+    list_item.addStreamInfo("audio", {"codec":"pcm_s16le","channels":"2" })
     directory_item = xbmcplugin.addDirectoryItem(handle=plugin_handle, url=u, listitem=list_item, isFolder=False)
     return directory_item

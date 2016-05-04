@@ -28,9 +28,7 @@ kids_url = 'https://www.netflix.com/Kids'
 evaluator_url = '%s/pathEvaluator?materialize=true&model=harris'
 profile_switch_url = '%s/profiles/switch?'
 profile_url = 'http://api-global.netflix.com/desktop/account/profiles?version=2&withCredentials=true'
-picture_url = 'https://image.tmdb.org/t/p/original'
 series_url = '%s/metadata?movieid=%s&imageFormat=jpg'
-tmdb_url = 'https://api.themoviedb.org/3/search/%s?api_key=%s&query=%s&language=de'
 activity_url = '%s/viewingactivity?_retry=0&authURL=%s'
 
 # post data information
@@ -46,14 +44,6 @@ def data_dir():
 
 def cache_dir():
     return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/cache/')
-
-
-def cover_cache_dir():
-    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/cache/cover/')
-
-
-def fanart_cache_dir():
-    return xbmc.translatePath('special://profile/addon_data/' + addon_id + '/cache/fanart/')
 
 
 def headers_file():
@@ -89,14 +79,6 @@ def addon_fanart():
         return addon_handle.getAddonInfo('fanart')
     else:
         return None
-
-
-def cover_fanart(name):
-    filename = clean_filename(name) + '.jpg'
-    cover_file = xbmc.translatePath(cover_cache_dir() + filename)
-    fanart_file = xbmc.translatePath(fanart_cache_dir() + filename)
-    return cover_file, fanart_file
-
 
 def create_pathname(path, item):
     ret = os.path.join(path, item)
@@ -194,10 +176,6 @@ def prepare_folders():
         xbmcvfs.mkdir(data_dir())
     if not xbmcvfs.exists(cache_dir()):
         xbmcvfs.mkdir(cache_dir())
-    if not xbmcvfs.exists(cover_cache_dir()):
-        xbmcvfs.mkdir(cover_cache_dir())
-    if not xbmcvfs.exists(fanart_cache_dir()):
-        xbmcvfs.mkdir(fanart_cache_dir())
     if not os.path.isdir(library_dir()):
         xbmcvfs.mkdir(library_dir())
     if not os.path.isdir(movie_dir()):

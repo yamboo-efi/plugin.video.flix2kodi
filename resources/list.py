@@ -64,7 +64,7 @@ def viewing_activity(video_type, run_as_widget=False):
 
 
 def add_sort_methods():
-    xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_TITLE)
+    xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_SORT_TITLE)
     xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
     xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_RATING)
     xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_VIDEO_RUNTIME)
@@ -73,9 +73,18 @@ def add_sort_methods():
 def add_videos_to_directory(loading_progress, run_as_widget, video_metadatas, video_type, page = None, url=None, viewing_activity = False):
 
     removable = url != None and 'mylist' in url
-
+    
+    if viewing_activity and type!="movie":
+        xbmcplugin.setContent(int(sys.argv[1]), "episodes")
+    elif video_type=="movie":
+        xbmcplugin.setContent(int(sys.argv[1]), "movies")
+    elif video_type == "show":
+        xbmcplugin.setContent(int(sys.argv[1]), "tvshows")
+    elif video_type == "both":
+        xbmcplugin.setContent(int(sys.argv[1]), "tvshows")
+    
     if not viewing_activity:
-        sorted_video_metadata = sorted(video_metadatas, key=lambda t: t['title'], reverse = viewing_activity)
+        sorted_video_metadata = sorted(video_metadatas, key=lambda t: t['date_watched'], reverse = viewing_activity)
     else:
         sorted_video_metadata = video_metadatas
 
@@ -89,13 +98,17 @@ def add_videos_to_directory(loading_progress, run_as_widget, video_metadatas, vi
     add.videos(filtered_video_metadata, removable, viewing_activity=viewing_activity)
 
     items_per_page = int(generic_utility.get_setting('items_per_page'))
-    if (not url or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page:
-        add.add_next_item('zzz[Next]zzz', page + 1, url, video_type, 'list_videos', '')
 
     if len(video_metadatas) == 0:
         generic_utility.notification(generic_utility.get_string(30306))
+    
     if not viewing_activity:
         add_sort_methods()
+    else:
+        xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
+    
+    if (not url or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page:
+        add.add_next_item(page + 1, url, video_type, 'list_videos')
 
 
 def calc_allowed_types(video_type, viewing_activity):
@@ -142,23 +155,25 @@ def search(search_string, video_type, run_as_widget=False):
 
 
 def seasons(series_name, series_id, thumb):
+    xbmcplugin.setContent(plugin_handle, 'seasons')
     seasons = get.seasons_data(series_id)
     for season in seasons:
-        title, sequence = season
-        add.season(title, sequence, thumb, series_name, series_id)
+        add.season(season)
+    xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
     xbmcplugin.endOfDirectory(plugin_handle)
 
 
 def episodes(series_id, season):
     xbmcplugin.setContent(plugin_handle, 'episodes')
-
     episodes = get.episodes_data(season, series_id)
     for episode in episodes:
         add.episode(episode)
-
+    
     if generic_utility.get_setting('force_view'):
         xbmc.executebuiltin('Container.SetViewMode(' + generic_utility.get_setting('view_id_episodes') + ')')
+    xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_EPISODE)
     xbmcplugin.endOfDirectory(plugin_handle)
+    
 
 
 def genres(video_type):
