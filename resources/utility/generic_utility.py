@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import HTMLParser
+import json
 import os
 import sys
 import urllib
@@ -25,13 +26,12 @@ if test == False:
 # urls for netflix
 main_url = 'https://www.netflix.com/'
 kids_url = 'https://www.netflix.com/Kids'
-evaluator_url = '%s/pathEvaluator?materialize=true&model=harris'
-profile_switch_url = '%s/profiles/switch?'
+api_url = 'https://www.netflix.com/api/shakti'
+evaluator_url = '%s/pathEvaluator/%s?materialize=true&model=harris'
+profile_switch_url = '%s/profiles/switch/%s?'
 profile_url = 'http://api-global.netflix.com/desktop/account/profiles?version=2&withCredentials=true'
-picture_url = 'https://image.tmdb.org/t/p/original'
-series_url = '%s/metadata?movieid=%s&imageFormat=jpg'
-tmdb_url = 'https://api.themoviedb.org/3/search/%s?api_key=%s&query=%s&language=de'
-activity_url = '%s/viewingactivity?_retry=0&authURL=%s'
+series_url = '%s/metadata/%s?movieid=%s&imageFormat=jpg'
+activity_url = '%s/viewingactivity/%s?_retry=0&authURL=%s'
 
 # post data information
 
@@ -104,17 +104,17 @@ def create_pathname(path, item):
 
 
 def evaluator():
-    return evaluator_url % api_url()
+    return evaluator_url % (api_url, endpoints()['/pathEvaluator'])
 
 
-def api_url():
-    return get_setting('api_url')
+def endpoints():
+    return json.loads(get_setting('endpoints'))
 
 def auth_url():
     return get_setting('authorization_url')
 
 def profile_switch():
-    return profile_switch_url % api_url()
+    return profile_switch_url % (api_url, endpoints()['/profiles/switch'])
 
 def error(message):
     if test == False:

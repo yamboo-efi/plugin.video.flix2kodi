@@ -45,10 +45,9 @@ def login():
                      'authURL': generic_utility.get_setting('authorization_url'),
                      'email': generic_utility.get_setting('username'),
                      'password':  generic_utility.get_setting('password'), 
-                     'RememberMeCheckbox': 'true',
-                     'RememberMe': 'on',
-                     'flow': 'websiteSignup',
-                     'mode': 'login',
+                     'rememberMe': 'true',
+                     'flow': 'websiteSignUp',
+                     'mode': 'loginPassword',
                      'action': 'loginAction',
                      'withFields': 'email,password,rememberMe,nextPage',
                      'nextPage': ''}
@@ -88,18 +87,18 @@ def login():
 
 
 def parse_data_set_cookies(content):
-    parse_api_url(content)
+    parse_endpoints(content)
     connect.set_chrome_netflix_cookies()
 
 
 
 
-def parse_api_url(content):
-    match = re.compile('"apiUrl":"(.+?)",', re.UNICODE).findall(content)
+def parse_endpoints(content):
+    match = re.compile('"endpointIdentifiers":({.+?}),', re.UNICODE).findall(content)
     if len(match) > 0:
-        generic_utility.set_setting('api_url', match[0])
+        generic_utility.set_setting('endpoints', match[0])
     else:
-        generic_utility.error('Cannot find apiUrl! Source: ' + content)
+        generic_utility.error('Cannot find api endpoints! Source: ' + content)
 
 
 def choose_profile():
@@ -125,7 +124,7 @@ class CannotRefreshDataException(Exception):
 
 def refresh_data():
     content = connect.load_netflix_site('https://www.netflix.com/browse')
-    parse_api_url(content)
+    parse_endpoints(content)
 
     profl = generic_utility.get_setting('selected_profile')
     if not profl:
