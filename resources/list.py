@@ -173,3 +173,22 @@ def genres(video_type):
             add.directory(title, 'genre?' + genre_id, 'list_videos', '', video_type)
     xbmcplugin.endOfDirectory(plugin_handle)
 
+
+def superbrowse():
+    xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
+
+    with open(".kodi/addons/plugin.video.flix2kodi/resources/data/superbrowse_categories.json") as categories_file:
+        categories = json.load(categories_file)
+
+    for category_name,category_id in categories.iteritems():
+        if 'TV' in category_name:
+            video_type='show'
+        elif 'Series' in category_name:
+            video_tyoe='show'
+        else:
+            video_type='movie'
+
+        add.directory(category_name, 'genre?' + category_id, 'list_videos', '', video_type)
+
+    xbmcplugin.endOfDirectory(plugin_handle)
+
