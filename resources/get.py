@@ -213,7 +213,7 @@ def series_info(series_id):
         content = generic_utility.decode(file_handler.read())
         file_handler.close()
     if not content:
-        url = generic_utility.series_url % (generic_utility.get_setting('api_url'), series_id)
+        url = generic_utility.series_url % (generic_utility.api_url, generic_utility.endpoints()['/metadata'], series_id)
         content = connect.load_netflix_site(url)
         file_handler = xbmcvfs.File(cache_file, 'wb')
         file_handler.write(generic_utility.encode(content))
@@ -282,7 +282,7 @@ def genre_info(video_type):
 
 
 def viewing_activity_info():
-    content = connect.load_netflix_site(generic_utility.activity_url % (generic_utility.get_setting('api_url'),
+    content = connect.load_netflix_site(generic_utility.activity_url % (generic_utility.api_url, generic_utility.endpoints()['/viewingactivity'],
                                                                         generic_utility.get_setting(
                                                                                 'authorization_url')))
     return content
