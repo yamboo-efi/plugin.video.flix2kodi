@@ -1,3 +1,6 @@
+version 0.6.4 (11.05.2016)
+  * merged tmdb-fix (marcelveldt), big thx!
+  
 version 0.6.3 (11.05.2016)
   * added missing italian translation
   * added auto-re-login after crash
