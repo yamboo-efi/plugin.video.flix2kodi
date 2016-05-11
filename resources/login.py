@@ -15,9 +15,6 @@ import profiles
 from resources.utility import generic_utility
 
 
-
-
-
 def login():
     if not test:
         login_progress = xbmcgui.DialogProgress()
@@ -107,14 +104,13 @@ def choose_profile():
 
 
 def profile_selection():
-    if not (
-        generic_utility.get_setting('selected_profile') or (generic_utility.get_setting('single_profile') == 'true')):
-        profiles.choose()
-    elif not (generic_utility.get_setting('single_profile') == 'true') and (
-        generic_utility.get_setting('show_profiles') == 'true'):
-        profiles.choose()
-    elif not ((generic_utility.get_setting('single_profile') and generic_utility.get_setting('show_profiles')) == 'true'):
-        profiles.load()
+
+    if generic_utility.get_setting('single_profile') == 'false':
+        if not generic_utility.get_setting('selected_profile') or generic_utility.get_setting('show_profiles') == 'true':
+            profiles.choose()
+        else:
+            profiles.load()
+
     profiles.update_displayed()
 
 
