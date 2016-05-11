@@ -1,3 +1,9 @@
+version 0.6.3 (11.05.2016)
+  * added missing italian translation
+  * added auto-re-login after crash
+  * merged super-shows (thx to badcrc)
+  * merged api-change fix (thx to fkmclane)
+
 version 0.6.2 (25.04.2016)
   * changed french translation
   * added viewstate update-flag
