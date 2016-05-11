@@ -104,6 +104,10 @@ msgctxt "#13003"
 msgid "Items per page"
 msgstr "Elementi per pagina"
 
+msgctxt "#13004"
+msgid "Sync viewstate with netflix"
+msgstr "Sincronizza lo stato delle visualizzazioni con netflix"
+
 msgctxt "#13100"
 msgid "Appearance"
 msgstr "Aspetto"

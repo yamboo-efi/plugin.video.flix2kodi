@@ -1,4 +1,4 @@
-﻿# Kodi Media Center language file
+# Kodi Media Center language file
 # Addon Name: Flix2Kodi
 # Addon id: plugin.video.flix2kodi
 # Addon Provider: zero
@@ -9,32 +9,33 @@ msgstr ""
 "POT-Creation-Date: 2015-11-04 18:30+0100\n"
 "PO-Revision-Date: 2015-11-04 18:30+0100\n"
 "Last-Translator: logi85\n"
-"Language-Team: German\n"
+"Language-Team: Portuguese-BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
+"Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
 
 msgctxt "#11000"
 msgid "General"
-msgstr "Allgemein"
+msgstr "Geral"
 
 msgctxt "#11001"
 msgid "Username"
-msgstr "Benutzername"
+msgstr "Usu�rio"
 
 msgctxt "#11002"
 msgid "Password"
-msgstr "Passwort"
+msgstr "Senha"
 
 msgctxt "#11100"
 msgid "General"
-msgstr "Allgemein"
+msgstr "Geral"
 
 msgctxt "#11101"
 msgid "Browser"
-msgstr ""
+msgstr "Buscar"
 
 msgctxt "#111011"
 msgid "Chrome"
@@ -58,252 +59,228 @@ msgstr ""
 
 msgctxt "#11102"
 msgid "Update library after adding"
-msgstr "Bibliothek aktualisieren nach Hinzufügen"
+msgstr "Atualizar biblioteca ap�s adicionar"
 
 msgctxt "#11200"
 msgid "Profil settings"
-msgstr "Profil Einstellungen"
+msgstr "Op��es de perfil"
 
 msgctxt "#11201"
 msgid "Single-user account"
-msgstr "Einzel-Profil Konto"
+msgstr "Somente um perfil na conta"
 
 msgctxt "#11202"
 msgid "Show profile selection on each start"
-msgstr "Profilauswahl bei jedem Start anzeigen"
+msgstr "Mostrar sele��o de perfil ao inciar"
 
 msgctxt "#12000"
 msgid "Advanced"
-msgstr "Erweitert"
+msgstr "Avan�ado"
 
 msgctxt "#12001"
 msgid "Debug logging"
-msgstr "Debug Protokollierung"
+msgstr "Habilitar debug log"
 
 msgctxt "#12002"
 msgid "Library path"
-msgstr "Datenbank Verzeichnis"
+msgstr "Caminho para biblioteca"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
-msgstr "lirc deaktivieren während der Wiedergabe"
+msgstr "Desabilitar lirc ao executar video"
 
 msgctxt "#13000"
 msgid "Views"
-msgstr "Ansichten"
+msgstr "Vistas"
 
 msgctxt "#13001"
 msgid "Get covers & fanart images from TMDb"
-msgstr "Cover & Fanart über TMDb beziehen"
+msgstr "Obter Posters e fanarts de TMDb"
 
 msgctxt "#13002"
 msgid "Browse TV-Shows instead of autoplaying"
-msgstr "Serien durchsuchen anstatt automatischer Wiedergabe"
+msgstr "Buscar Series em vez de reproduzi-las automaticamente"
 
 msgctxt "#13003"
 msgid "Items per page"
-msgstr "Einträge pro Seite"
-
-msgctxt "#13004"
-msgid "Sync viewstate with netflix"
-msgstr "Abspielstatus mit Netflix synchronisieren"
+msgstr "Items por p�gina"
 
 msgctxt "#13100"
 msgid "Appearance"
-msgstr "Aussehen"
+msgstr "Apar�ncia"
 
 msgctxt "#13101"
 msgid "Force view"
-msgstr "View erzwingen"
+msgstr "For�ar vista"
 
 msgctxt "#13102"
 msgid "View ID - videos"
-msgstr "View ID - Videos"
+msgstr "View ID - v�deos"
 
 msgctxt "#13103"
 msgid "View ID - episodes"
-msgstr "View ID - Episoden"
+msgstr "View ID - epis�dios"
 
 msgctxt "#13104"
 msgid "View ID - viewing activity"
-msgstr "View ID - Kürzlich angesehen"
+msgstr "View ID - Assistidos Anteriormente"
 
 msgctxt "#14000"
 msgid "User data"
-msgstr "Benutzerdaten"
+msgstr "Op��es de usu�rio"
 
 msgctxt "#14001"
 msgid "Delete cache"
-msgstr "Cache löschen"
+msgstr "Deletar cache"
 
 msgctxt "#14002"
 msgid "Delete cookies / session"
-msgstr "Cookies / Sitzung löschen"
+msgstr "Deletar cookies / sess�o"
 
 msgctxt "#14003"
 msgid "Reset Addon"
-msgstr "Addon zurücksetzen"
+msgstr "Reinciar Addon"
 
 msgctxt "#30100"
 msgid "Movies"
-msgstr "Filme"
+msgstr "Filmes"
 
 msgctxt "#30101"
 msgid "TV shows"
-msgstr "Serien"
+msgstr "Series"
 
 msgctxt "#30102"
 msgid "Suggestions"
-msgstr "Empfehlungen"
+msgstr "Sugest�es"
 
 msgctxt "#30103"
 msgid "Who's watching?"
-msgstr "Wer schaut gerade?"
+msgstr "Quem est� assistindo?"
 
 msgctxt "#30104"
 msgid "My list"
-msgstr "Meine Liste"
+msgstr "Minha Lista"
 
 msgctxt "#30105"
 msgid "Viewing activity"
-msgstr "Kürzlich angesehen"
+msgstr "Assistidos Anteriormente"
 
 msgctxt "#30106"
 msgid "Latest"
-msgstr "Neuerscheinungen"
+msgstr "�ltimos"
 
 msgctxt "#30107"
 msgid "All shows"
-msgstr "Alle Serien"
+msgstr "Todas as series"
 
 msgctxt "#30108"
 msgid "Genres"
-msgstr "Genres"
+msgstr "G�neros"
 
 msgctxt "#30109"
 msgid "Search"
-msgstr "Suche"
+msgstr "Buscar"
 
 msgctxt "#30110"
 msgid "Next page"
-msgstr "Nächste Seite"
+msgstr "Pr�xima P�gina"
 
 msgctxt "#30111"
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 msgctxt "#30150"
 msgid "Add to library"
-msgstr "Zur Bibliothek hinzufügen"
+msgstr "Adicionar a biblioteca"
 
 msgctxt "#301501"
 msgid "Remove from library"
-msgstr "Aus Bibliothek löschen"
+msgstr "Remover da biblioteca"
 
 msgctxt "#30151"
 msgid "Continue watching"
-msgstr "Wiedergabe fortsetzen"
+msgstr "Continuar assistindo"
 
 msgctxt "#30152"
 msgid "Show seasons"
-msgstr "Staffeln anzeigen"
+msgstr "Mostrar Temporadas"
 
 msgctxt "#30154"
 msgid "Remove from my list"
-msgstr "Von meiner Liste entfernen"
+msgstr "Remover de minha lista"
 
 msgctxt "#30155"
 msgid "Add to my list"
-msgstr "Zu meiner Liste hinzufügen"
+msgstr "Adicionar a minha lista"
 
 msgctxt "#30156"
 msgid "Similar Movies"
-msgstr "Ähnliche Filme"
+msgstr "Filmes similares"
 
 msgctxt "#30157"
 msgid "Similar TV Shows"
-msgstr "Ähnliche Serien"
+msgstr "S�ries similares"
 
 msgctxt "#30200"
 msgid "Connecting Netflix"
-msgstr "Mit Netflix verbinden"
+msgstr "Conectando ao Netflix"
 
 msgctxt "#30201"
 msgid "Preparing login"
-msgstr "Login vorbereiten"
+msgstr "Iniciando sess�o"
 
 msgctxt "#30202"
 msgid "Sending login details"
-msgstr "Sende Login Daten"
+msgstr "Enviando detalhes da sess�o"
 
 msgctxt "#30203"
 msgid "Loading profile"
-msgstr "Lade Profile"
+msgstr "Carregando perfil"
 
 msgctxt "#30204"
 msgid "Complete"
-msgstr "Fertig"
+msgstr "Finalizado"
 
 msgctxt "#30205"
 msgid "Loading metadata"
-msgstr "Lade Metadaten"
+msgstr "Carregando metadados"
 
 msgctxt "#30300"
 msgid "Sorry! Netflix is not available in your country yet."
-msgstr "Entschuldigung! Netflix ist aktuell nicht verfügbar in Ihrem Land."
+msgstr "Desculpe! Netflix n�o est� disponivel em seu pa�s."
 
 msgctxt "#30301"
 msgid "Cookies have been deleted."
-msgstr "Die Cookies wurden gelöscht"
+msgstr "Cookies deletados."
 
 msgctxt "#30302"
 msgid "Session has been deleted."
-msgstr "Die Session wurden gelöscht"
+msgstr "Sesi�n deletados."
 
 msgctxt "#30303"
 msgid "You are not logged in. Check your credentials and/or restart the addon!"
-msgstr "Sie sind nicht eingeloggt. Prüfen Sie Ihren Zugang und/oder starten Sie das Addon neu!"
+msgstr "Vo�� n�o est� conectado. Confirme suas credenciais e/ou reinicie o addon!"
 
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
-msgstr "Verschiedene Profile gefunden. Wählen Sie Ihr Profil!"
+msgstr "multiplos perfis encontrados. Escolha o seu perfil!"
 
 msgctxt "#30306"
 msgid "No results found!"
-msgstr "Keine Ergebnisse gefunden!"
+msgstr "Resultados n�o encontrados"
 
 msgctxt "#30307"
 msgid "Really reset the addon?"
-msgstr "Addon wirklich zurücksetzen?"
+msgstr "Deseja reinicar o addon?"
 
 msgctxt "#30308"
 msgid "Addon has been reset!"
-msgstr "Addon wurde zurückgesetzt!"
+msgstr "Addon reiniciado!"
 
 msgctxt "#30309"
 msgid "Cache has been deleted!"
-msgstr "Cache wurde geleert!"
+msgstr "Cach� deletado"
 
 msgctxt "#50001"
 msgid "No browser selected in settings!"
-msgstr "Kein Browser in den Einstellungen ausgewählt!"
-
-msgctxt "#50002"
-msgid "Sorry!"
-msgstr "Entschuldigung!"
-
-msgctxt "#50003"
-msgid "Flix2Kodi crashed."
-msgstr "Flix2Kodi ist abgestürzt."
-
-msgctxt "#50004"
-msgid "Try to refresh your login?"
-msgstr "Login-aktualisierung versuchen?"
-
-msgctxt "#50005"
-msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
-msgstr "Wenn der Browser nicht gestartet ist, ist etwas schiefgegangen. Drücke zurück um diesen Dialog zu verlassen."
-
-msgctxt "#50006"
-msgid "Login refreshed. please try again."
-msgstr "Login aktualisiert, bitte noch einmal versuchen."
+msgstr "Browser n�o selecionado nas configura��es"

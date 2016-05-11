@@ -112,6 +112,10 @@ msgctxt "#13003"
 msgid "Items per page"
 msgstr ""
 
+msgctxt "#13004"
+msgid "Sync viewstate with netflix"
+msgstr ""
+
 msgctxt "#13100"
 msgid "Appearance"
 msgstr ""
@@ -194,6 +198,10 @@ msgstr ""
 
 msgctxt "#30111"
 msgid "Search"
+msgstr ""
+
+msgctxt "#30112"
+msgid "Super browse"
 msgstr ""
 
 msgctxt "#30150"
