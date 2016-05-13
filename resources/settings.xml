@@ -14,6 +14,7 @@
         <setting id="library_path" type="folder" label="12002"
                  default="special://profile/addon_data/plugin.video.flix2kodi/library"/>
         <setting id="disable_lirc" type="bool" label="12101" default="false"/>
+        <setting id="alternate_remote" type="bool" label="12102" default="false"/>
         <setting id="superbrowse" type="bool" label="30112" default="false"/>
 
     </category>
