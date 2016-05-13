@@ -86,10 +86,12 @@ def insert_netflix_id(conn, name, expires_utc, last_access_utc, cookie_data, onl
     conn.commit()
 
 def clear_netflix_cookies(conn):
-    sql = 'DELETE cookies where host_key = ?'
-    cur = conn.cursor()
-    cur.execute(sql, '.netflix.com')
-    conn.commit()
+    try:
+        sql = 'DELETE cookies where host_key = ?'
+        cur = conn.cursor()
+        cur.execute(sql, '.netflix.com')
+        conn.commit()
+    except: generic_utility.log('Error clearing Chrome-Cookie: ' +traceback.format_exc(), xbmc.LOGERROR)
 
 def set_cookie(conn, name, value, expires, only_secure = False):
     last_access_utc = to_chrome_date_str(datetime.datetime.now())

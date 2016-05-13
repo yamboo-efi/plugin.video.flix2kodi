@@ -104,6 +104,10 @@ msgctxt "#13003"
 msgid "Items per page"
 msgstr "Elementi per pagina"
 
+msgctxt "#13004"
+msgid "Sync viewstate with netflix"
+msgstr "Sincronizza lo stato delle visualizzazioni con netflix"
+
 msgctxt "#13100"
 msgid "Appearance"
 msgstr "Aspetto"
@@ -204,10 +208,6 @@ msgctxt "#30152"
 msgid "Show seasons"
 msgstr "Mostra le stagioni"
 
-msgctxt "#30153"
-msgid "Play trailer"
-msgstr "Esegui il trailer"
-
 msgctxt "#30154"
 msgid "Remove from my list"
 msgstr "Rimuovi dalla mia lista"
@@ -267,10 +267,6 @@ msgstr "Non sei loggato. Verifica le tue credenziali e/o riavvia l'addon!"
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
 msgstr "Trovati profili multipli. Scegli il tuo!"
-
-msgctxt "#30305"
-msgid "No trailer available!"
-msgstr "Nessun trailer disponibile!"
 
 msgctxt "#30306"
 msgid "No results found!"

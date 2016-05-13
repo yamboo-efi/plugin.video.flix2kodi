@@ -5,7 +5,7 @@ import json
 from resources.utility import generic_utility
 
 
-def parse_episode_seasion(match):
+def parse_episode_season(match):
     episode = None
     season = None
     if 'summary' in match:
@@ -15,46 +15,47 @@ def parse_episode_seasion(match):
 
     return episode, season
 
-
-def video(video_id, lock = None, custom_title = None, series_title = None, ignore_cache = False):
-    video_details = get.video_info(video_id, lock, ignore_cache = ignore_cache)
-    match = json.loads(video_details)['value']['videos'][video_id]
-
-#    generic_utility.log('parsing videodata: '+str(match))
-
-    movie_metadata = parse_video(custom_title, match, series_title, video_id)
-#    utility.log(str(video_add_args))
-    return movie_metadata
-
-
-def parse_video(custom_title, jsn, series_title, video_id):
-    if custom_title != None:
-        title = custom_title
-    else:
-        title = get_value(jsn, 'title')
+def parse_video(jsn, video_id):
+    title = get_value(jsn, 'title')
     year = get_value(jsn, 'releaseYear', '1900')
+    date_watched = get_value(jsn, 'dateStr')
     thumb_url = extract_thumb_url(jsn)
     mpaa = get_mpaa(jsn)
-    episode, season = parse_episode_seasion(jsn)
     type = parse_type(jsn)
     # series has no playcount
-    if type != 'show':
+    if type != 'show': 
         duration, playcount = parse_duration_playcount(jsn)
     else:
         playcount = 0
         duration = ''
-    if generic_utility.get_setting('use_tmdb') == 'true':
-        type_tmdb = 'movie' if type == 'movie' else 'tv'
-        title_tmdb = series_title if series_title != None else title
-        load_tmdb_cover_fanart(title_tmdb, video_id, type_tmdb, year)
     description = get_decription(jsn)
     director = parse_director(jsn)
     genre = parse_genre(jsn)
     rating = parse_rating(jsn)
-    movie_metadata = {'title': title, 'video_id': video_id, 'thumb_url': thumb_url, 'type': type,
-                      'description': description, 'duration': duration, 'year': year, 'mpaa': mpaa, \
-                      'director': director, 'genre': genre, 'rating': rating, 'playcount': playcount,
-                      'episode': episode, 'season': season}
+    movie_metadata = {
+        'title': title, 
+        'video_id': video_id, 
+        'thumb_url': thumb_url, 
+        'type': type,
+        'description': description, 
+        'duration': duration, 
+        'year': year, 
+        'mpaa': mpaa,
+        'director': director, 
+        'genre': genre, 
+        'rating': rating,
+        'playcount': playcount,
+        'actors': parse_actors(jsn), 
+        'date_watched':date_watched,
+        'hd':jsn.get("hd",False)
+        }
+        
+    if type == "episode":
+        episode, season = parse_episode_season(jsn)
+        movie_metadata["season"] = season
+        movie_metadata["episode"] = episode
+        movie_metadata["series_title"] = get_value(jsn, 'seriesTitle')
+        movie_metadata["series_id"] = get_value(jsn, 'topNodeId')
     return movie_metadata
 
 
@@ -88,7 +89,6 @@ def get_value(match, key, default = None):
 
 def parse_duration_playcount(match):
     duration = get_value(match, 'runtime', 0)
-
     playcount = 0
 
     offset = get_value(match, 'bookmarkPosition', None)
@@ -107,7 +107,7 @@ def parse_duration_playcount(match):
 
 def parse_rating(match):
     try:
-        rating = match['userRating']['average']
+        rating = match['userRating']['average'] * 2
     except Exception:
         rating = '0.0'
     return rating
@@ -115,19 +115,34 @@ def parse_rating(match):
 
 def parse_genre(match):
     try:
-        genre = match['details']['genres'][0]['name']
+        genres = []
+        for item in match['details']['genres']:
+            if item.get("name") != "Series":
+                genres.append(item.get("name"))
+        genre = " / ".join(genres)
     except Exception:
         genre = ''
     return genre
 
+def parse_actors(match):
+    actors = []
+    try:
+        for item in match['details']['actors']:
+            actors.append(item.get("name"))
+    except Exception:
+        pass
+    return actors
+
 
 def parse_director(match):
     try:
-        director = match['details']['directors'][0]['name']
+        directors = []
+        for item in match['details']['directors']:
+            directors.append(item.get("name"))
+        director = " / ".join(directors)
     except Exception:
-        director = ''
+        genre = ''
     return director
-
 
 def parse_type(match):
     type = match['summary']['type']
@@ -145,24 +160,3 @@ def extract_thumb_url(match):
         except Exception:
             thumb_url = generic_utility.addon_fanart()
     return thumb_url
-
-
-def load_tmdb_cover_fanart(title, video_id, video_type_temp, year):
-    import get
-    import xbmc
-    import xbmcvfs
-
-    year_temp = year
-    title_temp = title
-    if ' - ' in title_temp:
-        title_temp = title_temp[title_temp.index(' - '):]
-    filename = video_id + '.jpg'
-    filename_none = video_id + '.none'
-    cover_file = xbmc.translatePath(generic_utility.cover_cache_dir() + filename)
-    cover_file_none = xbmc.translatePath(generic_utility.cover_cache_dir() + filename_none)
-    if not (xbmcvfs.exists(cover_file) or xbmcvfs.exists(cover_file_none)):
-        generic_utility.log('Downloading cover art. type: %s, video_id: %s, title: %s, year: %s' % (video_type_temp,
-                                                                                                    video_id, title_temp,
-                                                                                                    year_temp), xbmc.LOGDEBUG)
-        get.cover_and_fanart(video_type_temp, video_id, title_temp, year_temp)
-

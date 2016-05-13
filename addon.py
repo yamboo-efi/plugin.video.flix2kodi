@@ -57,12 +57,10 @@ def handle_request():
         library.add_series(series_id, name, url)
     elif mode == 'remove_series_from_library':
         library.remove_series(name)
-    elif mode == 'play_trailer':
-        play.trailer(url, video_type)
     elif mode == 'choose_profile':
         connect.choose_profile()
     elif mode == 'search':
-        search.netflix(video_type)
+        search.netflix(video_type, url)
     elif mode == 'delete_cookies':
         delete.cookies()
     elif mode == 'delete_cache':
@@ -88,8 +86,11 @@ try:
 except:
     generic_utility.log('parameters: ' + sys.argv[2])
     generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
-    dialog = xbmcgui.Dialog()
-    do_fresh_login = dialog.yesno(generic_utility.get_string(50002), generic_utility.get_string(50003), generic_utility.get_string(50004))
-    if do_fresh_login:
-        if connect.do_login()==True:
+
+    if connect.do_login():
+        handle_request()
+    else:
+        dialog = xbmcgui.Dialog()
+        do_fresh_login = dialog.yesno(generic_utility.get_string(50002), generic_utility.get_string(50003), generic_utility.get_string(50004))
+        if do_fresh_login:
             generic_utility.notification(generic_utility.get_string(50006))

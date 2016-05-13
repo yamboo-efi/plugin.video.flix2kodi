@@ -12,9 +12,9 @@ def req_path(*paths):
     from resources import connect
 
     auth_url = generic_utility.auth_url()
-    api_url = generic_utility.api_url()
+    endpoints = generic_utility.endpoints()
 
-    if not auth_url or not api_url:
+    if not auth_url or not endpoints:
         connect.do_login()
 
     post = '{"paths":['
@@ -23,7 +23,7 @@ def req_path(*paths):
     post = post[:-1]
     post += '],"authURL":"%s"}' % auth_url
 
-    content = connect.load_netflix_site('%s/pathEvaluator?materialize=true&model=harris' % api_url, post)
+    content = connect.load_netflix_site(generic_utility.evaluator_url % (generic_utility.api_url, endpoints['/pathEvaluator']), post)
     jsn = json.loads(content)
     if 'error' in jsn:
         err = jsn['error']
@@ -39,6 +39,41 @@ def req_path(*paths):
         raise Exception('Invalid path response: ' + content)
 
     return jsn['value']
+
+def get_root_list_id_from_cookie():
+    from resources import connect
+    profile = generic_utility.get_setting('selected_profile')
+
+    session = connect.get_netflix_session(False)
+
+    root_list_id = None
+    if not profile:
+        generic_utility.log('kein profil!')
+        for cur_cookie in session.cookies:
+            if 'lhpuuidh-browse-' in cur_cookie.name:
+#                generic_utility.log('found cookie: '+cur_cookie.value)
+                root_list_id = cur_cookie.value
+                break
+            elif 'lhpuuid-kid-' in cur_cookie.name:
+                root_list_id = cur_cookie.value
+    else:
+        for cur_cookie in session.cookies:
+            if 'lhpuuidh-browse-'+profile in cur_cookie.name:
+                root_list_id = cur_cookie.value
+                break
+            elif 'lhpuuid-kid-'+profile in cur_cookie.name:
+                root_list_id = cur_cookie.value
+
+    if not root_list_id:
+        raise ValueError('root_list_id not found in cookies!')
+
+    splt = root_list_id.split('%3A')
+    if(len(splt) != 3):
+        raise ValueError('Invalid split: '+root_list_id)
+
+#    generic_utility.log('root: '+str(splt[2]))
+    return splt[2]
+
 
 def from_to(fromnr, tonr):
     return '{"from":%d,"to":%d}' % (fromnr, tonr)

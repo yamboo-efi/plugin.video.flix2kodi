@@ -160,7 +160,9 @@ video_infos4 = '"boxarts",["_665x375","_342x192"],"jpg"'
 #path4 = path('"genres"', genre_to_browse, '"su"', from_to(off_from, off_to), video_infos3)
 #path5 = path('"genres"', genre_to_browse, '"su"', from_to(off_from, off_to), video_infos4)
 
-pathvid = path('"videos"', '70306296', '["requestId"]')
+#pathvid = path('"videos"', '70306296', '["requestId"]')
+
+pathvid = '["lolomos","-1",{"from":0,"to":1},"displayName"]'
 ret = req_path(pathvid)#, path2, path3, path4, path5)
 filter_empty(ret)
 

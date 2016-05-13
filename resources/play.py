@@ -30,33 +30,6 @@ BROWSER_ANDROID = '7'
 MAX_LANG = 5
 MAX_SUB = 5
 
-
-def trailer(title, video_type):
-    trailers = []
-    content = get.trailer(video_type, title)
-    if content:
-        for match in content['results']:
-            if match['site'] == 'YouTube':
-                if match['iso_639_1']:
-                    name = match['name'] + ' (' + match['iso_639_1'] + ')'
-                else:
-                    name = match['name']
-                match = {'name': name, 'key': match['key']}
-                trailers.append(match)
-        if len(trailers) > 0:
-            dialog = xbmcgui.Dialog()
-            nr = dialog.select('Trailer', [match['name'] for match in trailers])
-            if nr >= 0:
-                selected_trailer = trailers[nr]
-                match = 'PlayMedia(plugin://plugin.video.youtube/play/?video_id=%s)' % selected_trailer['key']
-                xbmc.executebuiltin(match)
-        else:
-            generic_utility.notification(generic_utility.get_string(30305))
-    else:
-        generic_utility.notification(generic_utility.get_string(30305))
-        pass
-
-
 def video(video_id, series_id):
     xbmc.Player().stop()
     player = LogiPlayer()
@@ -68,8 +41,6 @@ def video(video_id, series_id):
     if player.has_valid_browser():
         player.doModal()
     return None
-
-
 
 
 class LogiPlayer(xbmcgui.Window):
@@ -98,7 +69,7 @@ class LogiPlayer(xbmcgui.Window):
             xbmc.executebuiltin('LIRC.Stop')
 
         try:
-            self.launch_browser('http://www.netflix.com/watch/%s' % video_id)
+            self.launch_browser('http://netflix.com/watch/%s' % video_id)
         except:
             generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
             generic_utility.notification('Error launching browser. See logfile')
@@ -107,11 +78,13 @@ class LogiPlayer(xbmcgui.Window):
         xbmc.audioResume()
         if generic_utility.get_setting('disable_lirc') == 'true':
             xbmc.executebuiltin('LIRC.Start')
-        try:
-            self.update_playcount(video_id)
-        except:
-            generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
-            generic_utility.notification('Cannot update playcount. See logfile')
+
+        if generic_utility.get_setting('sync_viewstate') == 'true':
+            try:
+                self.update_playcount(video_id)
+            except:
+                generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
+                generic_utility.notification('Cannot update playcount. See logfile')
         self.close()
 
 
@@ -210,8 +183,7 @@ class LogiPlayer(xbmcgui.Window):
             self.call_script(callcmd)
 
     def launch_browser_android(self, url):
-        xbmc.executebuiltin("StartAndroidActivity(com.netflix.mediaclient,com.netflix.mediaclient.ui.launch.UIWebViewActivity,,"
-                            +url+")")
+        xbmc.executebuiltin("StartAndroidActivity(com.android.chrome,android.intent.action.VIEW,,"+url+")")
 
 
     def launch_browser(self, url):
@@ -238,6 +210,8 @@ class LogiPlayer(xbmcgui.Window):
 
     def after_launch(self):
         self.call_custom_script('after_playback')
+        #refresh listing to update any watched indicators
+        xbmc.executebuiltin("Container.Refresh")
 
     def call_custom_script(self, name, params = ''):
         data_dir = generic_utility.data_dir()

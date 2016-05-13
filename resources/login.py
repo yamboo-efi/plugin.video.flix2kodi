@@ -15,16 +15,13 @@ import profiles
 from resources.utility import generic_utility
 
 
-
-
-
 def login():
     if not test:
         login_progress = xbmcgui.DialogProgress()
         login_progress.create('Netflix', generic_utility.get_string(30200) + '...')
         generic_utility.progress_window(login_progress, 25, generic_utility.get_string(30201))
     content = connect.load_netflix_site(generic_utility.main_url + 'Login', new_session=True, login_process=True)
-    if not 'Sorry, Netflix ' in content:
+    if 'Sorry, Netflix ' not in content:
 
         match = re.compile('locale: "(.+?)"', re.DOTALL|re.UNICODE).findall(content)
         locale = None
@@ -41,8 +38,17 @@ def login():
             login_url = 'Login?locale=' + locale
         generic_utility.set_setting('language', locale)
 
-        post_data = {'authURL': generic_utility.get_setting('authorization_url'), 'email': generic_utility.get_setting('username'),
-                     'password': generic_utility.get_setting('password'), 'RememberMe': 'on'}
+        post_data = {
+                     'authURL': generic_utility.get_setting('authorization_url'),
+                     'email': generic_utility.get_setting('username'),
+                     'password':  generic_utility.get_setting('password'), 
+                     'rememberMe': 'true',
+                     'flow': 'websiteSignUp',
+                     'mode': 'loginPassword',
+                     'action': 'loginAction',
+                     'withFields': 'email,password,rememberMe,nextPage',
+                     'nextPage': ''}
+
         if not test:
             generic_utility.progress_window(login_progress, 50, generic_utility.get_string(30202))
 
@@ -78,18 +84,18 @@ def login():
 
 
 def parse_data_set_cookies(content):
-    parse_api_url(content)
+    parse_endpoints(content)
     connect.set_chrome_netflix_cookies()
 
 
 
 
-def parse_api_url(content):
-    match = re.compile('"apiUrl":"(.+?)",', re.UNICODE).findall(content)
+def parse_endpoints(content):
+    match = re.compile('"endpointIdentifiers":({.+?}),', re.UNICODE).findall(content)
     if len(match) > 0:
-        generic_utility.set_setting('api_url', match[0])
+        generic_utility.set_setting('endpoints', match[0])
     else:
-        generic_utility.error('Cannot find apiUrl! Source: ' + content)
+        generic_utility.error('Cannot find api endpoints! Source: ' + content)
 
 
 def choose_profile():
@@ -98,14 +104,13 @@ def choose_profile():
 
 
 def profile_selection():
-    if not (
-        generic_utility.get_setting('selected_profile') or (generic_utility.get_setting('single_profile') == 'true')):
-        profiles.choose()
-    elif not (generic_utility.get_setting('single_profile') == 'true') and (
-        generic_utility.get_setting('show_profiles') == 'true'):
-        profiles.choose()
-    elif not ((generic_utility.get_setting('single_profile') and generic_utility.get_setting('show_profiles')) == 'true'):
-        profiles.load()
+
+    if generic_utility.get_setting('single_profile') == 'false':
+        if not generic_utility.get_setting('selected_profile') or generic_utility.get_setting('show_profiles') == 'true':
+            profiles.choose()
+        else:
+            profiles.load()
+
     profiles.update_displayed()
 
 
@@ -115,7 +120,7 @@ class CannotRefreshDataException(Exception):
 
 def refresh_data():
     content = connect.load_netflix_site('https://www.netflix.com/browse')
-    parse_api_url(content)
+    parse_endpoints(content)
 
     profl = generic_utility.get_setting('selected_profile')
     if not profl:

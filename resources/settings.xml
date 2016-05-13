@@ -21,6 +21,7 @@
         <setting id="use_tmdb" type="bool" label="13001" default="false"/>
         <setting id="browse_tv_shows" type="bool" label="13002" default="true"/>
         <setting id="items_per_page" type="number" label="13003" default="100"/>
+        <setting id="sync_viewstate" type="bool" label="13004" default="true"/>
         <setting label="13100" type="lsep"/>
         <setting id="force_view" type="bool" label="13101" default="true"/>
         <setting id="view_id_videos" type="number" label="13102" enable="eq(-1,true)" default="504"/>

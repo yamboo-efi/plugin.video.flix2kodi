@@ -19,7 +19,7 @@ msgstr ""
 
 msgctxt "#11000"
 msgid "General"
-msgstr "Allgemein"
+msgstr "General"
 
 msgctxt "#11001"
 msgid "Username"
@@ -31,7 +31,7 @@ msgstr "Contraseña"
 
 msgctxt "#11100"
 msgid "General"
-msgstr "Allgemein"
+msgstr "General"
 
 msgctxt "#11101"
 msgid "Browser"
@@ -67,7 +67,7 @@ msgstr "Opciones de perfil"
 
 msgctxt "#11201"
 msgid "Single-user account"
-msgstr "Cuenta individualo"
+msgstr "Cuenta individual"
 
 msgctxt "#11202"
 msgid "Show profile selection on each start"
@@ -87,7 +87,7 @@ msgstr "Ruta de la librería"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
-msgstr ""
+msgstr "Desactivar lirc durante la reproducción"
 
 msgctxt "#13000"
 msgid "Views"
@@ -131,7 +131,7 @@ msgstr "Opciones de usuario"
 
 msgctxt "#14001"
 msgid "Delete cache"
-msgstr "Borrar cache"
+msgstr "Borrar caché"
 
 msgctxt "#14002"
 msgid "Delete cookies / session"
@@ -209,10 +209,6 @@ msgctxt "#30152"
 msgid "Show seasons"
 msgstr "Ver Temporadas"
 
-msgctxt "#30153"
-msgid "Play trailer"
-msgstr "Reproducir Trailer"
-
 msgctxt "#30154"
 msgid "Remove from my list"
 msgstr "Eliminar de mi lista"
@@ -272,10 +268,6 @@ msgstr "No has iniciado sesión. ¡Comprueba tus credenciales o reinicia el addo
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
 msgstr "Detectados múltiples perfiles. ¡Elija uno!"
-
-msgctxt "#30305"
-msgid "No trailer available!"
-msgstr "¡Trailer no disponible!"
 
 msgctxt "#30306"
 msgid "No results found!"

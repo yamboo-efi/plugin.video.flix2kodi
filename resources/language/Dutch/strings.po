@@ -9,13 +9,12 @@ msgstr ""
 "POT-Creation-Date: 2015-11-04 18:30+0100\n"
 "PO-Revision-Date: 2015-11-04 18:30+0100\n"
 "Last-Translator: logi85\n"
-"Language-Team: Spanish\n"
+"Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-
 
 msgctxt "#11000"
 msgid "General"
@@ -67,7 +66,7 @@ msgstr "Profiel instellingen"
 
 msgctxt "#11201"
 msgid "Single-user account"
-msgstr "Account met een enkele gebruiker"
+msgstr "Account met één gebruiker"
 
 msgctxt "#11202"
 msgid "Show profile selection on each start"
@@ -83,7 +82,7 @@ msgstr ""
 
 msgctxt "#12002"
 msgid "Library path"
-msgstr "Bibliotheek bestandspad"
+msgstr "Bibliotheek pad"
 
 msgctxt "#12101"
 msgid "Disable lirc on playback"
@@ -115,7 +114,7 @@ msgstr "Forceer view"
 
 msgctxt "#13102"
 msgid "View ID - videos"
-msgstr "View ID - videos"
+msgstr ""
 
 msgctxt "#13103"
 msgid "View ID - episodes"
@@ -135,7 +134,7 @@ msgstr "Verwijder cache"
 
 msgctxt "#14002"
 msgid "Delete cookies / session"
-msgstr "Verwijder cookies / session"
+msgstr "Verwijder cookies / sessie"
 
 msgctxt "#14003"
 msgid "Reset Addon"
@@ -151,11 +150,11 @@ msgstr "Series"
 
 msgctxt "#30102"
 msgid "Suggestions"
-msgstr "Suggesties"
+msgstr "Aanbevelingen"
 
 msgctxt "#30103"
 msgid "Who's watching?"
-msgstr "wie kijkt?"
+msgstr "Wie kijkt?"
 
 msgctxt "#30104"
 msgid "My list"
@@ -163,7 +162,7 @@ msgstr "Mijn lijst"
 
 msgctxt "#30105"
 msgid "Viewing activity"
-msgstr "Kijk activiteit"
+msgstr "Recent gekeken"
 
 msgctxt "#30106"
 msgid "Latest"
@@ -171,7 +170,7 @@ msgstr "Recentste"
 
 msgctxt "#30107"
 msgid "All shows"
-msgstr "Alle afleveringen"
+msgstr "Alle series"
 
 msgctxt "#30108"
 msgid "Genres"
@@ -195,11 +194,11 @@ msgstr "Voeg toe aan bibliotheek"
 
 msgctxt "#301501"
 msgid "Remove from library"
-msgstr "Verwijder van bibliotheek"
+msgstr "Verwijder uit bibliotheek"
 
 msgctxt "#30151"
 msgid "Continue watching"
-msgstr "Verder gaan met kijken"
+msgstr "Verder kijken"
 
 msgctxt "#30152"
 msgid "Show seasons"
@@ -219,11 +218,11 @@ msgstr "Voeg toe aan Mijn lijst"
 
 msgctxt "#30156"
 msgid "Similar Movies"
-msgstr "Gelijkwaardige films"
+msgstr "Vergelijkbare films"
 
 msgctxt "#30157"
 msgid "Similar TV Shows"
-msgstr "Gelijkwaardige series"
+msgstr "Vergelijkbare series"
 
 msgctxt "#30200"
 msgid "Connecting Netflix"
@@ -231,11 +230,11 @@ msgstr "Verbinden met Netflix"
 
 msgctxt "#30201"
 msgid "Preparing login"
-msgstr "Login voorbereiden"
+msgstr "Voorbereiden inloggen"
 
 msgctxt "#30202"
 msgid "Sending login details"
-msgstr "Login details versturen"
+msgstr "Versturen van inlog gegevens"
 
 msgctxt "#30203"
 msgid "Loading profile"
@@ -263,7 +262,7 @@ msgstr "Sessie is verwijderd."
 
 msgctxt "#30303"
 msgid "You are not logged in. Check your credentials and/or restart the addon!"
-msgstr "Je bent niet ingelogd. Controleer je gegevens en/of herstart de addon"
+msgstr "Je bent niet ingelogd. Controleer je gegevens en/of herstart de addon!"
 
 msgctxt "#30304"
 msgid "Multiple profiles found. Choose your profile!"
@@ -271,7 +270,7 @@ msgstr "Meerdere profielen gevonden, kies je profiel!"
 
 msgctxt "#30305"
 msgid "No trailer available!"
-msgstr "Geen trailers beschikbaar!"
+msgstr "Geen trailer beschikbaar!"
 
 msgctxt "#30306"
 msgid "No results found!"
@@ -292,3 +291,28 @@ msgstr "Cache is verwijderd!"
 msgctxt "#50001"
 msgid "No browser selected in settings!"
 msgstr "Er is geen browser geselecteerd in de instellingen!"
+
+msgctxt "#50002"
+msgid "Sorry!"
+msgstr ""
+
+msgctxt "#50003"
+msgid "Flix2Kodi crashed."
+msgstr "Flix2Kodi is vastgelopen."
+
+msgctxt "#50004"
+msgid "Try to refresh your login?"
+msgstr "Proberen om opnieuw in te loggen?"
+
+msgctxt "#50006"
+msgid "Login refreshed. please try again."
+msgstr "We zijn opnieuw ingelogd. Probeer opnieuw."
+
+
+msgctxt "#50005"
+msgid "If your browser does not launch, something went wrong. Push BACK to leave this dialog."
+msgstr "Wanneer je browser niet start is er iets mis gegaan. Druk op BACK om dit venster te verlaten."
+
+msgctxt "#99999"
+msgid ""
+msgstr ""
