@@ -96,6 +96,10 @@ msgctxt "#12101"
 msgid "Disable lirc on playback"
 msgstr ""
 
+msgctxt "#12102"
+msgid "Alternate remote control management"
+msgstr ""
+
 msgctxt "#13000"
 msgid "Views"
 msgstr ""

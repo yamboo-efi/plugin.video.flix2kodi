@@ -121,60 +121,153 @@ class LogiPlayer(xbmcgui.Window):
 
 
     def onAction(self, action):
-        generic_utility.debug('caught action: '+str(action.getId()))
-        ACTION_NAV_BACK = 92
-        ACTION_PREVIOUS_MENU = 10
-        ACTION_STOP = 13
+        if generic_utility.get_setting('alternate_remote') == 'true':
+            #from plugin.video.netflixbmc
+            ACTION_SELECT_ITEM = 7
+            ACTION_PARENT_DIR = 9
+            ACTION_PREVIOUS_MENU = 10
+            ACTION_PAUSE = 12
+            ACTION_STOP = 13
+            ACTION_SHOW_INFO = 11
+            ACTION_SHOW_GUI = 18
+            ACTION_MOVE_LEFT = 1
+            ACTION_MOVE_RIGHT = 2
+            ACTION_MOVE_UP = 3
+            ACTION_MOVE_DOWN = 4
+            ACTION_PLAYER_PLAY = 79
+            ACTION_VOLUME_UP = 88
+            ACTION_VOLUME_DOWN = 89
+            ACTION_MUTE = 91
+            ACTION_CONTEXT_MENU = 117
+            ACTION_BUILT_IN_FUNCTION = 122
+            KEY_BUTTON_BACK = 275
 
-        ACTION_SELECT_ITEM = 7
-        ACTION_PLAYER_PLAY = 79
-        ACTION_PLAYER_PLAYPAUSE = 229
-        ACTION_PAUSE = 12
-
-        ACTION_PLAYER_REWIND = 78
-        ACTION_MOVE_LEFT = 1
-        ACTION_REWIND = 17
-
-        ACTION_PLAYER_FORWARD = 77
-        ACTION_MOVE_RIGHT = 2
-        ACTION_FORWARD = 16
-
-        ACTION_MOVE_UP = 3
-        ACTION_MOVE_DOWN = 4
-
-        ACTION_KEY_1 = 59
-        ACTION_KEY_2 = 142
-        ACTION_CONTEXT_MENU = 117
-        ACTION_SHOW_INFO = 11
-
-        if action.getId() in(ACTION_NAV_BACK, ACTION_PREVIOUS_MENU, ACTION_STOP):
-            self.control('close')
-        elif action.getId() in(ACTION_SELECT_ITEM, ACTION_PLAYER_PLAY, ACTION_PLAYER_PLAYPAUSE, ACTION_PAUSE):
-            self.control('pause')
-        elif action.getId() in(ACTION_PLAYER_REWIND, ACTION_MOVE_LEFT, ACTION_REWIND):
-            self.control('backward')
-        elif action.getId() in(ACTION_PLAYER_FORWARD, ACTION_MOVE_RIGHT, ACTION_FORWARD):
-            self.control('forward')
-        elif action.getId() == ACTION_MOVE_UP:
-            self.control('up')
-        elif action.getId() == ACTION_MOVE_DOWN:
-            self.control('down')
-        elif action.getId() in (ACTION_KEY_1, ACTION_CONTEXT_MENU):
-            self.control('toggle_lang'+str(self.lang_count))
-            if self.lang_count == MAX_LANG:
-                self.lang_count = 0
-            else:
-                self.lang_count += 1
-
-        elif action.getId() in(ACTION_KEY_2, ACTION_SHOW_INFO):
-            self.control('toggle_sub'+str(self.subtitle_count))
-            if self.subtitle_count == MAX_SUB:
-                self.subtitle_count = 0
-            else:
-                self.subtitle_count += 1
+            if generic_utility.windows():
+                proc = subprocess.Popen('WMIC PROCESS get Caption', shell=True, stdout=subprocess.PIPE)
+                procAll = ""
+                for line in proc.stdout:
+                    procAll+=line
+                if "chrome.exe" in procAll:
+                    if action in [ACTION_SHOW_INFO, ACTION_SHOW_GUI, ACTION_STOP, ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_BUTTON_BACK]:
+                        subprocess.Popen('"'+sendKeysPath+'"'+' sendKey=Close', shell=False)
+                        self.close()
+                    elif action==ACTION_SELECT_ITEM:
+                        subprocess.Popen('"'+sendKeysPath+'"'+' sendKey=PlayPause', shell=False)
+                    elif action==ACTION_MOVE_LEFT:
+                        subprocess.Popen('"'+sendKeysPath+'"'+' sendKey=SeekLeft', shell=False)
+                    elif action==ACTION_MOVE_RIGHT:
+                        subprocess.Popen('"'+sendKeysPath+'"'+' sendKey=SeekRight', shell=False)
+                    elif action==ACTION_MOVE_UP:
+                        subprocess.Popen('"'+sendKeysPath+'"'+' sendKey=VolumeUp', shell=False)
+                    elif action==ACTION_MOVE_DOWN:
+                        subprocess.Popen('"'+sendKeysPath+'"'+' sendKey=VolumeDown', shell=False)
+                else:
+                    self.close()                
+            elif generic_utility.darwin():
+                proc = subprocess.Popen('/bin/ps ax', shell=True, stdout=subprocess.PIPE)
+                procAll = ""
+                for line in proc.stdout:
+                    procAll+=line
+                if "chrome" in procAll:
+                    if action in [ACTION_SHOW_INFO, ACTION_SHOW_GUI, ACTION_STOP, ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_BUTTON_BACK]:
+                        subprocess.Popen('cliclick kd:cmd t:q ku:cmd', shell=True)
+                        self.close()
+                    elif action==ACTION_SELECT_ITEM:
+                        subprocess.Popen('cliclick t:p', shell=True)
+                    elif action==ACTION_MOVE_LEFT:
+                        subprocess.Popen('cliclick kp:arrow-left', shell=True)
+                    elif action==ACTION_MOVE_RIGHT:
+                        subprocess.Popen('cliclick kp:arrow-right', shell=True)
+                    elif action==ACTION_MOVE_UP:
+                        subprocess.Popen('cliclick kp:arrow-up', shell=True)
+                    elif action==ACTION_MOVE_DOWN:
+                        subprocess.Popen('cliclick kp:arrow-down', shell=True)
+                else:
+                    self.close()
+            else: #linux
+                doClose = False
+                key=None
+                if action in [ACTION_SHOW_GUI, ACTION_STOP, ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_BUTTON_BACK]:
+                    key="control+shift+q"
+                    doClose=True
+                elif action in [ ACTION_SELECT_ITEM, ACTION_PLAYER_PLAY, ACTION_PAUSE ]:
+                    key="space"
+                elif action==ACTION_MOVE_LEFT:
+                    key="Left"
+                elif action==ACTION_MOVE_RIGHT:
+                    key="Right"
+                elif action==ACTION_SHOW_INFO:
+                    key="question"
+                elif action==ACTION_VOLUME_UP:
+                    key="Up"
+                elif action==ACTION_VOLUME_DOWN:
+                    key="Down"
+                elif action==ACTION_MUTE:
+                    key="M"
+                elif action==ACTION_CONTEXT_MENU:
+                    key="ctrl+alt+shift+d"
+                if key is not None:
+                    p = subprocess.Popen('xdotool search --onlyvisible --class "google-chrome|Chromium" key %s' % key, shell=True)
+                    p.wait()
+                    # 0 for success, 127 if xdotool not found in PATH. Return code is 1 if window not found (indicating should close).
+                    if not p.returncode in [0,127] or doClose:
+                        self.close()
 
         else:
-            generic_utility.error('unknown action: ' + str(action.getId()))
+            generic_utility.debug('caught action: '+str(action.getId()))
+            ACTION_NAV_BACK = 92
+            ACTION_PREVIOUS_MENU = 10
+            ACTION_STOP = 13
+
+            ACTION_SELECT_ITEM = 7
+            ACTION_PLAYER_PLAY = 79
+            ACTION_PLAYER_PLAYPAUSE = 229
+            ACTION_PAUSE = 12
+
+            ACTION_PLAYER_REWIND = 78
+            ACTION_MOVE_LEFT = 1
+            ACTION_REWIND = 17
+
+            ACTION_PLAYER_FORWARD = 77
+            ACTION_MOVE_RIGHT = 2
+            ACTION_FORWARD = 16
+
+            ACTION_MOVE_UP = 3
+            ACTION_MOVE_DOWN = 4
+
+            ACTION_KEY_1 = 59
+            ACTION_KEY_2 = 142
+            ACTION_CONTEXT_MENU = 117
+            ACTION_SHOW_INFO = 11
+
+            if action.getId() in(ACTION_NAV_BACK, ACTION_PREVIOUS_MENU, ACTION_STOP):
+                self.control('close')
+            elif action.getId() in(ACTION_SELECT_ITEM, ACTION_PLAYER_PLAY, ACTION_PLAYER_PLAYPAUSE, ACTION_PAUSE):
+                self.control('pause')
+            elif action.getId() in(ACTION_PLAYER_REWIND, ACTION_MOVE_LEFT, ACTION_REWIND):
+                self.control('backward')
+            elif action.getId() in(ACTION_PLAYER_FORWARD, ACTION_MOVE_RIGHT, ACTION_FORWARD):
+                self.control('forward')
+            elif action.getId() == ACTION_MOVE_UP:
+                self.control('up')
+            elif action.getId() == ACTION_MOVE_DOWN:
+                self.control('down')
+            elif action.getId() in (ACTION_KEY_1, ACTION_CONTEXT_MENU):
+                self.control('toggle_lang'+str(self.lang_count))
+                if self.lang_count == MAX_LANG:
+                    self.lang_count = 0
+                else:
+                    self.lang_count += 1
+
+            elif action.getId() in(ACTION_KEY_2, ACTION_SHOW_INFO):
+                self.control('toggle_sub'+str(self.subtitle_count))
+                if self.subtitle_count == MAX_SUB:
+                    self.subtitle_count = 0
+                else:
+                    self.subtitle_count += 1
+
+            else:
+                generic_utility.error('unknown action: ' + str(action.getId()))
 
     def control(self, key):
         script = self.get_launch_script('keysender')
