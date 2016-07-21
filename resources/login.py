@@ -14,7 +14,6 @@ import connect
 import profiles
 from resources.utility import generic_utility
 
-
 def login():
     if not test:
         login_progress = xbmcgui.DialogProgress()
@@ -93,7 +92,13 @@ def parse_data_set_cookies(content):
 def parse_endpoints(content):
     match = re.compile('"endpointIdentifiers":({.+?}),', re.UNICODE).findall(content)
     if len(match) > 0:
-        generic_utility.set_setting('endpoints', match[0])
+        epstr = match[0]
+        if epstr.endswith('}}'):
+            epstr = epstr[:-1]
+
+        epstr = generic_utility.replace_netfix_secret_code(epstr)
+
+        generic_utility.set_setting('endpoints', epstr)
     else:
         generic_utility.error('Cannot find api endpoints! Source: ' + content)
 

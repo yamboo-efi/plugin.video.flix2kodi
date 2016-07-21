@@ -160,19 +160,22 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
 def try_to_read_auth_url(ret):
     match = re.compile('"authURL":"(.+?)"', re.DOTALL | re.UNICODE).findall(ret)
     if len(match) > 0:
-        generic_utility.debug('Setting authorization url: ' + match[0])
+        authurl = generic_utility.replace_netfix_secret_code(match[0])
+        generic_utility.debug('Setting authorization url: ' + authurl)
         if not test:
-            generic_utility.set_setting('authorization_url', match[0])
+            generic_utility.set_setting('authorization_url', authurl)
         else:
-            return match[0]
+            return authurl
     else:
         match = re.compile('name="authURL" value="(.+?)"', re.DOTALL | re.UNICODE).findall(ret)
         if len(match) > 0:
-            generic_utility.debug('Setting authorization url: ' + match[0])
+            authurl = generic_utility.replace_netfix_secret_code(match[0])
+
+            generic_utility.debug('Setting authorization url: ' + authurl)
             if not test:
-                generic_utility.set_setting('authorization_url', match[0])
+                generic_utility.set_setting('authorization_url', authurl)
             else:
-                return match[0]
+                    return authurl
 
 
 def get_netflix_session(new_session):

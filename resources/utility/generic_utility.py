@@ -92,7 +92,13 @@ def evaluator():
 
 
 def endpoints():
-    return json.loads(get_setting('endpoints'))
+    endpointsstr = get_setting('endpoints')
+    endpointsstr = endpointsstr.replace('&apos;', '\'')
+    ret = json.loads(endpointsstr)
+    return ret
+
+def replace_netfix_secret_code(str):
+    return str.replace('&quot;', '"').replace('\\x2F', '/').replace('\\x2B', '+').replace('\\x3D', '=').replace('\\x3F', '?')
 
 def auth_url():
     return get_setting('authorization_url')
