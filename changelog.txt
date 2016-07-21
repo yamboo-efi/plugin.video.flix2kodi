@@ -1,3 +1,7 @@
+version 0.6.5 (22.07.2016)
+  * fixed api-change (encoding-escapes)
+  * merged alternate remote control
+
 version 0.6.4 (11.05.2016)
   * merged tmdb-fix (marcelveldt), big thx!
   
