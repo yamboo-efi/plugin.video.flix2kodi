@@ -108,7 +108,7 @@ def add_videos_to_directory(loading_progress, run_as_widget, video_metadatas, vi
     else:
         xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
     
-    if (not url or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page:
+    if page is not None and (not url or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page:
         add.add_next_item(page + 1, url, video_type, 'list_videos')
 
 
