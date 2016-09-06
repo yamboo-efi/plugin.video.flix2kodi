@@ -1,3 +1,7 @@
+version 0.6.6 (06.09.2016)
+  * Fixed cookie-deletion on chrome (thx to sean)
+  * fixed cookie-path on openelec (thx to kingBrowser)
+
 version 0.6.5 (22.07.2016)
   * fixed api-change (encoding-escapes)
   * merged alternate remote control
