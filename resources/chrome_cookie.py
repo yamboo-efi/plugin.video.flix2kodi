@@ -111,7 +111,7 @@ def connect():
     else:
         db_path += '/.config/google-chrome/Default/Cookies'
         if not os.path.isfile(db_path):
-            db_path += '/storage/.kodi/userdata/addon_data/browser.chromium/profile'
+            db_path = '/storage/.kodi/userdata/addon_data/browser.chromium/profile/Default/Cookies'
 
     if not os.path.isfile(db_path):
         raise ValueError('Cannot find cookie-file in: '+db_path)
