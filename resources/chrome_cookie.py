@@ -109,8 +109,13 @@ def connect():
     elif generic_utility.darwin():
         db_path += "/Library/Application Support/Google/Chrome/Default/Cookies"
     else:
-        db_path += '/.config/google-chrome/Default/Cookies'
-        if not os.path.isfile(db_path):
+        chrome_channels = [ '', '-beta', '-unstable' ]
+        for channel in chrome_channels:
+            db_path_tmp = "%s/.config/google-chrome%s/Default/Cookies" % (db_path, channel)
+            if os.path.isfile(db_path_tmp):
+               db_path = db_path_tmp
+               break
+        else:
             db_path = '/storage/.kodi/userdata/addon_data/browser.chromium/profile/Default/Cookies'
 
     if not os.path.isfile(db_path):
