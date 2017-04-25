@@ -12,9 +12,9 @@ def req_json_path(*paths):
     from resources import connect
 
     auth_url = generic_utility.auth_url()
-    endpoints = generic_utility.endpoints()
+    api_url = generic_utility.api_url()
 
-    if not auth_url or not endpoints:
+    if not auth_url or not api_url:
         connect.do_login()
 
     post = '{"paths":['
@@ -23,7 +23,7 @@ def req_json_path(*paths):
     post = post[:-1]
     post += '],"authURL":"%s"}' % auth_url
 
-    content = connect.load_netflix_site(generic_utility.evaluator_url % (generic_utility.api_url), post, headers={"Content-Type":"application/json"})
+    content = connect.load_netflix_site(generic_utility.evaluator_url % (api_url), post, headers={"Content-Type":"application/json"})
     jsn = json.loads(content)
     if 'error' in jsn:
         err = jsn['error']
@@ -44,9 +44,9 @@ def req_path(*paths):
     from resources import connect
 
     auth_url = generic_utility.auth_url()
-    endpoints = generic_utility.endpoints()
+    api_url = generic_utility.api_url()
 
-    if not auth_url or not endpoints:
+    if not auth_url or not api_url:
         connect.do_login()
 
     post = '{"paths":['
@@ -55,7 +55,7 @@ def req_path(*paths):
     post = post[:-1]
     post += '],"authURL":"%s"}' % auth_url
 
-    content = connect.load_netflix_site(generic_utility.evaluator_url % (generic_utility.api_url), post)
+    content = connect.load_netflix_site(generic_utility.evaluator_url % (api_url), post)
     jsn = json.loads(content)
     if 'error' in jsn:
         err = jsn['error']

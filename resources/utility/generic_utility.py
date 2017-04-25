@@ -26,7 +26,6 @@ if test == False:
 # urls for netflix
 main_url = 'https://www.netflix.com/'
 kids_url = 'https://www.netflix.com/Kids'
-api_url = 'https://www.netflix.com/api/shakti/1df66551'
 evaluator_url = '%s/pathEvaluator?materialize=true&model=harris'
 profile_switch_url = '%s/profiles/switch?'
 profile_url = 'http://api-global.netflix.com/desktop/account/profiles?version=2&withCredentials=true'
@@ -88,14 +87,12 @@ def create_pathname(path, item):
 
 
 def evaluator():
-    return evaluator_url % (api_url)
+    return evaluator_url % (api_url())
 
 
-def endpoints():
-    endpointsstr = get_setting('endpoints')
-    endpointsstr = endpointsstr.replace('&apos;', '\'')
-    ret = json.loads(endpointsstr)
-    return ret
+def api_url():
+    url = get_setting('api_url')
+    return url
 
 def replace_netfix_secret_code(str):
     return str.replace('&quot;', '"').replace('\\x2F', '/').replace('\\x2B', '+').replace('\\x3D', '=').replace('\\x3F', '?')
@@ -104,7 +101,7 @@ def auth_url():
     return get_setting('authorization_url')
 
 def profile_switch():
-    return profile_switch_url % (api_url)
+    return profile_switch_url % (api_url())
 
 def error(message):
     if test == False:
