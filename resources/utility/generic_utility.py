@@ -26,17 +26,17 @@ if test == False:
 # urls for netflix
 main_url = 'https://www.netflix.com/'
 kids_url = 'https://www.netflix.com/Kids'
-api_url = 'https://www.netflix.com/api/shakti'
-evaluator_url = '%s/pathEvaluator/%s?materialize=true&model=harris'
-profile_switch_url = '%s/profiles/switch/%s?'
+api_url = 'https://www.netflix.com/api/shakti/1df66551'
+evaluator_url = '%s/pathEvaluator?materialize=true&model=harris'
+profile_switch_url = '%s/profiles/switch?'
 profile_url = 'http://api-global.netflix.com/desktop/account/profiles?version=2&withCredentials=true'
-series_url = '%s/metadata/%s?movieid=%s&imageFormat=jpg'
-activity_url = '%s/viewingactivity/%s?_retry=0&authURL=%s'
+series_url = '%s/metadata?movieid=%s&imageFormat=jpg'
+activity_url = '%s/viewingactivity?_retry=0&authURL=%s'
 
 # post data information
 
 movie_genre = '{"paths":[["genreList",{"from":0,"to":24},["id","menuName"]]],"authURL":"%s"}'
-series_genre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},"summary"]],"authURL":"%s"}'
+series_genre = '{"paths":[["genres",83,"subgenres",{"from":0,"to":20},["id", "name"]]],"authURL":"%s"}'
 video_playback_info = '{"paths": [["videos",[%s],["bookmarkPosition","runtime","summary"]]],"authURL":"%s"}'
 
 
@@ -88,7 +88,7 @@ def create_pathname(path, item):
 
 
 def evaluator():
-    return evaluator_url % (api_url, endpoints()['/pathEvaluator'])
+    return evaluator_url % (api_url)
 
 
 def endpoints():
@@ -104,7 +104,7 @@ def auth_url():
     return get_setting('authorization_url')
 
 def profile_switch():
-    return profile_switch_url % (api_url, endpoints()['/profiles/switch'])
+    return profile_switch_url % (api_url)
 
 def error(message):
     if test == False:

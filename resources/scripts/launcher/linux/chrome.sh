@@ -3,7 +3,7 @@
 # copy from https://github.com/andrewleech/plugin.video.netflixbmc/blob/master/browser.sh
 
 # Managed to resolve the issues with, but will leave this here anyway, as its a good fallback
-CHROME_STARTED=`ps -ef | grep google-chrome | grep -v "grep" | wc -l`
+CHROME_STARTED=`ps -ef | grep google-chrome-stable | grep -v "grep" | wc -l`
 if [ $CHROME_STARTED -gt 0 ]; then
         exit 1;
 fi
@@ -15,7 +15,7 @@ XDOTOOL=$?
 url=$1
 
 # notice the ampersand to send google chrome into back ground so that the script continues and we execute the xdotool below
-/usr/bin/google-chrome --start-maximized --disable-translate --disable-new-tab-first-run --no-default-browser-check --no-first-run --kiosk "$url" &
+/usr/bin/google-chrome-stable --start-maximized --disable-translate --disable-new-tab-first-run --no-default-browser-check --no-first-run --kiosk "$url" &
 CHROME_PID=$!
 
 if [ $XDOTOOL -eq 0 ]; then

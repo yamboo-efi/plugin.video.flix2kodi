@@ -1,5 +1,5 @@
 from resources import path_evaluator
-from resources.path_evaluator import from_to, child, deref,filter_empty, req_path, get_root_list_id_from_cookie
+from resources.path_evaluator import from_to, child, deref,filter_empty, req_json_path, get_root_list_id_from_cookie
 from resources.utility import generic_utility
 
 
@@ -50,7 +50,7 @@ def get_root_list():
 #    return root_list_id
 
 def get_mylist(root_list_id):
-    ret = req_path(my_list(root_list_id), lists(root_list_id))
+    ret = req_json_path(my_list(root_list_id), lists(root_list_id))
     llms = child('lolomos', ret)
     rlst = child(root_list_id, llms)
     mylist_ref1 = child('mylist', rlst)

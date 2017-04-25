@@ -110,7 +110,7 @@ def should_retry(url, status_code):
     return should
 
 
-def load_netflix_site(url, post=None, new_session=False, lock = None, login_process = False, options = False):
+def load_netflix_site(url, post=None, new_session=False, lock = None, login_process = False, options = False, headers=None):
 
     generic_utility.debug('Loading netflix: ' + url + ' Post: ' + str(post))
     if lock != None:
@@ -119,7 +119,7 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
     session = get_netflix_session(new_session)
 
     try:
-        ret, status_code = load_site_internal(url, session, post, netflix=True, options=False)
+        ret, status_code = load_site_internal(url, session, post, netflix=True, options=False, headers=headers)
         ret = ret.decode('utf-8')
         not_logged_in = '"template":"torii/nonmemberHome.jsx"' in ret
     except requests.exceptions.TooManyRedirects:

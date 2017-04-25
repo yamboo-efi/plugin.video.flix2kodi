@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.flix2kodi"
        name="Flix2Kodi"
-       version="0.6.6"
+       version="0.6.7"
        provider-name="logi85 and many others">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
@@ -26,7 +26,7 @@
         <platform>all</platform>
         <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
         <forum>http://forum.kodi.tv/showthread.php?tid=254263</forum>
-        <website>https://github.com/logi85/plugin.video.flix2kodi</website>
+        <website>https://github.com/yamboo-efi/plugin.video.flix2kodi</website>
         <email/>
         <source/>
     </extension>

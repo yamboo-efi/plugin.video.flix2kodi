@@ -19,7 +19,7 @@ plugin_handle = int(sys.argv[1])
 def index():
     add.directory(generic_utility.get_string(30100), '', 'main', '', 'movie', login_context=True)
     add.directory(generic_utility.get_string(30101), '', 'main', '', 'show', login_context=True)
-    
+
     if generic_utility.get_setting('superbrowse') == 'true':
         add.directory(generic_utility.get_string(30112), '', 'superbrowse', '', 'superbrowse', login_context=True)
 
@@ -27,7 +27,7 @@ def index():
 
     if not generic_utility.get_setting('single_profile') == 'true':
         add.item(
-            generic_utility.get_string(30103) + ' - [COLOR FF8E0000]' + generic_utility.get_setting('profile_name') + '[/COLOR]',
+            generic_utility.get_string(30103) + ' - [COLOR FF8E0000]' + generic_utility.get_setting('profile_name').decode('utf-8') + '[/COLOR]',
             'choose_profile', login_context=True)
     xbmcplugin.endOfDirectory(plugin_handle)
 

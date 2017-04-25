@@ -8,6 +8,38 @@ class CacheMissException(Exception):
         self.jsn = jsn
 
 
+def req_json_path(*paths):
+    from resources import connect
+
+    auth_url = generic_utility.auth_url()
+    endpoints = generic_utility.endpoints()
+
+    if not auth_url or not endpoints:
+        connect.do_login()
+
+    post = '{"paths":['
+    for curpath in paths:
+        post += curpath+','
+    post = post[:-1]
+    post += '],"authURL":"%s"}' % auth_url
+
+    content = connect.load_netflix_site(generic_utility.evaluator_url % (generic_utility.api_url), post, headers={"Content-Type":"application/json"})
+    jsn = json.loads(content)
+    if 'error' in jsn:
+        err = jsn['error']
+        if 'innerErrors' in err:
+            inners = err['innerErrors']
+            for inner_err in inners:
+                if 'message' in inner_err:
+                    msg = inner_err['message']
+                    if 'Map cache miss' == msg:
+                        raise CacheMissException(content)
+        raise Exception('Invalid path response: ' + content)
+    if 'value' not in jsn:
+        raise Exception('Invalid path response: ' + content)
+
+    return jsn['value']
+
 def req_path(*paths):
     from resources import connect
 
@@ -23,7 +55,7 @@ def req_path(*paths):
     post = post[:-1]
     post += '],"authURL":"%s"}' % auth_url
 
-    content = connect.load_netflix_site(generic_utility.evaluator_url % (generic_utility.api_url, endpoints['/pathEvaluator']), post)
+    content = connect.load_netflix_site(generic_utility.evaluator_url % (generic_utility.api_url), post)
     jsn = json.loads(content)
     if 'error' in jsn:
         err = jsn['error']
