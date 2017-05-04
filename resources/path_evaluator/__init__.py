@@ -97,7 +97,7 @@ def get_root_list_id_from_cookie():
                 root_list_id = cur_cookie.value
 
     if not root_list_id:
-        raise ValueError('root_list_id not found in cookies!')
+        raise AttributeError('root_list_id not found in cookies!')
 
     splt = root_list_id.split('%3A')
     if(len(splt) != 3):

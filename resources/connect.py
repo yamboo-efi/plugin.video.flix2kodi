@@ -130,18 +130,14 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
             if lock:
                 lock.release()
 
-            try:
-                refresh_data()
-            except CannotRefreshDataException:
-                if not do_login():
-                    raise ValueError('re-login failed')
+            if not do_login():
+                raise ValueError('Login failed')
 
             session = get_netflix_session(new_session)
             ret, status_code = load_site_internal(url, session, post, netflix=True, options=False)
             ret = ret.decode('utf-8')
             if status_code != requests.codes.ok:
                     raise ValueError('!HTTP-ERROR1!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
-
         else:
             raise ValueError('!HTTP-ERROR2!: '+str(status_code)+' loading: "'+url+'", post: "'+ str(post)+'"')
 
@@ -222,10 +218,6 @@ def set_chrome_netflix_cookies():
     if not generic_utility.android():
         if test == False:
             chrome_cookie.set_netflix_cookies(read_cookies())
-
-
-def logged_in(content):
-    return 'netflix.falkorCache' in content
 
 
 def choose_profile():

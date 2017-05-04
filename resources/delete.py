@@ -26,11 +26,13 @@ def cache():
         pass
 
 
-def cookies():
+def cookies(silent=False):
     if xbmcvfs.exists(generic_utility.cookies_file()):
         xbmcvfs.delete(generic_utility.cookies_file())
-        generic_utility.notification(generic_utility.get_string(30301))
+        if not silent:
+            generic_utility.notification(generic_utility.get_string(30301))
 
     if xbmcvfs.exists(generic_utility.headers_file()):
         xbmcvfs.delete(generic_utility.headers_file())
-        generic_utility.notification(generic_utility.get_string(30302))
+        if not silent:
+            generic_utility.notification(generic_utility.get_string(30302))

@@ -324,6 +324,14 @@ msgctxt "#50006"
 msgid "Login refreshed. please try again."
 msgstr ""
 
+msgctxt "#50007"
+msgid "Login failed!!"
+msgstr ""
+
+msgctxt "#50008"
+msgid "Please check your username/password"
+msgstr ""
+
 msgctxt "#99999"
 msgid ""
 msgstr ""

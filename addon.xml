@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.flix2kodi"
        name="Flix2Kodi"
-       version="0.6.7"
-       provider-name="logi85 and many others">
+       version="0.6.8"
+       provider-name="yamboo-efi and many others">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.requests" version="2.8.1"/>

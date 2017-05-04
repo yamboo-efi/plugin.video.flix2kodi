@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import json
 import re
+from resources import delete
 
 test = False
 try:
@@ -15,6 +16,7 @@ import profiles
 from resources.utility import generic_utility
 
 def login():
+    delete.cookies(True);
     if not test:
         login_progress = xbmcgui.DialogProgress()
         login_progress.create('Netflix', generic_utility.get_string(30200) + '...')
@@ -55,7 +57,7 @@ def login():
             generic_utility.main_url + login_url,
             post=post_data, login_process=True)
 
-        if 'id="page-LOGIN"' in content:
+        if 'class="login-form"' in content:
             if not test:
                 generic_utility.notification(generic_utility.get_string(30303))
             return False
@@ -65,7 +67,8 @@ def login():
         if not test:
             generic_utility.progress_window(login_progress, 75, generic_utility.get_string(30203))
 
-        profile_selection()
+        if 'class="login-form"' not in content:
+            profile_selection()
 
         if login_progress:
             if not test:
@@ -88,9 +91,10 @@ def parse_data_set_cookies(content):
 
 
 def parse_api_url(content):
-    match = re.compile('"apiUrl":"(.+?)",', re.UNICODE).findall(content)
-    if len(match) > 0:
-        epstr = match[0]
+    apiroot = re.compile('"SHAKTI_API_ROOT":"(.+?)",', re.UNICODE).findall(content)
+    apibuild = re.compile('"BUILD_IDENTIFIER":"(.+?)",', re.UNICODE).findall(content)
+    if len(apiroot) > 0 and len(apibuild) > 0:
+        epstr = apiroot[0] + "/" + apibuild[0]
         epstr = generic_utility.replace_netfix_secret_code(epstr)
 
         generic_utility.set_setting('api_url', epstr)

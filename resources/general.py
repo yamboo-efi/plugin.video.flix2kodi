@@ -46,7 +46,13 @@ def main(video_type):
         add_dynamic_lists()
 
     if video_type != 'dynamic' and generic_utility.get_setting('is_kid') == 'false':
-        root_list = lolomos.get_root_list()
+        try:
+            root_list = lolomos.get_root_list()
+        except AttributeError:
+            if connect.do_login():
+                root_list = lolomos.get_root_list()
+            else:
+                raise Exception("Cannot login")
         mylist = lolomos.get_mylist(root_list)
         add.directory(child('displayName', mylist[1]), 'list?&mylist', 'list_videos', '', video_type)
 

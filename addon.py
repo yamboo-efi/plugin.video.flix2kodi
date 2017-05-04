@@ -83,14 +83,18 @@ def handle_request():
 
 try:
     handle_request()
-except:
+except Exception, e:
     generic_utility.log('parameters: ' + sys.argv[2])
     generic_utility.log(traceback.format_exc(), xbmc.LOGERROR)
 
-    if connect.do_login():
-        handle_request()
-    else:
+    if ("login" in str(e)):
         dialog = xbmcgui.Dialog()
-        do_fresh_login = dialog.yesno(generic_utility.get_string(50002), generic_utility.get_string(50003), generic_utility.get_string(50004))
-        if do_fresh_login:
-            generic_utility.notification(generic_utility.get_string(50006))
+        do_fresh_login = dialog.ok(generic_utility.get_string(50002), generic_utility.get_string(50007), generic_utility.get_string(50008))
+    else:
+        if connect.do_login():
+            handle_request()
+        else:
+            dialog = xbmcgui.Dialog()
+            do_fresh_login = dialog.yesno(generic_utility.get_string(50002), generic_utility.get_string(50003), generic_utility.get_string(50004))
+            if do_fresh_login:
+                generic_utility.notification(generic_utility.get_string(50006))
