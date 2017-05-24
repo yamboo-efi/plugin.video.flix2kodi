@@ -55,7 +55,7 @@ def req_path(*paths):
     post = post[:-1]
     post += '],"authURL":"%s"}' % auth_url
 
-    content = connect.load_netflix_site(generic_utility.evaluator_url % (api_url), post)
+    content = connect.load_netflix_site(generic_utility.evaluator_url % (api_url), post, headers={"Content-Type":"application/json"})
     jsn = json.loads(content)
     if 'error' in jsn:
         err = jsn['error']
