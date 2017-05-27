@@ -7,8 +7,8 @@ Big thanks to logi85, z-e-r-o and many others making this addon possible.
 ### 0.6.8
 * Improved API_URL detection
 * Fixed wrong credentials detection
-* Fixed suggestions retrieval. See #1
-* Fixed support on Kodi 17.x in Windows. See #2
+* Fixed suggestions retrieval.
+* Fixed support on Kodi 17.x in Windows.
 
 ### 0.6.7
 * Adapted to working on new API scheme

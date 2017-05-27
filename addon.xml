@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.flix2kodi"
        name="Flix2Kodi"
-       version="0.6.8"
+       version="0.6.9"
        provider-name="yamboo-efi and many others">
     <requires>
-        <import addon="xbmc.python" version="2.1.0"/>
-        <import addon="script.module.requests" version="2.8.1"/>
-        <import addon="script.skin.helper.service" version="1.0.0"/>
+        <import addon="xbmc.python" version="2.14.0"/>
+        <import addon="script.module.requests" version="2.12.4"/>
+        <import addon="script.skin.helper.service" version="1.0.11"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="addon.py">
         <provides>video</provides>

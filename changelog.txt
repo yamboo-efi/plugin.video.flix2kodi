@@ -1,3 +1,17 @@
+version 0.6.8 (27.05.2017)
+  * Improved API_URL detection
+  * Fixed wrong credentials detection
+  * Fixed suggestions retrieval.
+  * Fixed support on Kodi 17.x in Windows.
+
+version 0.6.7 (25.04.2017)
+  * Adapted to working on new API scheme
+  * Dynamic shakti API build change support
+  * Fixed searching
+  * Changed browsing from suggested to AZ, to get a natural pagination.
+  * Included metadata fro non HD videos
+  * Other minor changes
+
 version 0.6.6 (06.09.2016)
   * Fixed cookie-deletion on chrome (thx to sean)
   * fixed cookie-path on openelec (thx to kingBrowser)
@@ -8,7 +22,7 @@ version 0.6.5 (22.07.2016)
 
 version 0.6.4 (11.05.2016)
   * merged tmdb-fix (marcelveldt), big thx!
-  
+
 version 0.6.3 (11.05.2016)
   * added missing italian translation
   * added auto-re-login after crash
@@ -132,4 +146,4 @@ version 0.4 (02.01.2016)
 version 0.1 (30.12.2015)
 
   * first release, big thanks to z-e-r-o (this started as a fork of his great work)
- 
+
