@@ -50,6 +50,9 @@ def viewing_activity_matches(video_type):
             metadatas[video_id] = {'topNodeId': match['topNodeId'], 'seriesTitle': seriesTitle, 'dateStr': match['dateStr']}
             videos_str += video_id + ','
 
+    if videos_str == '':
+        return []
+
     videos_str = videos_str[:-1]
     path1 = path('"videos"', '[' + videos_str + ']', video_infos1)
     path2 = path('"videos"', '[' + videos_str + ']', video_infos2)
