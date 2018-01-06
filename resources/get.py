@@ -46,7 +46,7 @@ def viewing_activity_matches(video_type):
             seriesTitle = ""
 
         video_id = unicode(match['movieID'])
-        if video_type == metadata_type:
+        if video_type == 'dynamic' or video_type == metadata_type:
             metadatas[video_id] = {'topNodeId': match['topNodeId'], 'seriesTitle': seriesTitle, 'dateStr': match['dateStr']}
             videos_str += video_id + ','
 
