@@ -46,9 +46,12 @@ def viewing_activity_matches(video_type):
             seriesTitle = ""
 
         video_id = unicode(match['movieID'])
-        if video_type == metadata_type:
+        if video_type == 'dynamic' or video_type == metadata_type:
             metadatas[video_id] = {'topNodeId': match['topNodeId'], 'seriesTitle': seriesTitle, 'dateStr': match['dateStr']}
             videos_str += video_id + ','
+
+    if videos_str == '':
+        return []
 
     videos_str = videos_str[:-1]
     path1 = path('"videos"', '[' + videos_str + ']', video_infos1)
@@ -117,11 +120,9 @@ def videos_in_search(search_str):
     path4 = path('"search"', '"byTerm"', '"|' + search_str + '"', '"titles"', '99', from_to(0,99), '"reference"', video_infos4)
     ret = req_json_path(path1, path2, path3, path4)
     filter_empty(ret)
-    generic_utility.log("Hey mate 2 %s and %s" %(search_str, ret))
     rets = []
     if 'search' in ret:
         search = ret['search']
-	generic_utility.log("Hey mate 3 %s and %s" %(search_str, ret[u'videos']))
         for video_ref in ret[u'videos']:
                 parsed = video_parser.parse_video(ret['videos'][video_ref], video_ref)
                 rets.append(parsed)

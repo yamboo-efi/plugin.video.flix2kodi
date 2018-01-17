@@ -149,7 +149,7 @@ def load_netflix_site(url, post=None, new_session=False, lock = None, login_proc
 
     try_to_read_auth_url(ret)
 
-#    generic_utility.debug('Returning : '+ret)
+    generic_utility.debug('Returning : '+ret)
     return ret
 
 
