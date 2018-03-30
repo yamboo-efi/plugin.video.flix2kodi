@@ -1,3 +1,10 @@
+version 0.6.9 (30.03.2018)
+  * Fixed searching (Thanks to klondi)
+  * Fixed superbrowse (Thanks to klondi)
+  * Fixed my activity recommendations (Thanks to klondi)
+  * Fixed suggestions
+  * Fixed searching inside suggestions
+
 version 0.6.8 (27.05.2017)
   * Improved API_URL detection
   * Fixed wrong credentials detection
