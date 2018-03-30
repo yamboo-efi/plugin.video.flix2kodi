@@ -50,9 +50,6 @@ def viewing_activity_matches(video_type):
             metadatas[video_id] = {'topNodeId': match['topNodeId'], 'seriesTitle': seriesTitle, 'dateStr': match['dateStr']}
             videos_str += video_id + ','
 
-    if videos_str == '':
-        return []
-
     videos_str = videos_str[:-1]
     path1 = path('"videos"', '[' + videos_str + ']', video_infos1)
     path2 = path('"videos"', '[' + videos_str + ']', video_infos2)
@@ -78,19 +75,20 @@ def videos_in_list(list_to_browse, page):
     off_from = page * items_per_page
     off_to = off_from + items_per_page - 2
 
-    path1 = path('"lists"', '"' + list_to_browse + '"', from_to(off_from, off_to), video_infos1)
-    path2 = path('"lists"', '"' + list_to_browse + '"', from_to(off_from, off_to), video_infos2)
-    path3 = path('"lists"', '"' + list_to_browse + '"', from_to(off_from, off_to), video_infos3)
-    path4 = path('"lists"', '"' + list_to_browse + '"', from_to(off_from, off_to), video_infos4)
+    path1 = path('"lists"', '"' + list_to_browse + '"', from_to(off_from, off_to), '"reference"', video_infos1)
+    path2 = path('"lists"', '"' + list_to_browse + '"', from_to(off_from, off_to), '"reference"', video_infos2)
+    path3 = path('"lists"', '"' + list_to_browse + '"', from_to(off_from, off_to), '"reference"', video_infos3)
+    path4 = path('"lists"', '"' + list_to_browse + '"', from_to(off_from, off_to), '"reference"', video_infos4)
     ret = req_json_path(path1, path2, path3, path4)
     filter_empty(ret)
     lists = child('lists', ret)
     list = child(list_to_browse, lists)
     rets = []
     for ref in list:
-        video_id, vjsn = deref(list[ref], ret)
-        parsed = video_parser.parse_video(vjsn, video_id)
-        rets.append(parsed)
+        if len(list[ref]) > 0:
+            video_id, vjsn = deref(list[ref]['reference'], ret)
+            parsed = video_parser.parse_video(vjsn, video_id)
+            rets.append(parsed)
     return rets
 
 def videos_in_genre(genre_to_browse, page):

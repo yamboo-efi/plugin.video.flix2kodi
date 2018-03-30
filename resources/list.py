@@ -74,7 +74,7 @@ def add_sort_methods():
 def add_videos_to_directory(loading_progress, run_as_widget, video_metadatas, video_type, page = None, url=None, viewing_activity = False):
 
     removable = url != None and 'mylist' in url
-    
+
     if viewing_activity and type!="movie":
         xbmcplugin.setContent(int(sys.argv[1]), "episodes")
     elif video_type=="movie":
@@ -83,7 +83,7 @@ def add_videos_to_directory(loading_progress, run_as_widget, video_metadatas, vi
         xbmcplugin.setContent(int(sys.argv[1]), "tvshows")
     elif video_type == "both":
         xbmcplugin.setContent(int(sys.argv[1]), "tvshows")
-    
+
     if not viewing_activity:
         sorted_video_metadata = sorted(video_metadatas, key=lambda t: t['date_watched'], reverse = viewing_activity)
     else:
@@ -102,12 +102,12 @@ def add_videos_to_directory(loading_progress, run_as_widget, video_metadatas, vi
 
     if len(video_metadatas) == 0:
         generic_utility.notification(generic_utility.get_string(30306))
-    
+
     if not viewing_activity:
         add_sort_methods()
     else:
         xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
-    
+
     if page is not None and (not url or 'list_viewing_activity' not in url) and len(video_metadatas) == items_per_page:
         add.add_next_item(page + 1, url, video_type, 'list_videos')
 
@@ -117,6 +117,9 @@ def calc_allowed_types(video_type, viewing_activity):
     if video_type == 'both':
         allowed_types.append('movie')
         allowed_types.append('episode')
+        allowed_types.append('show')
+    elif video_type == 'dynamic':
+        allowed_types.append('movie')
         allowed_types.append('show')
     elif viewing_activity:
         if video_type == 'movie':
@@ -169,12 +172,12 @@ def episodes(series_id, season):
     episodes = get.episodes_data(season, series_id)
     for episode in episodes:
         add.episode(episode)
-    
+
     if generic_utility.get_setting('force_view'):
         xbmc.executebuiltin('Container.SetViewMode(' + generic_utility.get_setting('view_id_episodes') + ')')
     xbmcplugin.addSortMethod(plugin_handle, xbmcplugin.SORT_METHOD_EPISODE)
     xbmcplugin.endOfDirectory(plugin_handle)
-    
+
 
 
 def genres(video_type):
