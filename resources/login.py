@@ -41,13 +41,13 @@ def login():
 
         post_data = {
                      'authURL': generic_utility.get_setting('authorization_url'),
-                     'userLoginId': generic_utility.get_setting('username'),
+                     'email': generic_utility.get_setting('username'),
                      'password':  generic_utility.get_setting('password'),
                      'rememberMe': 'true',
                      'flow': 'websiteSignUp',
                      'mode': 'login',
                      'action': 'loginAction',
-                     'withFields': 'userLoginId,password,rememberMe,nextPage',
+                     'withFields': 'email,password,rememberMe,nextPage',
                      'nextPage': ''}
 
         if not test:
